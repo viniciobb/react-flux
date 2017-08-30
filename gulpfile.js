@@ -2,6 +2,9 @@
 var gulp = require('gulp');
 var connect = require('gulp-connect');
 var open = require('gulp-open');
+var browserify = required('browserify'); // bundles JS
+var reactify = required('reactify');// Transforms React JSX to JS
+var source = required('vinyl-source-stream');// Use conventionals text streams with gulp
 
 // start a local development server
 var config = {
