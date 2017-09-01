@@ -8,7 +8,7 @@ var source = require('vinyl-source-stream');// Use conventionals text streams wi
 var concat = require('gulp-concat'); // concatenates files
 var lint = require('gulp-eslint'); // lint js files
 
-// start a local development server
+// start a local development server 
 var config = {
     port : 9005,
     devBaseUrl : 'http://localhost',
