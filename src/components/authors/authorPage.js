@@ -11,6 +11,8 @@ var AuthorList = require("./authorList");
  * 
  * Props validation
  * 
+ * React Router
+ * 
  */
 
 var AuthorsPage = React.createClass({
