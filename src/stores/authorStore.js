@@ -50,6 +50,14 @@ Dispatcher.register(function(action){
             _authors.splice(existingAuthorIndex,1,action.author);
             AuthorStore.emitChange();
             break;
+
+        case ActionTypes.DELETE_AUTHOR:
+            
+            var existingAuthor = _.find(_authors, {id : action.id});
+            var existingAuthorIndex = _.indexOf(_authors, existingAuthor);
+            _authors.splice(existingAuthorIndex,1);
+            AuthorStore.emitChange();
+            break;    
     }
 });
 

@@ -33,9 +33,7 @@ var ManageAuthorPage = React.createClass({
 
     componentWillMount: function(){
         var authorId = this.props.params.id; // from the path /author/:id
-        console.log("component will mount");
-        console.log("authorId");
-        console.log(authorId);
+        
         if(authorId){
             this.setState({author: AuthorStore.getAuthorById(authorId)});
         } 
