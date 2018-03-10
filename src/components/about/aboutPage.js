@@ -1,25 +1,25 @@
 "use strict";
 var React = require('react');
 var About = React.createClass({
-    statics: {
-        willTransitionTo: function(transition, params, query, callback){
-            if(!confirm('Are you sure you read a page that\'s this boring ?')){
-                transition.about();
+    // statics: {
+    //     willTransitionTo: function(transition, params, query, callback){
+    //         if(!confirm('Are you sure you read a page that\'s this boring ?')){
+    //             transition.about();
 
-            }else{
+    //         }else{
                 
-                callback();
-            }
+    //             callback();
+    //         }
 
-        },
+    //     },
 
-        willTransitionFrom: function(transition, component){
-            if(!confirm('Are you sure you lead a page that\'s so exciting ??')){
-                transition.about();
-            }    
-        }
+    //     willTransitionFrom: function(transition, component){
+    //         if(!confirm('Are you sure you lead a page that\'s so exciting ??')){
+    //             transition.about();
+    //         }    
+    //     }
 
-    },
+    // },
     
     render: function(){
         return (
@@ -27,15 +27,11 @@ var About = React.createClass({
             <div>
                 <h1>About</h1>                
                 <p>
-                    this application uses the following technologies:
+                    HeyCondominio - Massato e Vinicio
                     <ul>
-                        <li>React</li>
-                        <li>Reat Router</li>
-                        <li>Flux</li>
-                        <li>Node</li>
-                        <li>Gulp</li>
-                        <li>Browserify</li>
-                        <li>Bootstrap</li>
+                        <li>Gestão de Condomínio</li>
+                        <li>Moradores</li>
+                        <li>Reservas pelo site ou pelo Face</li>
                     </ul>
                 </p>
             </div>
