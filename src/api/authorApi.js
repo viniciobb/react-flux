@@ -13,9 +13,59 @@ var _clone = function(item) {
 	return JSON.parse(JSON.stringify(item)); //return cloned copy so that the item is passed by value instead of by reference
 };
 
+// function postData(url, data) {
+// 	// Default options are marked with *
+// 	return fetch(url, {
+// 	  body: JSON.stringify(data), // must match 'Content-Type' header
+// 	  cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+// 	  credentials: 'same-origin', // include, same-origin, *omit
+// 	  headers: {
+// 		'user-agent': 'Mozilla/4.0 MDN Example',
+// 		'content-type': 'application/json'
+// 	  },
+// 	  method: 'POST', // *GET, POST, PUT, DELETE, etc.
+// 	  mode: 'cors', // no-cors, cors, *same-origin
+// 	  redirect: 'follow', // *manual, follow, error
+// 	  referrer: 'no-referrer', // *client, no-referrer
+// 	})
+// 	.then(response => response.json()) // parses response to JSON
+//   }
+
+
+
+
 var AuthorApi = {
 	getAllAuthors: function() {
-		return _clone(authors); 
+		//return _clone(authors); 
+		return fetch('http://localhost:1337/localhost:3000/api-condominio/authors')
+  		.then(function(response) {
+			if(response.ok) {
+				return response.json().then(function(resposta) {
+				  console.log(resposta);
+				  return resposta;
+				});
+			  } else {
+				console.log('Network response was not ok.');
+			  }
+		  })
+		  .catch(function(error) {
+			console.log('There has been a problem with your fetch operation: ' + error.message);
+		  });
+		  
+		  /*fetch('flowers.jpg').then(function(response) {
+  if(response.ok) {
+    response.blob().then(function(myBlob) {
+      var objectURL = URL.createObjectURL(myBlob);
+      myImage.src = objectURL;
+    });
+  } else {
+    console.log('Network response was not ok.');
+  }
+})
+.catch(function(error) {
+  console.log('There has been a problem with your fetch operation: ' + error.message);
+});*/
+
 	},
 
 	getAuthorById: function(id) {

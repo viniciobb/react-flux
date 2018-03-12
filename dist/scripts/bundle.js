@@ -50283,7 +50283,7 @@ var AuthorActions = {
 
 module.exports = AuthorActions;
 
-},{"../api/authorApi":206,"../constants/actionTypes":219,"../dispatcher/appDispatcher":220}],205:[function(require,module,exports){
+},{"../api/authorApi":206,"../constants/actionTypes":218,"../dispatcher/appDispatcher":219}],205:[function(require,module,exports){
 "use strict"
 var Dispatcher = require("../dispatcher/appDispatcher");
 var ActionTypes = require("../constants/actionTypes");
@@ -50292,18 +50292,30 @@ var AuthorApi = require("../api/authorApi");
 
 var InitializeActions = {
     initApp: function(){
-        Dispatcher.dispatch({
-            actionType: ActionTypes.INITIALIZE,
-            initialData : {
-                authors: AuthorApi.getAllAuthors()
-            }
+        
+        //var authors = AuthorApi.getAllAuthors();
+        //console.log("response authors :" + authors);
+        
+        AuthorApi.getAllAuthors().then(function(responseAuthors){
+            console.log(responseAuthors);
+            
+            Dispatcher.dispatch({
+                actionType: ActionTypes.INITIALIZE,
+                initialData : {
+                    authors: responseAuthors
+                }
+            });
+
         });
+
+        
+        
     }
 }
 
 module.exports = InitializeActions;
 
-},{"../api/authorApi":206,"../constants/actionTypes":219,"../dispatcher/appDispatcher":220}],206:[function(require,module,exports){
+},{"../api/authorApi":206,"../constants/actionTypes":218,"../dispatcher/appDispatcher":219}],206:[function(require,module,exports){
 "use strict";
 
 //This file is mocking a web API by hitting hard coded data.
@@ -50319,9 +50331,59 @@ var _clone = function(item) {
 	return JSON.parse(JSON.stringify(item)); //return cloned copy so that the item is passed by value instead of by reference
 };
 
+// function postData(url, data) {
+// 	// Default options are marked with *
+// 	return fetch(url, {
+// 	  body: JSON.stringify(data), // must match 'Content-Type' header
+// 	  cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+// 	  credentials: 'same-origin', // include, same-origin, *omit
+// 	  headers: {
+// 		'user-agent': 'Mozilla/4.0 MDN Example',
+// 		'content-type': 'application/json'
+// 	  },
+// 	  method: 'POST', // *GET, POST, PUT, DELETE, etc.
+// 	  mode: 'cors', // no-cors, cors, *same-origin
+// 	  redirect: 'follow', // *manual, follow, error
+// 	  referrer: 'no-referrer', // *client, no-referrer
+// 	})
+// 	.then(response => response.json()) // parses response to JSON
+//   }
+
+
+
+
 var AuthorApi = {
 	getAllAuthors: function() {
-		return _clone(authors); 
+		//return _clone(authors); 
+		return fetch('http://localhost:1337/localhost:3000/api-condominio/authors')
+  		.then(function(response) {
+			if(response.ok) {
+				return response.json().then(function(resposta) {
+				  console.log(resposta);
+				  return resposta;
+				});
+			  } else {
+				console.log('Network response was not ok.');
+			  }
+		  })
+		  .catch(function(error) {
+			console.log('There has been a problem with your fetch operation: ' + error.message);
+		  });
+		  
+		  /*fetch('flowers.jpg').then(function(response) {
+  if(response.ok) {
+    response.blob().then(function(myBlob) {
+      var objectURL = URL.createObjectURL(myBlob);
+      myImage.src = objectURL;
+    });
+  } else {
+    console.log('Network response was not ok.');
+  }
+})
+.catch(function(error) {
+  console.log('There has been a problem with your fetch operation: ' + error.message);
+});*/
+
 	},
 
 	getAuthorById: function(id) {
@@ -50377,25 +50439,25 @@ module.exports = {
 "use strict";
 var React = require('react');
 var About = React.createClass({displayName: "About",
-    // statics: {
-    //     willTransitionTo: function(transition, params, query, callback){
-    //         if(!confirm('Are you sure you read a page that\'s this boring ?')){
-    //             transition.about();
+    statics: {
+        willTransitionTo: function(transition, params, query, callback){
+            if(!confirm('Are you sure you read a page that\'s this boring ?')){
+                transition.about();
 
-    //         }else{
+            }else{
                 
-    //             callback();
-    //         }
+                callback();
+            }
 
-    //     },
+        },
 
-    //     willTransitionFrom: function(transition, component){
-    //         if(!confirm('Are you sure you lead a page that\'s so exciting ??')){
-    //             transition.about();
-    //         }    
-    //     }
+        willTransitionFrom: function(transition, component){
+            if(!confirm('Are you sure you lead a page that\'s so exciting ??')){
+                transition.about();
+            }    
+        }
 
-    // },
+    },
     
     render: function(){
         return (
@@ -50403,11 +50465,15 @@ var About = React.createClass({displayName: "About",
             React.createElement("div", null, 
                 React.createElement("h1", null, "About"), 
                 React.createElement("p", null, 
-                    "HeyCondominio - Massato e Vinicio", 
+                    "this application uses the following technologies:", 
                     React.createElement("ul", null, 
-                        React.createElement("li", null, "Gestão de Condomínio"), 
-                        React.createElement("li", null, "Moradores"), 
-                        React.createElement("li", null, "Reservas pelo site ou pelo Face")
+                        React.createElement("li", null, "React"), 
+                        React.createElement("li", null, "Reat Router"), 
+                        React.createElement("li", null, "Flux"), 
+                        React.createElement("li", null, "Node"), 
+                        React.createElement("li", null, "Gulp"), 
+                        React.createElement("li", null, "Browserify"), 
+                        React.createElement("li", null, "Bootstrap")
                     )
                 )
             )
@@ -50575,7 +50641,7 @@ var AuthorsPage = React.createClass({displayName: "AuthorsPage",
 
 module.exports = AuthorsPage;
 
-},{"../../actions/authorActions":204,"../../stores/authorStore":223,"./authorList":211,"react":202,"react-router":33}],213:[function(require,module,exports){
+},{"../../actions/authorActions":204,"../../stores/authorStore":222,"./authorList":211,"react":202,"react-router":33}],213:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Router = require('react-router');
@@ -50682,7 +50748,7 @@ var ManageAuthorPage = React.createClass({displayName: "ManageAuthorPage",
 
 module.exports = ManageAuthorPage; 
 
-},{"../../actions/authorActions":204,"../../stores/authorStore":223,"./authorForm":210,"react":202,"react-router":33,"toastr":203}],214:[function(require,module,exports){
+},{"../../actions/authorActions":204,"../../stores/authorStore":222,"./authorForm":210,"react":202,"react-router":33,"toastr":203}],214:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Router = require('react-router');
@@ -50697,7 +50763,6 @@ var Header = React.createClass({displayName: "Header",
                     React.createElement("ul", {className: "nav navbar-nav"}, 
                         React.createElement("li", null, React.createElement(Link, {to: "app"}, "Home")), 
                         React.createElement("li", null, React.createElement(Link, {to: "authors"}, "Authors")), 
-                        React.createElement("li", null, React.createElement(Link, {to: "condominios"}, "Condominios")), 
                         React.createElement("li", null, React.createElement(Link, {to: "about"}, "About"))
                     )
                 )
@@ -50748,58 +50813,15 @@ module.exports = TextInput;
 "use strict";
 var React = require('react');
 var Router = require('react-router');
-var Link = require('react-router').Link;
-var AuthorStore = require("../../stores/authorStore");
-var AuthorActions = require("../../actions/authorActions");
-var AuthorList = require("../authors/authorList");
-
-var AuthorsPage = React.createClass({displayName: "AuthorsPage",
-    
-    getInitialState: function(){
-        return {
-            authors: AuthorStore.getAllAuthors()
-        };
-    },
-    
-    componentWillMount : function(){
-        AuthorStore.addChangeListener(this._onChange);
-    },
-    componentWillUnmount : function(){
-        AuthorStore.removeChangeListener(this._onChange);
-    },
-    
-    _onChange : function(){
-        this.setState({ authors: AuthorStore.getAllAuthors() });
-    },
-    
-    render: function(){
-        
-        return (
-            React.createElement("div", null, 
-               React.createElement("h1", null, "Authors"), 
-               React.createElement(Link, {to: "addAuthor", className: "btn btn-default"}, "Add Author"), 
-               React.createElement(AuthorList, {
-                    authors: this.state.authors})
-            )    
-        );
-    }
-});
-
-module.exports = AuthorsPage;
-
-},{"../../actions/authorActions":204,"../../stores/authorStore":223,"../authors/authorList":211,"react":202,"react-router":33}],217:[function(require,module,exports){
-"use strict";
-var React = require('react');
-var Router = require('react-router');
 var Link = Router.Link;
 
 var Home = React.createClass({displayName: "Home",
     render: function(){
         return (
             React.createElement("div", {className: "jumbotron"}, 
-                React.createElement("h1", null, "HeyCondominio Administration"), 
-                React.createElement("p", null, " um lugar único para acessar seu condomínio - visite nosso Face."), 
-                React.createElement(Link, {to: "about", className: "btn btn-primary btn-lg"}, "Saiba mais")
+                React.createElement("h1", null, "Pluralsight administration"), 
+                React.createElement("p", null, " React, React Router and Flux for ultra responsive web apps."), 
+                React.createElement(Link, {to: "about", className: "btn btn-primary btn-lg"}, "Learn more")
             )
         );
     }
@@ -50808,7 +50830,7 @@ var Home = React.createClass({displayName: "Home",
 
 module.exports = Home; 
 
-},{"react":202,"react-router":33}],218:[function(require,module,exports){
+},{"react":202,"react-router":33}],217:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Link = require('react-router').Link;
@@ -50827,7 +50849,7 @@ var NotFoundPage = React.createClass({displayName: "NotFoundPage",
 
 module.exports = NotFoundPage; 
 
-},{"react":202,"react-router":33}],219:[function(require,module,exports){
+},{"react":202,"react-router":33}],218:[function(require,module,exports){
 "use strict"
 var keyMirror = require("react/lib/keyMirror")
 
@@ -50839,11 +50861,11 @@ module.exports = keyMirror({
 
 });
 
-},{"react/lib/keyMirror":187}],220:[function(require,module,exports){
+},{"react/lib/keyMirror":187}],219:[function(require,module,exports){
 var Dispatcher = require("flux").Dispatcher;
 module.exports = new Dispatcher();
 
-},{"flux":3}],221:[function(require,module,exports){
+},{"flux":3}],220:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Router = require('react-router');
@@ -50856,7 +50878,7 @@ Router.run(routes, function(Handler){
     React.render(React.createElement(Handler, null), document.getElementById('app'));
 }); 
 
-},{"./actions/initializeActions":205,"./routes":222,"react":202,"react-router":33}],222:[function(require,module,exports){
+},{"./actions/initializeActions":205,"./routes":221,"react":202,"react-router":33}],221:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Router = require("react-router");
@@ -50869,7 +50891,6 @@ var Redirect = Router.Redirect;
 var routes = (
     React.createElement(Route, {name: "app", path: "/", handler: require('./components/app')}, 
         React.createElement(DefaultRoute, {handler: require('./components/homePage')}), 
-        React.createElement(Route, {name: "condominios", handler: require('./components/condominios/condominioPage')}), 
         React.createElement(Route, {name: "authors", handler: require('./components/authors/authorPage')}), 
         React.createElement(Route, {name: "addAuthor", path: "author", handler: require('./components/authors/manageAuthorPage')}), 
         React.createElement(Route, {name: "manageAuthor", path: "author/:id", handler: require('./components/authors/manageAuthorPage')}), 
@@ -50883,7 +50904,7 @@ var routes = (
 
 module.exports = routes;
 
-},{"./components/about/aboutPage":208,"./components/app":209,"./components/authors/authorPage":212,"./components/authors/manageAuthorPage":213,"./components/condominios/condominioPage":216,"./components/homePage":217,"./components/notFoundPage":218,"react":202,"react-router":33}],223:[function(require,module,exports){
+},{"./components/about/aboutPage":208,"./components/app":209,"./components/authors/authorPage":212,"./components/authors/manageAuthorPage":213,"./components/homePage":216,"./components/notFoundPage":217,"react":202,"react-router":33}],222:[function(require,module,exports){
 "use strict"
 var Dispatcher = require("../dispatcher/appDispatcher");
 var ActionTypes = require("../constants/actionTypes");
@@ -50949,4 +50970,4 @@ Dispatcher.register(function(action){
 
 module.exports = AuthorStore;
 
-},{"../constants/actionTypes":219,"../dispatcher/appDispatcher":220,"events":1,"lodash":7,"object-assign":8}]},{},[221]);
+},{"../constants/actionTypes":218,"../dispatcher/appDispatcher":219,"events":1,"lodash":7,"object-assign":8}]},{},[220]);

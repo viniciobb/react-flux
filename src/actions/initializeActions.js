@@ -6,12 +6,24 @@ var AuthorApi = require("../api/authorApi");
 
 var InitializeActions = {
     initApp: function(){
-        Dispatcher.dispatch({
-            actionType: ActionTypes.INITIALIZE,
-            initialData : {
-                authors: AuthorApi.getAllAuthors()
-            }
+        
+        //var authors = AuthorApi.getAllAuthors();
+        //console.log("response authors :" + authors);
+        
+        AuthorApi.getAllAuthors().then(function(responseAuthors){
+            console.log(responseAuthors);
+            
+            Dispatcher.dispatch({
+                actionType: ActionTypes.INITIALIZE,
+                initialData : {
+                    authors: responseAuthors
+                }
+            });
+
         });
+
+        
+        
     }
 }
 
