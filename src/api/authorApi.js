@@ -41,7 +41,6 @@ var AuthorApi = {
   		.then(function(response) {
 			if(response.ok) {
 				return response.json().then(function(resposta) {
-				  console.log(resposta);
 				  return resposta;
 				});
 			  } else {
@@ -74,17 +73,31 @@ var AuthorApi = {
 	},
 	
 	saveAuthor: function(author) {
+		var id = _generateId(author);
+		author.id = id;
 		//pretend an ajax call to web api is made here
+		return fetch('http://localhost:1337/localhost:3000/api-condominio/author',
+			{
+				method: 'post',
+				headers: {
+					'Accept': 'application/json, text/plain, */*',
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(author)
+			}
+		).then(function(response) {
+			if(response.ok) {
+				return response.json().then(function(resposta) {
+				  return resposta;
+				});
+			} else {
+				console.log('Network response was not ok.');
+			}  
+		})
+		  .catch(function(error) {
+			console.log('There has been a problem with your fetch operation: ' + error.message);
+		  });
 		
-		if (author.id) {
-			var existingAuthor = _.find(authors, {id : author.id});
-			var existingAuthorIndex = _.indexOf(existingAuthor);
-			authors.splice(existingAuthorIndex,1,author);
-		} else {
-			author.id = _generateId(author);
-			authors.push(author);
-		}
-		return _clone(author);
 	},
 
 	deleteAuthor: function(id) {

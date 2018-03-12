@@ -22,10 +22,12 @@ var AuthorStore = assign({}, EventEmitter.prototype,{
     },
 
     getAllAuthors: function(){
+        console.log("getAllAuthors authorStore" + _authors);
         return _authors;        
     },
 
     getAuthorById: function(id){
+        console.log("getAuthorById authorStore" + _authors);
         return _.find(_authors, {id : id});
     }
 });
@@ -40,7 +42,9 @@ Dispatcher.register(function(action){
             break;
         
         case ActionTypes.CREATE_AUTHOR:
+            console.log("CREATE_AUTHOR in authorStore" + action.author);
             _authors.push(action.author);
+            console.log("CREATE_AUTHOR in authorStore" + _authors);
             AuthorStore.emitChange();
             break;
 

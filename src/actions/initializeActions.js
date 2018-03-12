@@ -11,7 +11,6 @@ var InitializeActions = {
         //console.log("response authors :" + authors);
         
         AuthorApi.getAllAuthors().then(function(responseAuthors){
-            console.log(responseAuthors);
             
             Dispatcher.dispatch({
                 actionType: ActionTypes.INITIALIZE,

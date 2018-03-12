@@ -50252,14 +50252,27 @@ var AuthorActions = {
 
     createAuthor: function(author){
         
-        var newAuthor = AuthorApi.saveAuthor(author);
-        console.log("Created new author" + newAuthor);
-        console.log("Dispatch");
-        // hey dispatcher, go tell alll the stores that an author was just created
-        Dispatcher.dispatch({
-            actionType: actionTypes.CREATE_AUTHOR,
-            author: newAuthor
+        // var newAuthor = AuthorApi.saveAuthor(author);
+        // console.log("Created new author" + newAuthor);
+        // console.log("Dispatch");
+        // // hey dispatcher, go tell alll the stores that an author was just created
+        // Dispatcher.dispatch({
+        //     actionType: actionTypes.CREATE_AUTHOR,
+        //     author: newAuthor
+        // });
+            AuthorApi.saveAuthor(author).then(function(newAuthor){
+            console.log("Created new author");
+            console.dir(newAuthor);
+            console.log("Dispatch");
+
+            Dispatcher.dispatch({
+                actionType: actionTypes.CREATE_AUTHOR,
+                author: newAuthor
+            });
+
         });
+
+
     },
 
     updateAuthor: function(author){
@@ -50297,7 +50310,6 @@ var InitializeActions = {
         //console.log("response authors :" + authors);
         
         AuthorApi.getAllAuthors().then(function(responseAuthors){
-            console.log(responseAuthors);
             
             Dispatcher.dispatch({
                 actionType: ActionTypes.INITIALIZE,
@@ -50359,7 +50371,6 @@ var AuthorApi = {
   		.then(function(response) {
 			if(response.ok) {
 				return response.json().then(function(resposta) {
-				  console.log(resposta);
 				  return resposta;
 				});
 			  } else {
@@ -50392,17 +50403,31 @@ var AuthorApi = {
 	},
 	
 	saveAuthor: function(author) {
+		var id = _generateId(author);
+		author.id = id;
 		//pretend an ajax call to web api is made here
+		return fetch('http://localhost:1337/localhost:3000/api-condominio/author',
+			{
+				method: 'post',
+				headers: {
+					'Accept': 'application/json, text/plain, */*',
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(author)
+			}
+		).then(function(response) {
+			if(response.ok) {
+				return response.json().then(function(resposta) {
+				  return resposta;
+				});
+			} else {
+				console.log('Network response was not ok.');
+			}  
+		})
+		  .catch(function(error) {
+			console.log('There has been a problem with your fetch operation: ' + error.message);
+		  });
 		
-		if (author.id) {
-			var existingAuthor = _.find(authors, {id : author.id});
-			var existingAuthorIndex = _.indexOf(existingAuthor);
-			authors.splice(existingAuthorIndex,1,author);
-		} else {
-			author.id = _generateId(author);
-			authors.push(author);
-		}
-		return _clone(author);
 	},
 
 	deleteAuthor: function(id) {
@@ -50623,6 +50648,7 @@ var AuthorsPage = React.createClass({displayName: "AuthorsPage",
     },
     
     _onChange : function(){
+        console.log("onChange authorPage");
         this.setState({ authors: AuthorStore.getAllAuthors() });
     },
     
@@ -50929,10 +50955,12 @@ var AuthorStore = assign({}, EventEmitter.prototype,{
     },
 
     getAllAuthors: function(){
+        console.log("getAllAuthors authorStore" + _authors);
         return _authors;        
     },
 
     getAuthorById: function(id){
+        console.log("getAuthorById authorStore" + _authors);
         return _.find(_authors, {id : id});
     }
 });
@@ -50947,7 +50975,9 @@ Dispatcher.register(function(action){
             break;
         
         case ActionTypes.CREATE_AUTHOR:
+            console.log("CREATE_AUTHOR in authorStore" + action.author);
             _authors.push(action.author);
+            console.log("CREATE_AUTHOR in authorStore" + _authors);
             AuthorStore.emitChange();
             break;
 
