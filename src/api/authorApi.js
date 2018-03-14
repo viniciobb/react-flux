@@ -89,7 +89,7 @@ var AuthorApi = {
 	updateAuthor: function(author) {
 		
 		//pretend an ajax call to web api is made here
-		return fetch('http://localhost:1337/localhost:3000/api-condominio/author/'+author.id,
+		return fetch('http://localhost:1337/localhost:3000/api-condominio/authors/'+author.id,
 			{
 				method: 'put',
 				headers: {
@@ -114,10 +114,35 @@ var AuthorApi = {
 		
 	},
 
+	
+
 	deleteAuthor: function(id) {
-		console.log('Pretend this just deleted the author from the DB via an AJAX call...');
-		_.remove(authors, { id: id});
+		
+		//pretend an ajax call to web api is made here
+		return fetch('http://localhost:1337/localhost:3000/api-condominio/authors/'+id,
+			{
+				method: 'delete',
+				headers: {
+					'Accept': 'application/json, text/plain, */*',
+					'Content-Type': 'application/json'
+				}
+			}
+		).then(function(response) {
+			if(response.ok) {
+				return response.json().then(function(resposta) {
+				  return resposta;
+				});
+			} else {
+				console.log('Network response was not ok.');
+			}  
+		})
+		  .catch(function(error) {
+			console.log('There has been a problem with your fetch operation: ' + error.message);
+		  });
+		
 	}
+
+
 };
 
 module.exports = AuthorApi;
