@@ -50261,9 +50261,6 @@ var AuthorActions = {
         //     author: newAuthor
         // });
             AuthorApi.saveAuthor(author).then(function(newAuthor){
-            console.log("Created new author");
-            console.dir(newAuthor);
-            console.log("Dispatch");
 
             Dispatcher.dispatch({
                 actionType: actionTypes.CREATE_AUTHOR,
@@ -50276,11 +50273,14 @@ var AuthorActions = {
     },
 
     updateAuthor: function(author){
-        var updatedAuthor = AuthorApi.saveAuthor(author);
-        Dispatcher.dispatch({
-            actionType: actionTypes.UPDATE_AUTHOR,
-            author: updatedAuthor
+        AuthorApi.updateAuthor(author).then(function(updatedAuthor){
+            Dispatcher.dispatch({
+                actionType: actionTypes.UPDATE_AUTHOR,
+                author: updatedAuthor
+            });
+
         });
+        
     },
 
     deleteAuthor: function(id){
@@ -50380,20 +50380,6 @@ var AuthorApi = {
 		  .catch(function(error) {
 			console.log('There has been a problem with your fetch operation: ' + error.message);
 		  });
-		  
-		  /*fetch('flowers.jpg').then(function(response) {
-  if(response.ok) {
-    response.blob().then(function(myBlob) {
-      var objectURL = URL.createObjectURL(myBlob);
-      myImage.src = objectURL;
-    });
-  } else {
-    console.log('Network response was not ok.');
-  }
-})
-.catch(function(error) {
-  console.log('There has been a problem with your fetch operation: ' + error.message);
-});*/
 
 	},
 
@@ -50414,6 +50400,34 @@ var AuthorApi = {
 					'Content-Type': 'application/json'
 				},
 				body: JSON.stringify(author)
+			}
+		).then(function(response) {
+			if(response.ok) {
+				return response.json().then(function(resposta) {
+				  return resposta;
+				});
+			} else {
+				console.log('Network response was not ok.');
+			}  
+		})
+		  .catch(function(error) {
+			console.log('There has been a problem with your fetch operation: ' + error.message);
+		  });
+		
+	},
+
+	updateAuthor: function(author) {
+		
+		//pretend an ajax call to web api is made here
+		return fetch('http://localhost:1337/localhost:3000/api-condominio/author/'+author.id,
+			{
+				method: 'put',
+				headers: {
+					'Accept': 'application/json, text/plain, */*',
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(author)
+				
 			}
 		).then(function(response) {
 			if(response.ok) {
