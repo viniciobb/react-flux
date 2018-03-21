@@ -23,7 +23,7 @@ var ManageAuthorPage = React.createClass({
     },
 
     getInitialState: function(){
-        console.log("getInitialState");
+        console.log("getInitialState managerAuthor");
         return {
             author: { id: '', firstName: '', lastName: ''},
             errors: {},
@@ -32,11 +32,16 @@ var ManageAuthorPage = React.createClass({
     },
 
     componentWillMount: function(){
+       
+        console.log("componentWillMount managerAuthor");
+       
         var authorId = this.props.params.id; // from the path /author/:id
         
+        console.log(authorId);
+
         if(authorId){
             this.setState({author: AuthorStore.getAuthorById(authorId)});
-        } 
+        }
 
     },
         

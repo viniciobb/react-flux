@@ -50251,15 +50251,7 @@ var actionTypes = require("../constants/actionTypes");
 var AuthorActions = {
 
     createAuthor: function(author){
-        
-        // var newAuthor = AuthorApi.saveAuthor(author);
-        // console.log("Created new author" + newAuthor);
-        // console.log("Dispatch");
-        // // hey dispatcher, go tell alll the stores that an author was just created
-        // Dispatcher.dispatch({
-        //     actionType: actionTypes.CREATE_AUTHOR,
-        //     author: newAuthor
-        // });
+       
             AuthorApi.saveAuthor(author).then(function(newAuthor){
 
             Dispatcher.dispatch({
@@ -50285,22 +50277,113 @@ var AuthorActions = {
 
     deleteAuthor: function(id){
         
-        AuthorApi.deleteAuthor(id);
-        Dispatcher.dispatch({
-            actionType: actionTypes.DELETE_AUTHOR,
-            id: id
+        AuthorApi.deleteAuthor(id).then(function(response){
+
+            Dispatcher.dispatch({
+                actionType: actionTypes.DELETE_AUTHOR,
+                id: response.id
+            });
+
         });
+        
     }
 
 };
 
 module.exports = AuthorActions;
 
-},{"../api/authorApi":206,"../constants/actionTypes":218,"../dispatcher/appDispatcher":219}],205:[function(require,module,exports){
+},{"../api/authorApi":207,"../constants/actionTypes":224,"../dispatcher/appDispatcher":225}],205:[function(require,module,exports){
+"use strict"
+var Dispatcher = require("../dispatcher/appDispatcher");
+var CondominioApi = require("../api/condominioApi");
+var actionTypes = require("../constants/actionTypes");
+
+var CondominioActions = {
+
+    createEndereco: function(endereco){
+       
+            CondominioApi.saveEndereco(endereco).then(function(newEndereco){
+
+            Dispatcher.dispatch({
+                actionType: actionTypes.CREATE_ENDERECO,
+                endereco: newEndereco
+            });
+
+        });
+
+
+    },
+
+    updateEndereco: function(endereco){
+        CondominioApi.updateEndereco(endereco).then(function(updatedEndereco){
+            Dispatcher.dispatch({
+                actionType: actionTypes.UPDATE_ENDERECO,
+                condominio: updatedEndereco
+            });
+
+        });
+        
+    },
+
+    deleteEndereco: function(id){
+        
+        CondominioApi.deleteEndereco(id).then(function(response){
+
+            Dispatcher.dispatch({
+                actionType: actionTypes.DELETE_ENDERECO,
+                id: response.id
+            });
+
+        });
+        
+    },
+
+    createCondominio: function(condominio){
+       
+        CondominioApi.saveCondominio(condominio).then(function(newCondominio){
+
+            Dispatcher.dispatch({
+                actionType: actionTypes.CREATE_CONDOMINIO,
+                condominio: newCondominio
+            });
+
+        });
+    },
+
+    updateCondominio: function(condominio){
+        CondominioApi.updateCondominio(condominio).then(function(updatedCondominio){
+            Dispatcher.dispatch({
+                actionType: actionTypes.UPDATE_CONDOMINIO,
+                condominio: updatedCondominio
+            });
+
+        });
+        
+    },
+
+    deleteCondominio: function(id){
+        
+        CondominioApi.deleteCondominio(id).then(function(response){
+
+            Dispatcher.dispatch({
+                actionType: actionTypes.DELETE_CONDOMINIO,
+                id: response.id
+            });
+
+        });
+        
+    }
+
+};
+
+module.exports = CondominioActions;
+
+},{"../api/condominioApi":209,"../constants/actionTypes":224,"../dispatcher/appDispatcher":225}],206:[function(require,module,exports){
 "use strict"
 var Dispatcher = require("../dispatcher/appDispatcher");
 var ActionTypes = require("../constants/actionTypes");
 var AuthorApi = require("../api/authorApi");
+var CondominioApi = require("../api/condominioApi");
 
 
 var InitializeActions = {
@@ -50320,14 +50403,24 @@ var InitializeActions = {
 
         });
 
-        
+        CondominioApi.getAllCondominios().then(function(responseCondominios){
+            console.log("initialStateCondominio - initializeActions");
+            console.dir(responseCondominios);
+            Dispatcher.dispatch({
+                actionType: ActionTypes.INITIALIZE_CONDOMINIO,
+                initialData : {
+                    condominios: responseCondominios
+                }
+            });
+
+        });
         
     }
 }
 
 module.exports = InitializeActions;
 
-},{"../api/authorApi":206,"../constants/actionTypes":218,"../dispatcher/appDispatcher":219}],206:[function(require,module,exports){
+},{"../api/authorApi":207,"../api/condominioApi":209,"../constants/actionTypes":224,"../dispatcher/appDispatcher":225}],207:[function(require,module,exports){
 "use strict";
 
 //This file is mocking a web API by hitting hard coded data.
@@ -50477,7 +50570,7 @@ var AuthorApi = {
 
 module.exports = AuthorApi;
 
-},{"./authorData":207,"lodash":7}],207:[function(require,module,exports){
+},{"./authorData":208,"lodash":7}],208:[function(require,module,exports){
 module.exports = {
 	authors: 
 	[
@@ -50499,7 +50592,131 @@ module.exports = {
 	]
 };
 
-},{}],208:[function(require,module,exports){
+},{}],209:[function(require,module,exports){
+"use strict";
+
+//This file is mocking a web API by hitting hard coded data.
+var authors = require('./authorData').authors;
+var _ = require('lodash');
+
+//This would be performed on the server in a real app. Just stubbing in.
+var _generateId = function(author) {
+	return author.firstName.toLowerCase() + '-' + author.lastName.toLowerCase();
+};
+
+var _clone = function(item) {
+	return JSON.parse(JSON.stringify(item)); //return cloned copy so that the item is passed by value instead of by reference
+};
+
+var CondominioApi = {
+	getAllCondominios: function() {
+		//return _clone(authors); 
+		return fetch('http://localhost:1337/localhost:3000/api-condominio/condominios')
+  		.then(function(response) {
+			if(response.ok) {
+				return response.json().then(function(resposta) {
+				  return resposta;
+				});
+			  } else {
+				console.log('Network response was not ok.');
+			  }
+		  })
+		  .catch(function(error) {
+			console.log('There has been a problem with your fetch operation: ' + error.message);
+		  });
+
+	},
+	
+	
+	saveCondominio: function(condominio) {
+		
+		//pretend an ajax call to web api is made here
+		return fetch('http://localhost:1337/localhost:3000/api-condominio/condominio',
+			{
+				method: 'post',
+				headers: {
+					'Accept': 'application/json, text/plain, */*',
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(condominio)
+			}
+		).then(function(response) {
+			if(response.ok) {
+				return response.json().then(function(resposta) {
+				  return resposta;
+				});
+			} else {
+				console.log('Network response was not ok.');
+			}  
+		})
+		  .catch(function(error) {
+			console.log('There has been a problem with your fetch operation: ' + error.message);
+		  });
+		
+	},
+
+	updateCondominio: function(condominio) {
+		
+		//pretend an ajax call to web api is made here
+		return fetch('http://localhost:1337/localhost:3000/api-condominio/condominios/'+condominio.id,
+			{
+				method: 'put',
+				headers: {
+					'Accept': 'application/json, text/plain, */*',
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(condominio)
+				
+			}
+		).then(function(response) {
+			if(response.ok) {
+				return response.json().then(function(resposta) {
+				  return resposta;
+				});
+			} else {
+				console.log('Network response was not ok.');
+			}  
+		})
+		  .catch(function(error) {
+			console.log('There has been a problem with your fetch operation: ' + error.message);
+		  });
+		
+	},
+
+	
+
+	deleteCondominio: function(id) {
+		
+		//pretend an ajax call to web api is made here
+		return fetch('http://localhost:1337/localhost:3000/api-condominio/condominios/'+id,
+			{
+				method: 'delete',
+				headers: {
+					'Accept': 'application/json, text/plain, */*',
+					'Content-Type': 'application/json'
+				}
+			}
+		).then(function(response) {
+			if(response.ok) {
+				return response.json().then(function(resposta) {
+				  return resposta;
+				});
+			} else {
+				console.log('Network response was not ok.');
+			}  
+		})
+		  .catch(function(error) {
+			console.log('There has been a problem with your fetch operation: ' + error.message);
+		  });
+		
+	}
+
+
+};
+
+module.exports = CondominioApi;
+
+},{"./authorData":208,"lodash":7}],210:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var About = React.createClass({displayName: "About",
@@ -50549,7 +50766,7 @@ var About = React.createClass({displayName: "About",
 
 module.exports = About; 
 
-},{"react":202}],209:[function(require,module,exports){
+},{"react":202}],211:[function(require,module,exports){
 /*eslint-disable strict */ // disabling check because qe cant run strict mode . we need global vars
 
 var React = require('react');
@@ -50572,7 +50789,7 @@ var App = React.createClass({displayName: "App",
 
 module.exports = App;
 
-},{"./common/header":214,"jquery":6,"react":202,"react-router":33}],210:[function(require,module,exports){
+},{"./common/header":216,"jquery":6,"react":202,"react-router":33}],212:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Input = require("../common/textInput");
@@ -50612,7 +50829,7 @@ var AuthorForm = React.createClass({displayName: "AuthorForm",
 
 module.exports = AuthorForm;  
 
-},{"../common/textInput":215,"react":202}],211:[function(require,module,exports){
+},{"../common/textInput":217,"react":202}],213:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Router = require('react-router');
@@ -50662,7 +50879,7 @@ var AuthorList = React.createClass({displayName: "AuthorList",
 
 module.exports = AuthorList;
 
-},{"../../actions/authorActions":204,"react":202,"react-router":33,"toastr":203}],212:[function(require,module,exports){
+},{"../../actions/authorActions":204,"react":202,"react-router":33,"toastr":203}],214:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Router = require('react-router');
@@ -50706,7 +50923,7 @@ var AuthorsPage = React.createClass({displayName: "AuthorsPage",
 
 module.exports = AuthorsPage;
 
-},{"../../actions/authorActions":204,"../../stores/authorStore":222,"./authorList":211,"react":202,"react-router":33}],213:[function(require,module,exports){
+},{"../../actions/authorActions":204,"../../stores/authorStore":228,"./authorList":213,"react":202,"react-router":33}],215:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Router = require('react-router');
@@ -50732,7 +50949,7 @@ var ManageAuthorPage = React.createClass({displayName: "ManageAuthorPage",
     },
 
     getInitialState: function(){
-        console.log("getInitialState");
+        console.log("getInitialState managerAuthor");
         return {
             author: { id: '', firstName: '', lastName: ''},
             errors: {},
@@ -50741,11 +50958,16 @@ var ManageAuthorPage = React.createClass({displayName: "ManageAuthorPage",
     },
 
     componentWillMount: function(){
+       
+        console.log("componentWillMount managerAuthor");
+       
         var authorId = this.props.params.id; // from the path /author/:id
         
+        console.log(authorId);
+
         if(authorId){
             this.setState({author: AuthorStore.getAuthorById(authorId)});
-        } 
+        }
 
     },
         
@@ -50813,7 +51035,7 @@ var ManageAuthorPage = React.createClass({displayName: "ManageAuthorPage",
 
 module.exports = ManageAuthorPage; 
 
-},{"../../actions/authorActions":204,"../../stores/authorStore":222,"./authorForm":210,"react":202,"react-router":33,"toastr":203}],214:[function(require,module,exports){
+},{"../../actions/authorActions":204,"../../stores/authorStore":228,"./authorForm":212,"react":202,"react-router":33,"toastr":203}],216:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Router = require('react-router');
@@ -50828,6 +51050,7 @@ var Header = React.createClass({displayName: "Header",
                     React.createElement("ul", {className: "nav navbar-nav"}, 
                         React.createElement("li", null, React.createElement(Link, {to: "app"}, "Home")), 
                         React.createElement("li", null, React.createElement(Link, {to: "authors"}, "Authors")), 
+                        React.createElement("li", null, React.createElement(Link, {to: "condominios"}, "Condomínios")), 
                         React.createElement("li", null, React.createElement(Link, {to: "about"}, "About"))
                     )
                 )
@@ -50840,7 +51063,7 @@ var Header = React.createClass({displayName: "Header",
 
 module.exports = Header; 
 
-},{"react":202,"react-router":33}],215:[function(require,module,exports){
+},{"react":202,"react-router":33}],217:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var TextInput = React.createClass({displayName: "TextInput",
@@ -50874,7 +51097,295 @@ var TextInput = React.createClass({displayName: "TextInput",
 
 module.exports = TextInput; 
 
-},{"react":202}],216:[function(require,module,exports){
+},{"react":202}],218:[function(require,module,exports){
+"use strict";
+var React = require('react');
+var Input = require("../common/textInput");
+var CondominioForm = React.createClass({displayName: "CondominioForm",
+    
+    propTypes: {
+        condominio: React.PropTypes.object.isRequired,
+        onSave: React.PropTypes.func.isRequired,
+        onChange: React.PropTypes.func.isRequired,
+        errors: React.PropTypes.object
+    },
+        
+    render: function(){
+        return ( 
+            React.createElement("form", null, 
+                React.createElement("h1", null, "Formulário Condominio"), 
+                React.createElement(Input, {
+                    label: "Nome", 
+                    name: "condominioName", 
+                    onChange: this.props.onChange, 
+                    value: this.props.condominio.nome, 
+                    error: this.props.errors.nomeCondominio}
+                ), 
+                React.createElement(Input, {
+                    label: "CNPJ", 
+                    name: "condominioCNPJ", 
+                    onChange: this.props.onChange, 
+                    value: this.props.condominio.cnpj, 
+                    error: this.props.errors.cnpj}
+                ), 
+                React.createElement(Input, {
+                    label: "Quantidade de Apartamentos", 
+                    name: "condominioQuantidadeApartamentos", 
+                    onChange: this.props.onChange, 
+                    value: this.props.condominio.quantidadeApartamentos, 
+                    error: this.props.errors.quantidadeApartamentos}
+                ), 
+                React.createElement(Input, {
+                    label: "Quantidade de Blocos", 
+                    name: "condominioQuantidadeBlocos", 
+                    onChange: this.props.onChange, 
+                    value: this.props.condominio.quantidadeBlocos, 
+                    error: this.props.errors.quantidadeBlocos}
+                ), 
+                 React.createElement(Input, {
+                    label: "Quantidade de Elevadores", 
+                    name: "condominioQuantidadeElevadores", 
+                    onChange: this.props.onChange, 
+                    value: this.props.condominio.quantidadeElevadores, 
+                    error: this.props.errors.quantidadeElevadores}
+                ), 
+                React.createElement(Input, {
+                    label: "Quantidade de Vagas", 
+                    name: "condominioQuantidadeVagas", 
+                    onChange: this.props.onChange, 
+                    value: this.props.condominio.quantidadeVagas, 
+                    error: this.props.errors.quantidadeVagas}
+                ), 
+                React.createElement("input", {type: "submit", value: "Save", onClick: this.props.onSave, className: "btn btn-default"})
+            )               
+        ); 
+    }
+
+});
+
+module.exports = CondominioForm;  
+
+},{"../common/textInput":217,"react":202}],219:[function(require,module,exports){
+"use strict";
+var React = require('react');
+var Router = require('react-router');
+var Link = Router.Link;
+var CondominioActions = require("../../actions/condominioActions");
+var Toastr = require("toastr");
+
+var CondominioList = React.createClass({displayName: "CondominioList",
+    propTypes: {
+        condominios: React.PropTypes.array.isRequired
+    },
+
+    deleteCondominio: function(id, event){
+        event.preventDefault();
+        CondominioActions.deleteCondominio(id);
+        Toastr.success("Condominio Deleted");
+    },
+    
+    render: function(){
+        
+        var createCondominioRow = function(condominio){
+            console.log("Rendering createCondominioRow");
+            console.dir(condominio);
+            return (
+                React.createElement("tr", {key: condominio.id}, 
+                    React.createElement("td", null, React.createElement("a", {href: "#", onClick: this.deleteCondominio.bind(this, condominio.id)}, "Delete")), 
+                    React.createElement("td", null, React.createElement(Link, {to: "manageCondominio", params: {id: condominio.id}}, condominio.nome)), 
+                    React.createElement("td", null, condominio.cnpj)
+                )
+            );
+        };
+        
+        return (
+            React.createElement("div", null, 
+                React.createElement("table", {className: "table"}, 
+                React.createElement("thead", null, 
+                    React.createElement("th", null, "Delete"), 
+                    React.createElement("th", null, "Nome"), 
+                    React.createElement("th", null, "CNPJ")
+                ), 
+                React.createElement("tbody", null, 
+                    this.props.condominios.map(createCondominioRow, this)
+                )
+                )
+            )    
+        );
+    }
+});
+
+module.exports = CondominioList;
+
+},{"../../actions/condominioActions":205,"react":202,"react-router":33,"toastr":203}],220:[function(require,module,exports){
+"use strict";
+var React = require('react');
+var Router = require('react-router');
+var Link = require('react-router').Link;
+var CondominioStore = require("../../stores/condominioStore");
+var CondominioActions = require("../../actions/condominioActions");
+var CondominioList = require("./condominioList");
+
+var CondominiosPage = React.createClass({displayName: "CondominiosPage",
+    
+    getInitialState: function(){
+        
+        return {
+            condominios: CondominioStore.getAllCondominios()
+        };
+    },
+    
+    componentWillMount : function(){
+        CondominioStore.addChangeListener(this._onChange);
+    },
+    componentWillUnmount : function(){
+        CondominioStore.removeChangeListener(this._onChange);
+    },
+    
+    _onChange : function(){
+        console.log("onChange condominioPage");
+        this.setState({ condominios: CondominioStore.getAllCondominios() });
+    },
+    
+    render: function(){
+        
+        return (
+            React.createElement("div", null, 
+               React.createElement("h1", null, "Condomínios"), 
+               React.createElement(Link, {to: "addCondominio", className: "btn btn-default"}, "Adicionar Condomínio"), 
+               React.createElement(CondominioList, {
+                    condominios: this.state.condominios})
+            )    
+        );
+    }
+});
+
+module.exports = CondominiosPage;
+
+},{"../../actions/condominioActions":205,"../../stores/condominioStore":229,"./condominioList":219,"react":202,"react-router":33}],221:[function(require,module,exports){
+"use strict";
+var React = require('react');
+var Router = require('react-router');
+var CondominioForm = require('./condominioForm');
+var CondominioStore = require("../../stores/condominioStore");
+var CondominioActions = require("../../actions/condominioActions");
+
+var Toastr = require("toastr");
+
+var ManageCondominioPage = React.createClass({displayName: "ManageCondominioPage",
+    mixins: [
+        Router.Navigation
+    ],
+
+    statics: {
+
+        willTransitionFrom: function(transition, component){
+            if( component.state.dirty && !confirm("Leave without saving ?")){
+                transition.abort();
+            }    
+        }
+
+    },
+
+    getInitialState: function(){
+        console.log("getInitialState managerCondominio");
+        return {
+            condominio: {
+    
+                nome: '',
+                cnpj: 0,
+                quantidadeApartamentos: 0,
+                quantidadeBlocos: 0,
+                quantidadeElevadores: 0,
+                quantidadeVagas: 0
+                //endereco: [enderecoSchema],
+                //facilities: [facilitySchema]
+            
+            },
+            errors: {},
+            dirty: false
+        };
+    },
+
+    componentWillMount: function(){
+       
+        console.log("componentWillMount managerCondominio");
+       
+        var condominioId = this.props.params.id; // from the path /condominio/:id
+        
+        console.log(condominioId);
+
+        if(condominioId){
+            this.setState({condominio: CondominioStore.getCondominioById(condominioId)});
+        }
+
+    },
+        
+    setCondominioState: function(event){ // called for every key press
+        var field = event.target.name;
+        var value = event.target.value;
+        this.state.condominio[field] = value;
+        console.log("typed : " + value);
+        this.setState({ dirty: true });
+        return this.setState({ condominio: this.state.condominio});
+    },
+    condominioFormIsValid: function(){
+        var formIsValid = true;
+        this.state.errors = {}; // clear any previous errors
+        if(this.state.condominio.nome.length < 1){
+            this.state.errors.firstName = "Name must be filled.";
+            formIsValid = false;
+        }
+
+        if(this.state.condominio.cnpj.length < 3){
+            this.state.errors.cnpj = "CNPJ must be filled.";
+            formIsValid = false;
+        }
+
+        this.setState({errors: this.state.errors});
+        return formIsValid;
+
+    },
+
+    saveCondominio: function(event){
+        event.preventDefault();
+        if(!this.condominioFormIsValid()){
+            return;
+        }
+
+        if(this.state.condominio.id)
+        {
+            CondominioActions.updateCondominio(this.state.condominio);
+
+        }else{
+            CondominioActions.createCondominio(this.state.condominio);
+        }
+            
+        
+        this.setState({ dirty: false });
+        Toastr.success('Condominio saved.');
+        this.transitionTo('condominios');
+
+    },
+    /**
+     * creating reusable inputs
+     * 
+     */
+    render: function(){
+        return (
+            React.createElement(CondominioForm, {
+             condominio: this.state.condominio, 
+             onChange: this.setCondominioState, 
+             onSave: this.saveCondominio, 
+             errors: this.state.errors})
+        ); 
+    }
+
+});
+
+module.exports = ManageCondominioPage; 
+
+},{"../../actions/condominioActions":205,"../../stores/condominioStore":229,"./condominioForm":218,"react":202,"react-router":33,"toastr":203}],222:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Router = require('react-router');
@@ -50884,8 +51395,8 @@ var Home = React.createClass({displayName: "Home",
     render: function(){
         return (
             React.createElement("div", {className: "jumbotron"}, 
-                React.createElement("h1", null, "Pluralsight administration"), 
-                React.createElement("p", null, " React, React Router and Flux for ultra responsive web apps."), 
+                React.createElement("h1", null, "HeyCondominium Administration"), 
+                React.createElement("p", null, " Reserve e controle."), 
                 React.createElement(Link, {to: "about", className: "btn btn-primary btn-lg"}, "Learn more")
             )
         );
@@ -50895,7 +51406,7 @@ var Home = React.createClass({displayName: "Home",
 
 module.exports = Home; 
 
-},{"react":202,"react-router":33}],217:[function(require,module,exports){
+},{"react":202,"react-router":33}],223:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Link = require('react-router').Link;
@@ -50914,7 +51425,7 @@ var NotFoundPage = React.createClass({displayName: "NotFoundPage",
 
 module.exports = NotFoundPage; 
 
-},{"react":202,"react-router":33}],218:[function(require,module,exports){
+},{"react":202,"react-router":33}],224:[function(require,module,exports){
 "use strict"
 var keyMirror = require("react/lib/keyMirror")
 
@@ -50922,15 +51433,22 @@ module.exports = keyMirror({
     CREATE_AUTHOR: null,
     INITIALIZE : null,
     UPDATE_AUTHOR : null,
-    DELETE_AUTHOR: null
+    DELETE_AUTHOR: null,
+    INITIALIZE_CONDOMINIO : null,
+    CREATE_CONDOMINIO: null,
+    UPDATE_CONDOMINIO: null,
+    DELETE_CONDOMINIO: null,
+    CREATE_CONDOMINIO_ENDERERECO: null,
+    UPDATE_CONDOMINIO_ENDERERECO: null,
+    DELETE_CONDOMINIO_ENDERERECO: null
 
 });
 
-},{"react/lib/keyMirror":187}],219:[function(require,module,exports){
+},{"react/lib/keyMirror":187}],225:[function(require,module,exports){
 var Dispatcher = require("flux").Dispatcher;
 module.exports = new Dispatcher();
 
-},{"flux":3}],220:[function(require,module,exports){
+},{"flux":3}],226:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Router = require('react-router');
@@ -50943,7 +51461,7 @@ Router.run(routes, function(Handler){
     React.render(React.createElement(Handler, null), document.getElementById('app'));
 }); 
 
-},{"./actions/initializeActions":205,"./routes":221,"react":202,"react-router":33}],221:[function(require,module,exports){
+},{"./actions/initializeActions":206,"./routes":227,"react":202,"react-router":33}],227:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Router = require("react-router");
@@ -50958,8 +51476,11 @@ var routes = (
         React.createElement(DefaultRoute, {handler: require('./components/homePage')}), 
         React.createElement(Route, {name: "authors", handler: require('./components/authors/authorPage')}), 
         React.createElement(Route, {name: "addAuthor", path: "author", handler: require('./components/authors/manageAuthorPage')}), 
+        React.createElement(Route, {name: "addCondominio", path: "condominio", handler: require('./components/condominios/manageCondominioPage')}), 
         React.createElement(Route, {name: "manageAuthor", path: "author/:id", handler: require('./components/authors/manageAuthorPage')}), 
+        React.createElement(Route, {name: "manageCondominio", path: "condominio/:id", handler: require('./components/condominios/manageCondominioPage')}), 
         React.createElement(Route, {name: "about", handler: require('./components/about/aboutPage')}), 
+        React.createElement(Route, {name: "condominios", handler: require('./components/condominios/condominiosPage')}), 
         React.createElement(NotFoundRoute, {handler: require('./components/notFoundPage')}), 
         React.createElement(Redirect, {from: "about-us", to: "about"}), 
         React.createElement(Redirect, {from: "awthors", to: "authors"}), 
@@ -50969,7 +51490,7 @@ var routes = (
 
 module.exports = routes;
 
-},{"./components/about/aboutPage":208,"./components/app":209,"./components/authors/authorPage":212,"./components/authors/manageAuthorPage":213,"./components/homePage":216,"./components/notFoundPage":217,"react":202,"react-router":33}],222:[function(require,module,exports){
+},{"./components/about/aboutPage":210,"./components/app":211,"./components/authors/authorPage":214,"./components/authors/manageAuthorPage":215,"./components/condominios/condominiosPage":220,"./components/condominios/manageCondominioPage":221,"./components/homePage":222,"./components/notFoundPage":223,"react":202,"react-router":33}],228:[function(require,module,exports){
 "use strict"
 var Dispatcher = require("../dispatcher/appDispatcher");
 var ActionTypes = require("../constants/actionTypes");
@@ -51000,7 +51521,8 @@ var AuthorStore = assign({}, EventEmitter.prototype,{
 
     getAuthorById: function(id){
         console.log("getAuthorById authorStore" + _authors);
-        return _.find(_authors, {id : id});
+        if(_authors)
+            return _.find(_authors, {id : id});
     }
 });
 
@@ -51009,6 +51531,7 @@ Dispatcher.register(function(action){
         // this is the part that varies...
         
         case  ActionTypes.INITIALIZE:
+            console.log("initialized");
             _authors = action.initialData.authors;
             AuthorStore.emitChange();
             break;
@@ -51021,6 +51544,7 @@ Dispatcher.register(function(action){
             break;
 
         case ActionTypes.UPDATE_AUTHOR:
+            console.log("update_AUTHOR in authorStore" + action.author);
             var existingAuthor = _.find(_authors, {id : action.author.id});
             var existingAuthorIndex = _.indexOf(_authors, existingAuthor);
             _authors.splice(existingAuthorIndex,1,action.author);
@@ -51039,4 +51563,72 @@ Dispatcher.register(function(action){
 
 module.exports = AuthorStore;
 
-},{"../constants/actionTypes":218,"../dispatcher/appDispatcher":219,"events":1,"lodash":7,"object-assign":8}]},{},[220]);
+},{"../constants/actionTypes":224,"../dispatcher/appDispatcher":225,"events":1,"lodash":7,"object-assign":8}],229:[function(require,module,exports){
+"use strict"
+var Dispatcher = require("../dispatcher/appDispatcher");
+var ActionTypes = require("../constants/actionTypes");
+var EventEmitter = require("events").EventEmitter;
+var assign = require("object-assign");
+var _ = require("lodash");
+var CHANGE_EVENT = "change";
+
+var _condominios = []; // outside the export module
+
+// take an empty object, take the emitEmitter.prototype and 
+// add everything on the last object
+var CondominioStore = assign({}, EventEmitter.prototype,{
+    addChangeListener: function(callback){
+        this.on(CHANGE_EVENT, callback);        
+    },
+    removeChangeListener: function(callback){
+        this.removeListener(CHANGE_EVENT, callback);        
+    },
+    emitChange: function(){
+        this.emit(CHANGE_EVENT);
+    },
+
+    getAllCondominios: function(){
+        
+        return _condominios;        
+    },
+
+    getCondominioById: function(id){
+        
+        if(_condominios)
+            return _.find(_condominios, {id : id});
+    }
+});
+
+Dispatcher.register(function(action){
+    switch(action.actionType){
+        // this is the part that varies...
+        
+        case  ActionTypes.INITIALIZE_CONDOMINIO:
+            _condominios = action.initialData.condominios;
+            CondominioStore.emitChange();
+            break;
+        
+        case ActionTypes.CREATE_CONDOMINIO:
+            _condominios.push(action.condominio);
+            CondominioStore.emitChange();
+            break;
+
+        case ActionTypes.UPDATE_CONDOMINIO:
+            var existingCondominio = _.find(_condominios, {id : action.condominio.id});
+            var existingCondominioIndex = _.indexOf(_condominios, existingCondominio);
+            _condominios.splice(existingCondominioIndex,1,action.condominio);
+            CondominioStore.emitChange();
+            break;
+
+        case ActionTypes.DELETE_CONDOMINIO:
+            var existingCondominio = _.find(_condominios, {id : action.condominio.id});
+            var existingCondominioIndex = _.indexOf(_condominios, existingCondominio);
+            _condominios.splice(existingCondominioIndex,1);
+            CondominioStore.emitChange();
+            break;    
+    }
+});
+
+module.exports = CondominioStore;
+
+},{"../constants/actionTypes":224,"../dispatcher/appDispatcher":225,"events":1,"lodash":7,"object-assign":8}]},{},[226]);

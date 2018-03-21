@@ -28,7 +28,8 @@ var AuthorStore = assign({}, EventEmitter.prototype,{
 
     getAuthorById: function(id){
         console.log("getAuthorById authorStore" + _authors);
-        return _.find(_authors, {id : id});
+        if(_authors)
+            return _.find(_authors, {id : id});
     }
 });
 
@@ -37,6 +38,7 @@ Dispatcher.register(function(action){
         // this is the part that varies...
         
         case  ActionTypes.INITIALIZE:
+            console.log("initialized");
             _authors = action.initialData.authors;
             AuthorStore.emitChange();
             break;
@@ -49,6 +51,7 @@ Dispatcher.register(function(action){
             break;
 
         case ActionTypes.UPDATE_AUTHOR:
+            console.log("update_AUTHOR in authorStore" + action.author);
             var existingAuthor = _.find(_authors, {id : action.author.id});
             var existingAuthorIndex = _.indexOf(_authors, existingAuthor);
             _authors.splice(existingAuthorIndex,1,action.author);

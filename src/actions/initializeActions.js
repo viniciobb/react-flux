@@ -2,6 +2,7 @@
 var Dispatcher = require("../dispatcher/appDispatcher");
 var ActionTypes = require("../constants/actionTypes");
 var AuthorApi = require("../api/authorApi");
+var CondominioApi = require("../api/condominioApi");
 
 
 var InitializeActions = {
@@ -21,7 +22,17 @@ var InitializeActions = {
 
         });
 
-        
+        CondominioApi.getAllCondominios().then(function(responseCondominios){
+            console.log("initialStateCondominio - initializeActions");
+            console.dir(responseCondominios);
+            Dispatcher.dispatch({
+                actionType: ActionTypes.INITIALIZE_CONDOMINIO,
+                initialData : {
+                    condominios: responseCondominios
+                }
+            });
+
+        });
         
     }
 }

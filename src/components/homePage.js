@@ -7,8 +7,8 @@ var Home = React.createClass({
     render: function(){
         return (
             <div className="jumbotron">
-                <h1>Pluralsight administration</h1>                
-                <p> React, React Router and Flux for ultra responsive web apps.</p>
+                <h1>HeyCondominium Administration</h1>                
+                <p> Reserve e controle.</p>
                 <Link to="about" className="btn btn-primary btn-lg">Learn more</Link>
             </div>
         );
