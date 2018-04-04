@@ -51116,42 +51116,42 @@ var CondominioForm = React.createClass({displayName: "CondominioForm",
                 React.createElement("h1", null, "Formulário Condominio"), 
                 React.createElement(Input, {
                     label: "Nome", 
-                    name: "condominioName", 
+                    name: "nome", 
                     onChange: this.props.onChange, 
                     value: this.props.condominio.nome, 
                     error: this.props.errors.nomeCondominio}
                 ), 
                 React.createElement(Input, {
                     label: "CNPJ", 
-                    name: "condominioCNPJ", 
+                    name: "cnpj", 
                     onChange: this.props.onChange, 
                     value: this.props.condominio.cnpj, 
                     error: this.props.errors.cnpj}
                 ), 
                 React.createElement(Input, {
                     label: "Quantidade de Apartamentos", 
-                    name: "condominioQuantidadeApartamentos", 
+                    name: "quantidadeApartamentos", 
                     onChange: this.props.onChange, 
                     value: this.props.condominio.quantidadeApartamentos, 
                     error: this.props.errors.quantidadeApartamentos}
                 ), 
                 React.createElement(Input, {
                     label: "Quantidade de Blocos", 
-                    name: "condominioQuantidadeBlocos", 
+                    name: "quantidadeBlocos", 
                     onChange: this.props.onChange, 
                     value: this.props.condominio.quantidadeBlocos, 
                     error: this.props.errors.quantidadeBlocos}
                 ), 
                  React.createElement(Input, {
                     label: "Quantidade de Elevadores", 
-                    name: "condominioQuantidadeElevadores", 
+                    name: "quantidadeElevadores", 
                     onChange: this.props.onChange, 
                     value: this.props.condominio.quantidadeElevadores, 
                     error: this.props.errors.quantidadeElevadores}
                 ), 
                 React.createElement(Input, {
                     label: "Quantidade de Vagas", 
-                    name: "condominioQuantidadeVagas", 
+                    name: "quantidadeVagas", 
                     onChange: this.props.onChange, 
                     value: this.props.condominio.quantidadeVagas, 
                     error: this.props.errors.quantidadeVagas}
@@ -51230,6 +51230,8 @@ var CondominiosPage = React.createClass({displayName: "CondominiosPage",
     
     getInitialState: function(){
         
+        console.log("CondominiosPage getInitialState");
+
         return {
             condominios: CondominioStore.getAllCondominios()
         };
@@ -51297,7 +51299,8 @@ var ManageCondominioPage = React.createClass({displayName: "ManageCondominioPage
                 quantidadeApartamentos: 0,
                 quantidadeBlocos: 0,
                 quantidadeElevadores: 0,
-                quantidadeVagas: 0
+                quantidadeVagas: 0,
+                id: 0
                 //endereco: [enderecoSchema],
                 //facilities: [facilitySchema]
             
@@ -51353,17 +51356,22 @@ var ManageCondominioPage = React.createClass({displayName: "ManageCondominioPage
             return;
         }
 
+        console.log("saveCondominio");
+
         if(this.state.condominio.id)
         {
             CondominioActions.updateCondominio(this.state.condominio);
 
         }else{
             CondominioActions.createCondominio(this.state.condominio);
+            console.log("saveCondominio");
         }
             
         
         this.setState({ dirty: false });
+        console.log("setState");
         Toastr.success('Condominio saved.');
+        console.log("toaster");
         this.transitionTo('condominios');
 
     },
@@ -51621,7 +51629,7 @@ Dispatcher.register(function(action){
             break;
 
         case ActionTypes.DELETE_CONDOMINIO:
-            var existingCondominio = _.find(_condominios, {id : action.condominio.id});
+            var existingCondominio = _.find(_condominios, {id : action.id});
             var existingCondominioIndex = _.indexOf(_condominios, existingCondominio);
             _condominios.splice(existingCondominioIndex,1);
             CondominioStore.emitChange();
