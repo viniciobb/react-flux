@@ -8,6 +8,7 @@ var CHANGE_EVENT = "change";
 
 var _condominios = []; // outside the export module
 
+
 // take an empty object, take the emitEmitter.prototype and 
 // add everything on the last object
 var CondominioStore = assign({}, EventEmitter.prototype,{
@@ -29,8 +30,27 @@ var CondominioStore = assign({}, EventEmitter.prototype,{
     getCondominioById: function(id){
         
         if(_condominios)
-            return _.find(_condominios, {id : id});
+            return  _.find(_condominios, {id : id});
+    },
+    
+    getEnderecosCondominio: function(condominioId){
+        
+        if(_condominios){
+
+             var condominio = _.find(_condominios, {id : condominioId});
+             
+             return condominio.enderecos;
+
+        }else{
+
+            return;
+
+        }
+                    
     }
+    
+
+
 });
 
 Dispatcher.register(function(action){
@@ -58,6 +78,28 @@ Dispatcher.register(function(action){
             var existingCondominio = _.find(_condominios, {id : action.id});
             var existingCondominioIndex = _.indexOf(_condominios, existingCondominio);
             _condominios.splice(existingCondominioIndex,1);
+            CondominioStore.emitChange();
+            break;
+        
+        
+            
+
+
+        case ActionTypes.BUSCA_ENDERECO:
+
+            var enderecoModel = {
+                logradouro: action.endereco.logradouro, 
+                siglaFederacao: action.endereco.estado,
+                cep: action.endereco.cep,
+                bairro: action.endereco.bairro,
+                cidade: action.endereco.cidade,
+                numero: 0,
+                complemento : ""
+            };
+        
+            var existingCondominio = _.find(_condominios, {id : action.id});
+            var existingCondominioIndex = _.indexOf(_condominios, existingCondominio);
+            condominios[existingCondominioIndex].enderecos.push(enderecoModel);
             CondominioStore.emitChange();
             break;    
     }

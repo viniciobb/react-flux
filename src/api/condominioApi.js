@@ -114,6 +114,32 @@ var CondominioApi = {
 			console.log('There has been a problem with your fetch operation: ' + error.message);
 		  });
 		
+	},
+
+	buscaEndereco: function(cep) {
+		
+		//pretend an ajax call to web api is made here
+		return fetch('http://api.postmon.com.br/v1/cep/'+cep,
+			{
+				method: 'get',
+				headers: {
+					'Accept': 'application/json, text/plain, */*',
+					'Content-Type': 'application/json'
+				}
+			}
+		).then(function(response) {
+			if(response.ok) {
+				return response.json().then(function(resposta) {
+				  return resposta;
+				});
+			} else {
+				console.log('Network response was not ok.');
+			}  
+		})
+		  .catch(function(error) {
+			console.log('There has been a problem with your fetch CEP operation: ' + error.message);
+		  });
+		
 	}
 
 

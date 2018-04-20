@@ -50292,7 +50292,7 @@ var AuthorActions = {
 
 module.exports = AuthorActions;
 
-},{"../api/authorApi":207,"../constants/actionTypes":224,"../dispatcher/appDispatcher":225}],205:[function(require,module,exports){
+},{"../api/authorApi":208,"../constants/actionTypes":229,"../dispatcher/appDispatcher":231}],205:[function(require,module,exports){
 "use strict"
 var Dispatcher = require("../dispatcher/appDispatcher");
 var CondominioApi = require("../api/condominioApi");
@@ -50300,43 +50300,8 @@ var actionTypes = require("../constants/actionTypes");
 
 var CondominioActions = {
 
-    createEndereco: function(endereco){
-       
-            CondominioApi.saveEndereco(endereco).then(function(newEndereco){
 
-            Dispatcher.dispatch({
-                actionType: actionTypes.CREATE_ENDERECO,
-                endereco: newEndereco
-            });
-
-        });
-
-
-    },
-
-    updateEndereco: function(endereco){
-        CondominioApi.updateEndereco(endereco).then(function(updatedEndereco){
-            Dispatcher.dispatch({
-                actionType: actionTypes.UPDATE_ENDERECO,
-                condominio: updatedEndereco
-            });
-
-        });
-        
-    },
-
-    deleteEndereco: function(id){
-        
-        CondominioApi.deleteEndereco(id).then(function(response){
-
-            Dispatcher.dispatch({
-                actionType: actionTypes.DELETE_ENDERECO,
-                id: response.id
-            });
-
-        });
-        
-    },
+    
 
     createCondominio: function(condominio){
        
@@ -50374,11 +50339,89 @@ var CondominioActions = {
         
     }
 
+    
+
 };
 
 module.exports = CondominioActions;
 
-},{"../api/condominioApi":209,"../constants/actionTypes":224,"../dispatcher/appDispatcher":225}],206:[function(require,module,exports){
+},{"../api/condominioApi":210,"../constants/actionTypes":229,"../dispatcher/appDispatcher":231}],206:[function(require,module,exports){
+"use strict"
+var Dispatcher = require("../dispatcher/appDispatcher");
+var CondominioApi = require("../api/condominioApi");
+var actionTypes = require("../constants/actionTypes");
+
+var EnderecoActions = {
+
+
+    buscaEndereco: function(cep){
+        
+        CondominioApi.buscaCep(cep).then(function(response){
+
+            Dispatcher.dispatch({
+                actionType: actionTypes.BUSCA_ENDERECO,
+                endereco: response
+            });
+
+        });
+        
+    },
+
+    createEndereco: function(endereco, idCondominio){
+
+        Dispatcher.dispatch({
+            actionType: actionTypes.CREATE_ENDERECO,
+            endereco: endereco
+        });
+    },
+
+    cleanEndereco: function(){
+        Dispatcher.dispatch({
+            actionType: actionTypes.CLEAN_ENDERECO
+        });
+    },
+
+    carregaEnderecos: function(enderecos){
+        Dispatcher.dispatch({
+            actionType: actionTypes.INIT_ENDERECO,
+            enderecos: enderecos
+        });
+    }
+
+    
+    
+    
+
+    
+
+    // updateEndereco: function(endereco){
+    //     CondominioApi.updateEndereco(endereco).then(function(updatedEndereco){
+    //         Dispatcher.dispatch({
+    //             actionType: actionTypes.UPDATE_ENDERECO,
+    //             condominio: updatedEndereco
+    //         });
+
+    //     });
+        
+    // },
+    
+    // deleteEndereco: function(id){
+        
+    //     Dispatcher.dispatch({
+    //         actionType: actionTypes.DELETE_ENDERECO,
+    //         id: id
+    //     });
+        
+    // }
+
+
+    
+
+};
+
+module.exports = EnderecoActions;
+
+},{"../api/condominioApi":210,"../constants/actionTypes":229,"../dispatcher/appDispatcher":231}],207:[function(require,module,exports){
 "use strict"
 var Dispatcher = require("../dispatcher/appDispatcher");
 var ActionTypes = require("../constants/actionTypes");
@@ -50420,7 +50463,7 @@ var InitializeActions = {
 
 module.exports = InitializeActions;
 
-},{"../api/authorApi":207,"../api/condominioApi":209,"../constants/actionTypes":224,"../dispatcher/appDispatcher":225}],207:[function(require,module,exports){
+},{"../api/authorApi":208,"../api/condominioApi":210,"../constants/actionTypes":229,"../dispatcher/appDispatcher":231}],208:[function(require,module,exports){
 "use strict";
 
 //This file is mocking a web API by hitting hard coded data.
@@ -50570,7 +50613,7 @@ var AuthorApi = {
 
 module.exports = AuthorApi;
 
-},{"./authorData":208,"lodash":7}],208:[function(require,module,exports){
+},{"./authorData":209,"lodash":7}],209:[function(require,module,exports){
 module.exports = {
 	authors: 
 	[
@@ -50592,7 +50635,7 @@ module.exports = {
 	]
 };
 
-},{}],209:[function(require,module,exports){
+},{}],210:[function(require,module,exports){
 "use strict";
 
 //This file is mocking a web API by hitting hard coded data.
@@ -50709,6 +50752,32 @@ var CondominioApi = {
 			console.log('There has been a problem with your fetch operation: ' + error.message);
 		  });
 		
+	},
+
+	buscaEndereco: function(cep) {
+		
+		//pretend an ajax call to web api is made here
+		return fetch('http://api.postmon.com.br/v1/cep/'+cep,
+			{
+				method: 'get',
+				headers: {
+					'Accept': 'application/json, text/plain, */*',
+					'Content-Type': 'application/json'
+				}
+			}
+		).then(function(response) {
+			if(response.ok) {
+				return response.json().then(function(resposta) {
+				  return resposta;
+				});
+			} else {
+				console.log('Network response was not ok.');
+			}  
+		})
+		  .catch(function(error) {
+			console.log('There has been a problem with your fetch CEP operation: ' + error.message);
+		  });
+		
 	}
 
 
@@ -50716,7 +50785,7 @@ var CondominioApi = {
 
 module.exports = CondominioApi;
 
-},{"./authorData":208,"lodash":7}],210:[function(require,module,exports){
+},{"./authorData":209,"lodash":7}],211:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var About = React.createClass({displayName: "About",
@@ -50766,7 +50835,7 @@ var About = React.createClass({displayName: "About",
 
 module.exports = About; 
 
-},{"react":202}],211:[function(require,module,exports){
+},{"react":202}],212:[function(require,module,exports){
 /*eslint-disable strict */ // disabling check because qe cant run strict mode . we need global vars
 
 var React = require('react');
@@ -50789,7 +50858,7 @@ var App = React.createClass({displayName: "App",
 
 module.exports = App;
 
-},{"./common/header":216,"jquery":6,"react":202,"react-router":33}],212:[function(require,module,exports){
+},{"./common/header":217,"jquery":6,"react":202,"react-router":33}],213:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Input = require("../common/textInput");
@@ -50829,7 +50898,7 @@ var AuthorForm = React.createClass({displayName: "AuthorForm",
 
 module.exports = AuthorForm;  
 
-},{"../common/textInput":217,"react":202}],213:[function(require,module,exports){
+},{"../common/textInput":218,"react":202}],214:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Router = require('react-router');
@@ -50879,7 +50948,7 @@ var AuthorList = React.createClass({displayName: "AuthorList",
 
 module.exports = AuthorList;
 
-},{"../../actions/authorActions":204,"react":202,"react-router":33,"toastr":203}],214:[function(require,module,exports){
+},{"../../actions/authorActions":204,"react":202,"react-router":33,"toastr":203}],215:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Router = require('react-router');
@@ -50923,7 +50992,7 @@ var AuthorsPage = React.createClass({displayName: "AuthorsPage",
 
 module.exports = AuthorsPage;
 
-},{"../../actions/authorActions":204,"../../stores/authorStore":228,"./authorList":213,"react":202,"react-router":33}],215:[function(require,module,exports){
+},{"../../actions/authorActions":204,"../../stores/authorStore":234,"./authorList":214,"react":202,"react-router":33}],216:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Router = require('react-router');
@@ -51035,7 +51104,7 @@ var ManageAuthorPage = React.createClass({displayName: "ManageAuthorPage",
 
 module.exports = ManageAuthorPage; 
 
-},{"../../actions/authorActions":204,"../../stores/authorStore":228,"./authorForm":212,"react":202,"react-router":33,"toastr":203}],216:[function(require,module,exports){
+},{"../../actions/authorActions":204,"../../stores/authorStore":234,"./authorForm":213,"react":202,"react-router":33,"toastr":203}],217:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Router = require('react-router');
@@ -51063,7 +51132,7 @@ var Header = React.createClass({displayName: "Header",
 
 module.exports = Header; 
 
-},{"react":202,"react-router":33}],217:[function(require,module,exports){
+},{"react":202,"react-router":33}],218:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var TextInput = React.createClass({displayName: "TextInput",
@@ -51078,7 +51147,7 @@ var TextInput = React.createClass({displayName: "TextInput",
         return (
             React.createElement("div", {className: wrapperClass}, 
                 React.createElement("label", {htmlFor: this.props.name}, this.props.label), 
-                React.createElement("div", {className: "field"}, 
+                React.createElement("div", {className: "field "}, 
                     React.createElement("input", {type: "text", 
                     name: this.props.name, 
                     className: "form-control", 
@@ -51097,10 +51166,11 @@ var TextInput = React.createClass({displayName: "TextInput",
 
 module.exports = TextInput; 
 
-},{"react":202}],218:[function(require,module,exports){
+},{"react":202}],219:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Input = require("../common/textInput");
+var EnderecosPage = require("../enderecos/enderecosPage");
 var CondominioForm = React.createClass({displayName: "CondominioForm",
     
     propTypes: {
@@ -51113,7 +51183,7 @@ var CondominioForm = React.createClass({displayName: "CondominioForm",
     render: function(){
         return ( 
             React.createElement("form", null, 
-                React.createElement("h1", null, "Formulário Condominio"), 
+                React.createElement("h1", null, "Formulário Condomínio"), 
                 React.createElement(Input, {
                     label: "Nome", 
                     name: "nome", 
@@ -51156,6 +51226,12 @@ var CondominioForm = React.createClass({displayName: "CondominioForm",
                     value: this.props.condominio.quantidadeVagas, 
                     error: this.props.errors.quantidadeVagas}
                 ), 
+
+                React.createElement(EnderecosPage, {
+                    idCondominio: this.props.condominio.id, 
+                    getEnderecos: this.props.getEnderecos}
+                ), 
+
                 React.createElement("input", {type: "submit", value: "Save", onClick: this.props.onSave, className: "btn btn-default"})
             )               
         ); 
@@ -51165,7 +51241,7 @@ var CondominioForm = React.createClass({displayName: "CondominioForm",
 
 module.exports = CondominioForm;  
 
-},{"../common/textInput":217,"react":202}],219:[function(require,module,exports){
+},{"../common/textInput":218,"../enderecos/enderecosPage":225,"react":202}],220:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Router = require('react-router');
@@ -51217,13 +51293,12 @@ var CondominioList = React.createClass({displayName: "CondominioList",
 
 module.exports = CondominioList;
 
-},{"../../actions/condominioActions":205,"react":202,"react-router":33,"toastr":203}],220:[function(require,module,exports){
+},{"../../actions/condominioActions":205,"react":202,"react-router":33,"toastr":203}],221:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Router = require('react-router');
 var Link = require('react-router').Link;
 var CondominioStore = require("../../stores/condominioStore");
-var CondominioActions = require("../../actions/condominioActions");
 var CondominioList = require("./condominioList");
 
 var CondominiosPage = React.createClass({displayName: "CondominiosPage",
@@ -51264,13 +51339,15 @@ var CondominiosPage = React.createClass({displayName: "CondominiosPage",
 
 module.exports = CondominiosPage;
 
-},{"../../actions/condominioActions":205,"../../stores/condominioStore":229,"./condominioList":219,"react":202,"react-router":33}],221:[function(require,module,exports){
+},{"../../stores/condominioStore":235,"./condominioList":220,"react":202,"react-router":33}],222:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Router = require('react-router');
 var CondominioForm = require('./condominioForm');
 var CondominioStore = require("../../stores/condominioStore");
+var EnderecoStore = require("../../stores/enderecoStore");
 var CondominioActions = require("../../actions/condominioActions");
+var EnderecoActions = require("../../actions/enderecoActions");
 
 var Toastr = require("toastr");
 
@@ -51288,6 +51365,16 @@ var ManageCondominioPage = React.createClass({displayName: "ManageCondominioPage
         }
 
     },
+    
+    // componentWillUnmount : function(){
+    //     EnderecoStore.removeChangeListener(this._onChange);
+    // },
+    
+    // _onChange : function(){
+    //     console.log("onChange EnderecoStore");
+    //     this.state.condominio.enderecos = EnderecoStore.getEnderecos();
+    //     this.setState({ condominio: this.state.condominio });
+    // },
 
     getInitialState: function(){
         console.log("getInitialState managerCondominio");
@@ -51300,8 +51387,8 @@ var ManageCondominioPage = React.createClass({displayName: "ManageCondominioPage
                 quantidadeBlocos: 0,
                 quantidadeElevadores: 0,
                 quantidadeVagas: 0,
-                id: 0
-                //endereco: [enderecoSchema],
+                id: 0,
+                enderecos: []
                 //facilities: [facilitySchema]
             
             },
@@ -51312,6 +51399,8 @@ var ManageCondominioPage = React.createClass({displayName: "ManageCondominioPage
 
     componentWillMount: function(){
        
+        //EnderecoStore.addChangeListener(this._onChange);
+
         console.log("componentWillMount managerCondominio");
        
         var condominioId = this.props.params.id; // from the path /condominio/:id
@@ -51321,10 +51410,11 @@ var ManageCondominioPage = React.createClass({displayName: "ManageCondominioPage
         if(condominioId){
             this.setState({condominio: CondominioStore.getCondominioById(condominioId)});
         }
-
-    },
         
-    setCondominioState: function(event){ // called for every key press
+        console.dir(this.state.condominio);
+    },
+
+     setCondominioState: function(event){ // called for every key press
         var field = event.target.name;
         var value = event.target.value;
         this.state.condominio[field] = value;
@@ -51350,13 +51440,19 @@ var ManageCondominioPage = React.createClass({displayName: "ManageCondominioPage
 
     },
 
+    getEnderecos: function(){
+       
+        return  CondominioStore.getEnderecosCondominio(this.props.params.id);
+
+    },
+
     saveCondominio: function(event){
         event.preventDefault();
         if(!this.condominioFormIsValid()){
             return;
         }
 
-        console.log("saveCondominio");
+        this.state.condominio.enderecos = EnderecoStore.getEnderecos();
 
         if(this.state.condominio.id)
         {
@@ -51366,7 +51462,8 @@ var ManageCondominioPage = React.createClass({displayName: "ManageCondominioPage
             CondominioActions.createCondominio(this.state.condominio);
             console.log("saveCondominio");
         }
-            
+
+        EnderecoActions.cleanEndereco();
         
         this.setState({ dirty: false });
         console.log("setState");
@@ -51375,6 +51472,9 @@ var ManageCondominioPage = React.createClass({displayName: "ManageCondominioPage
         this.transitionTo('condominios');
 
     },
+
+    
+
     /**
      * creating reusable inputs
      * 
@@ -51385,6 +51485,7 @@ var ManageCondominioPage = React.createClass({displayName: "ManageCondominioPage
              condominio: this.state.condominio, 
              onChange: this.setCondominioState, 
              onSave: this.saveCondominio, 
+             getEnderecos: this.getEnderecos, 
              errors: this.state.errors})
         ); 
     }
@@ -51393,7 +51494,325 @@ var ManageCondominioPage = React.createClass({displayName: "ManageCondominioPage
 
 module.exports = ManageCondominioPage; 
 
-},{"../../actions/condominioActions":205,"../../stores/condominioStore":229,"./condominioForm":218,"react":202,"react-router":33,"toastr":203}],222:[function(require,module,exports){
+},{"../../actions/condominioActions":205,"../../actions/enderecoActions":206,"../../stores/condominioStore":235,"../../stores/enderecoStore":236,"./condominioForm":219,"react":202,"react-router":33,"toastr":203}],223:[function(require,module,exports){
+"use strict";
+var React = require('react');
+var Input = require("../common/textInput");
+var EnderecoForm = React.createClass({displayName: "EnderecoForm",
+    
+    propTypes: {
+        endereco: React.PropTypes.object.isRequired,
+        onSave: React.PropTypes.func.isRequired,
+        onChange: React.PropTypes.func.isRequired,
+        errors: React.PropTypes.object
+    },
+        
+    render: function(){
+        return ( 
+            React.createElement("form", null, 
+                React.createElement("h1", null, "Formulário Endereço"), 
+                React.createElement(Input, {
+                    label: "CEP", 
+                    name: "cep", 
+                    onChange: this.props.onChange, 
+                    value: this.props.endereco.cep, 
+                    error: this.props.errors.cep}
+                ), 
+                
+                React.createElement(Input, {
+                    label: "Logradouro", 
+                    name: "logradouro", 
+                    onChange: this.props.onChange, 
+                    value: this.props.endereco.logradouro, 
+                    error: this.props.errors.logradouro}
+                ), 
+                
+                React.createElement(Input, {
+                    label: "Numero", 
+                    name: "numero", 
+                    onChange: this.props.onChange, 
+                    value: this.props.endereco.numero, 
+                    error: this.props.errors.numero}
+                ), 
+                React.createElement(Input, {
+                    label: "Bairro", 
+                    name: "bairro", 
+                    onChange: this.props.onChange, 
+                    value: this.props.endereco.bairro, 
+                    error: this.props.errors.bairro}
+                ), 
+                React.createElement(Input, {
+                    label: "Complemento", 
+                    name: "complemento", 
+                    onChange: this.props.onChange, 
+                    value: this.props.endereco.complemento, 
+                    error: this.props.errors.complemento}
+                ), 
+                 React.createElement(Input, {
+                    label: "Cidade", 
+                    name: "cidade", 
+                    onChange: this.props.onChange, 
+                    value: this.props.endereco.cidade, 
+                    error: this.props.errors.cidade}
+                ), 
+                React.createElement("input", {type: "submit", value: "Save", onClick: this.props.onSave, className: "btn btn-default"})
+            )               
+        ); 
+    }
+
+});
+
+module.exports = EnderecoForm;  
+
+},{"../common/textInput":218,"react":202}],224:[function(require,module,exports){
+"use strict";
+var React = require('react');
+var Router = require('react-router');
+var Link = Router.Link;
+var CondominioStore = require("../../stores/condominioStore");
+var EnderecoStore = require("../../stores/enderecoStore");
+
+var EnderecoList = React.createClass({displayName: "EnderecoList",
+    
+    //<td><Link to="manageEndereco" params={{idCondominio: this.props.idCondominio, idEndereco: endereco.id }}>{endereco.logradouro}</Link></td>
+    
+    propTypes: {
+        enderecos: React.PropTypes.array.isRequired
+    },
+
+    render: function(){
+
+        
+        var createEnderecoRow = function(endereco, index, array){
+            console.log(index);
+            return (
+                
+                React.createElement("tr", {key: index}, 
+                    React.createElement("td", null, endereco.logradouro), 
+                    React.createElement("td", null, endereco.numero), 
+                    React.createElement("td", null, endereco.bairro), 
+                    React.createElement("td", null, endereco.cep)
+                )
+            );
+        };
+        
+        return (
+            React.createElement("div", null, 
+                React.createElement("table", {className: "table"}, 
+                React.createElement("thead", null, 
+                    React.createElement("th", null, "Delete"), 
+                    React.createElement("th", null, "Logradouro"), 
+                    React.createElement("th", null, "Numero"), 
+                    React.createElement("th", null, "Bairro"), 
+                    React.createElement("th", null, "CEP")
+                ), 
+                React.createElement("tbody", null, 
+                    this.props.enderecos.map(createEnderecoRow)
+                )
+                )
+            )    
+        );
+    }
+});
+
+module.exports = EnderecoList;
+
+},{"../../stores/condominioStore":235,"../../stores/enderecoStore":236,"react":202,"react-router":33}],225:[function(require,module,exports){
+"use strict";
+var React = require('react');
+var Router = require('react-router');
+var Link = require('react-router').Link;
+var EnderecoList = require("./enderecoList");
+var EnderecoStore = require("../../stores/enderecoStore");
+var EnderecoActions = require("../../actions/enderecoActions");
+
+
+var EnderecosPage = React.createClass({displayName: "EnderecosPage",
+
+    propTypes: {
+        getEnderecos: React.PropTypes.func.isRequired
+    },
+    
+    getInitialState: function(){
+
+        var enderecos = [];
+
+        console.log(this.props.idCondominio); 
+
+        if(this.props.idCondominio){
+            
+            if(!EnderecoStore.getInitialized()){
+                enderecos = this.props.getEnderecos(); 
+                EnderecoActions.carregaEnderecos(enderecos);
+
+            }else{
+                enderecos = EnderecoStore.getEnderecos();
+            }
+
+        }
+
+        return {
+            enderecos
+        };
+    },
+    
+    componentWillMount : function(){
+        EnderecoStore.addChangeListener(this._onChange);
+    },
+    componentWillUnmount : function(){
+        EnderecoStore.removeChangeListener(this._onChange);
+    },
+    
+    _onChange : function(){
+        console.log("onChange enderecoPage");
+        this.setState({ enderecos: EnderecoStore.getEnderecos() });
+    },
+    
+    render: function(){
+        
+        return (
+            React.createElement("div", null, 
+               React.createElement("h1", null, "Endereços"), 
+               React.createElement(Link, {to: "addEndereco", params: {idCondominio: this.props.idCondominio}, className: "btn btn-default"}, "Adicionar Endereço"), 
+               React.createElement(EnderecoList, {
+                    enderecos: this.state.enderecos}
+                )
+            )    
+        );
+    }
+});
+
+module.exports = EnderecosPage;
+
+},{"../../actions/enderecoActions":206,"../../stores/enderecoStore":236,"./enderecoList":224,"react":202,"react-router":33}],226:[function(require,module,exports){
+"use strict";
+var React = require('react');
+var Router = require('react-router');
+var EnderecoForm = require('./enderecoForm');
+var CondominioStore = require("../../stores/condominioStore");
+var EnderecoActions = require("../../actions/enderecoActions");
+
+var Toastr = require("toastr");
+
+var ManageEnderecoPage = React.createClass({displayName: "ManageEnderecoPage",
+
+    getInitialState: function(){
+        console.log("getInitialState ManageEnderecoPage");
+        return {
+            endereco: {
+                logradouro: '',
+                numero: 0,
+                complemento: '',
+                bairro: '',
+                cep: 0,
+                siglaFederacao: '',
+                cidade: '',
+                id: ''
+            
+            },
+            errors: {},
+            dirty: false
+        };
+    },
+
+    mixins: [
+        Router.Navigation
+    ],
+
+    statics: {
+
+        willTransitionFrom: function(transition, component){
+            if( component.state.dirty && !confirm("Leave without saving ?")){
+                transition.abort();
+            }    
+        }
+
+    },
+
+    componentWillMount: function(){
+       
+        console.log("componentWillMount managerEndereco");
+        console.log(this.props.params.idCondominio);
+
+        if(this.props.params.idEndereco && this.props.params.idCondominio){
+            
+            this.setState({endereco: CondominioStore.getEnderecoCondominioById(this.props.params.idCondominio, this.props.params.idEndereco)});
+        }
+
+    },
+        
+    setEnderecoState: function(event){ // called for every key press
+        var field = event.target.name;
+        var value = event.target.value;
+        this.state.endereco[field] = value;
+        console.log("typed : " + value);
+        this.setState({ dirty: true });
+        return this.state.endereco;
+    },
+    
+    saveEndereco: function(event){ 
+        event.preventDefault();
+        if(!this.enderecoFormIsValid()){
+            return;
+        }
+        
+        console.dir(this.state.endereco);
+
+        EnderecoActions.createEndereco(this.state.endereco, this.props.idCondominio);
+        
+        console.log(this.props.params.idCondominio);
+        
+        if(this.props.params.idCondominio)
+            
+            this.transitionTo('manageCondominio', {id: this.props.params.idCondominio});
+            
+        else{
+            
+            this.transitionTo('addCondominio');
+
+        }    
+
+    },
+
+
+    enderecoFormIsValid: function(){
+        var formIsValid = true;
+        this.state.errors = {}; // clear any previous errors
+        if(this.state.endereco.logradouro.length < 1){
+            this.state.errors.logradouro = "logradouro must be filled.";
+            formIsValid = false;
+        }
+
+        if(this.state.endereco.cep.length < 3){
+            this.state.errors.cep = "CEP must be filled.";
+            formIsValid = false;
+        }
+
+        this.setState({errors: this.state.errors});
+        return formIsValid;
+
+    },
+
+    
+    /**
+     * creating reusable inputs
+     * 
+     */
+    render: function(){
+        return (
+            React.createElement(EnderecoForm, {
+             endereco: this.state.endereco, 
+             onChange: this.setEnderecoState, 
+             onSave: this.saveEndereco, 
+             errors: this.state.errors})
+        ); 
+    }
+
+});
+
+module.exports = ManageEnderecoPage; 
+
+},{"../../actions/enderecoActions":206,"../../stores/condominioStore":235,"./enderecoForm":223,"react":202,"react-router":33,"toastr":203}],227:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Router = require('react-router');
@@ -51414,7 +51833,7 @@ var Home = React.createClass({displayName: "Home",
 
 module.exports = Home; 
 
-},{"react":202,"react-router":33}],223:[function(require,module,exports){
+},{"react":202,"react-router":33}],228:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Link = require('react-router').Link;
@@ -51433,7 +51852,7 @@ var NotFoundPage = React.createClass({displayName: "NotFoundPage",
 
 module.exports = NotFoundPage; 
 
-},{"react":202,"react-router":33}],224:[function(require,module,exports){
+},{"react":202,"react-router":33}],229:[function(require,module,exports){
 "use strict"
 var keyMirror = require("react/lib/keyMirror")
 
@@ -51446,17 +51865,29 @@ module.exports = keyMirror({
     CREATE_CONDOMINIO: null,
     UPDATE_CONDOMINIO: null,
     DELETE_CONDOMINIO: null,
-    CREATE_CONDOMINIO_ENDERERECO: null,
-    UPDATE_CONDOMINIO_ENDERERECO: null,
-    DELETE_CONDOMINIO_ENDERERECO: null
+    CREATE_ENDERECO: null,
+    CLEAN_ENDERECO: null,
+    INIT_ENDERECO: null,
+    DELETE_CONDOMINIO_ENDERECO: null,
+    BUSCA_ENDERECO: null
 
 });
 
-},{"react/lib/keyMirror":187}],225:[function(require,module,exports){
+},{"react/lib/keyMirror":187}],230:[function(require,module,exports){
+"use strict"
+var keyMirror = require("react/lib/keyMirror")
+
+module.exports = keyMirror({
+    ENDERECOS_CONDOMINIO: null,
+    ENDERECOS_CONDOMINO: null
+
+});
+
+},{"react/lib/keyMirror":187}],231:[function(require,module,exports){
 var Dispatcher = require("flux").Dispatcher;
 module.exports = new Dispatcher();
 
-},{"flux":3}],226:[function(require,module,exports){
+},{"flux":3}],232:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Router = require('react-router');
@@ -51469,7 +51900,7 @@ Router.run(routes, function(Handler){
     React.render(React.createElement(Handler, null), document.getElementById('app'));
 }); 
 
-},{"./actions/initializeActions":206,"./routes":227,"react":202,"react-router":33}],227:[function(require,module,exports){
+},{"./actions/initializeActions":207,"./routes":233,"react":202,"react-router":33}],233:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Router = require("react-router");
@@ -51485,8 +51916,10 @@ var routes = (
         React.createElement(Route, {name: "authors", handler: require('./components/authors/authorPage')}), 
         React.createElement(Route, {name: "addAuthor", path: "author", handler: require('./components/authors/manageAuthorPage')}), 
         React.createElement(Route, {name: "addCondominio", path: "condominio", handler: require('./components/condominios/manageCondominioPage')}), 
+        React.createElement(Route, {name: "addEndereco", path: "condominio/:idCondominio/endereco", handler: require('./components/enderecos/manageEnderecoPage')}), 
         React.createElement(Route, {name: "manageAuthor", path: "author/:id", handler: require('./components/authors/manageAuthorPage')}), 
         React.createElement(Route, {name: "manageCondominio", path: "condominio/:id", handler: require('./components/condominios/manageCondominioPage')}), 
+        React.createElement(Route, {name: "manageEndereco", path: "condominio/:idCondominio/endereco/:idEndereco", handler: require('./components/enderecos/manageEnderecoPage')}), 
         React.createElement(Route, {name: "about", handler: require('./components/about/aboutPage')}), 
         React.createElement(Route, {name: "condominios", handler: require('./components/condominios/condominiosPage')}), 
         React.createElement(NotFoundRoute, {handler: require('./components/notFoundPage')}), 
@@ -51498,7 +51931,7 @@ var routes = (
 
 module.exports = routes;
 
-},{"./components/about/aboutPage":210,"./components/app":211,"./components/authors/authorPage":214,"./components/authors/manageAuthorPage":215,"./components/condominios/condominiosPage":220,"./components/condominios/manageCondominioPage":221,"./components/homePage":222,"./components/notFoundPage":223,"react":202,"react-router":33}],228:[function(require,module,exports){
+},{"./components/about/aboutPage":211,"./components/app":212,"./components/authors/authorPage":215,"./components/authors/manageAuthorPage":216,"./components/condominios/condominiosPage":221,"./components/condominios/manageCondominioPage":222,"./components/enderecos/manageEnderecoPage":226,"./components/homePage":227,"./components/notFoundPage":228,"react":202,"react-router":33}],234:[function(require,module,exports){
 "use strict"
 var Dispatcher = require("../dispatcher/appDispatcher");
 var ActionTypes = require("../constants/actionTypes");
@@ -51571,7 +52004,7 @@ Dispatcher.register(function(action){
 
 module.exports = AuthorStore;
 
-},{"../constants/actionTypes":224,"../dispatcher/appDispatcher":225,"events":1,"lodash":7,"object-assign":8}],229:[function(require,module,exports){
+},{"../constants/actionTypes":229,"../dispatcher/appDispatcher":231,"events":1,"lodash":7,"object-assign":8}],235:[function(require,module,exports){
 "use strict"
 var Dispatcher = require("../dispatcher/appDispatcher");
 var ActionTypes = require("../constants/actionTypes");
@@ -51581,6 +52014,7 @@ var _ = require("lodash");
 var CHANGE_EVENT = "change";
 
 var _condominios = []; // outside the export module
+
 
 // take an empty object, take the emitEmitter.prototype and 
 // add everything on the last object
@@ -51603,8 +52037,27 @@ var CondominioStore = assign({}, EventEmitter.prototype,{
     getCondominioById: function(id){
         
         if(_condominios)
-            return _.find(_condominios, {id : id});
+            return  _.find(_condominios, {id : id});
+    },
+    
+    getEnderecosCondominio: function(condominioId){
+        
+        if(_condominios){
+
+             var condominio = _.find(_condominios, {id : condominioId});
+             
+             return condominio.enderecos;
+
+        }else{
+
+            return;
+
+        }
+                    
     }
+    
+
+
 });
 
 Dispatcher.register(function(action){
@@ -51633,10 +52086,99 @@ Dispatcher.register(function(action){
             var existingCondominioIndex = _.indexOf(_condominios, existingCondominio);
             _condominios.splice(existingCondominioIndex,1);
             CondominioStore.emitChange();
+            break;
+        
+        
+            
+
+
+        case ActionTypes.BUSCA_ENDERECO:
+
+            var enderecoModel = {
+                logradouro: action.endereco.logradouro, 
+                siglaFederacao: action.endereco.estado,
+                cep: action.endereco.cep,
+                bairro: action.endereco.bairro,
+                cidade: action.endereco.cidade,
+                numero: 0,
+                complemento : ""
+            };
+        
+            var existingCondominio = _.find(_condominios, {id : action.id});
+            var existingCondominioIndex = _.indexOf(_condominios, existingCondominio);
+            condominios[existingCondominioIndex].enderecos.push(enderecoModel);
+            CondominioStore.emitChange();
             break;    
     }
 });
 
 module.exports = CondominioStore;
 
-},{"../constants/actionTypes":224,"../dispatcher/appDispatcher":225,"events":1,"lodash":7,"object-assign":8}]},{},[226]);
+},{"../constants/actionTypes":229,"../dispatcher/appDispatcher":231,"events":1,"lodash":7,"object-assign":8}],236:[function(require,module,exports){
+"use strict"
+var Dispatcher = require("../dispatcher/appDispatcher");
+var ParentTypes = require("../constants/parentTypes");
+var ActionTypes = require("../constants/actionTypes");
+var EventEmitter = require("events").EventEmitter;
+var assign = require("object-assign");
+var _ = require("lodash");
+var CHANGE_EVENT = "change";
+
+var _enderecos = []; // outside the export module
+var _initialized = false;
+
+// take an empty object, take the emitEmitter.prototype and 
+// add everything on the last object
+var EnderecoStore = assign({}, EventEmitter.prototype,{
+    addChangeListener: function(callback){
+        this.on(CHANGE_EVENT, callback);        
+    },
+    removeChangeListener: function(callback){
+        this.removeListener(CHANGE_EVENT, callback);        
+    },
+    emitChange: function(){
+        this.emit(CHANGE_EVENT);
+    },
+    
+    getEnderecos: function(){
+        
+        return _enderecos;
+    },
+
+    getInitialized: function(){
+        
+        return _initialized;
+    }
+
+});
+
+Dispatcher.register(function(action){
+    switch(action.actionType){
+        // this is the part that varies...
+
+        
+        case ActionTypes.CLEAN_ENDERECO:
+            _enderecos = [];
+            _initialized = false;
+            EnderecoStore.emitChange();
+            break;
+        
+        case ActionTypes.INIT_ENDERECO:
+            _enderecos = action.enderecos;
+            _initialized = true;
+            EnderecoStore.emitChange();
+            break;
+        
+        case ActionTypes.CREATE_ENDERECO:
+            _enderecos.push(action.endereco);
+            EnderecoStore.emitChange();
+        break;
+            
+            
+            
+    }
+});
+
+module.exports = EnderecoStore;
+
+},{"../constants/actionTypes":229,"../constants/parentTypes":230,"../dispatcher/appDispatcher":231,"events":1,"lodash":7,"object-assign":8}]},{},[232]);

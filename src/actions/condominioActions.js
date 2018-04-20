@@ -5,43 +5,8 @@ var actionTypes = require("../constants/actionTypes");
 
 var CondominioActions = {
 
-    createEndereco: function(endereco){
-       
-            CondominioApi.saveEndereco(endereco).then(function(newEndereco){
 
-            Dispatcher.dispatch({
-                actionType: actionTypes.CREATE_ENDERECO,
-                endereco: newEndereco
-            });
-
-        });
-
-
-    },
-
-    updateEndereco: function(endereco){
-        CondominioApi.updateEndereco(endereco).then(function(updatedEndereco){
-            Dispatcher.dispatch({
-                actionType: actionTypes.UPDATE_ENDERECO,
-                condominio: updatedEndereco
-            });
-
-        });
-        
-    },
-
-    deleteEndereco: function(id){
-        
-        CondominioApi.deleteEndereco(id).then(function(response){
-
-            Dispatcher.dispatch({
-                actionType: actionTypes.DELETE_ENDERECO,
-                id: response.id
-            });
-
-        });
-        
-    },
+    
 
     createCondominio: function(condominio){
        
@@ -78,6 +43,8 @@ var CondominioActions = {
         });
         
     }
+
+    
 
 };
 

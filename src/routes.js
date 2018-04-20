@@ -13,8 +13,10 @@ var routes = (
         <Route name="authors" handler={require('./components/authors/authorPage')}/>
         <Route name="addAuthor" path="author" handler={require('./components/authors/manageAuthorPage')}/>
         <Route name="addCondominio" path="condominio" handler={require('./components/condominios/manageCondominioPage')}/>
+        <Route name="addEndereco" path="condominio/:idCondominio/endereco"  handler={require('./components/enderecos/manageEnderecoPage')}/>
         <Route name="manageAuthor" path="author/:id" handler={require('./components/authors/manageAuthorPage')}/>
         <Route name="manageCondominio" path="condominio/:id" handler={require('./components/condominios/manageCondominioPage')}/>
+        <Route name="manageEndereco" path="condominio/:idCondominio/endereco/:idEndereco" handler={require('./components/enderecos/manageEnderecoPage')}/>
         <Route name="about" handler={require('./components/about/aboutPage')}/>
         <Route name="condominios" handler={require('./components/condominios/condominiosPage')}/>
         <NotFoundRoute handler={require('./components/notFoundPage')}/>

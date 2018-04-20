@@ -1,6 +1,7 @@
 "use strict";
 var React = require('react');
 var Input = require("../common/textInput");
+var EnderecosPage = require("../enderecos/enderecosPage");
 var CondominioForm = React.createClass({
     
     propTypes: {
@@ -13,7 +14,7 @@ var CondominioForm = React.createClass({
     render: function(){
         return ( 
             <form>
-                <h1>Formulário Condominio</h1>
+                <h1>Formulário Condomínio</h1>
                 <Input 
                     label="Nome"
                     name="nome"
@@ -56,6 +57,12 @@ var CondominioForm = React.createClass({
                     value={this.props.condominio.quantidadeVagas}
                     error={this.props.errors.quantidadeVagas}
                 />
+
+                <EnderecosPage
+                    idCondominio={this.props.condominio.id}
+                    getEnderecos={this.props.getEnderecos}
+                />
+
                 <input type="submit" value="Save" onClick={this.props.onSave} className="btn btn-default"/>
             </form>               
         ); 

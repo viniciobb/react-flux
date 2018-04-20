@@ -3,7 +3,9 @@ var React = require('react');
 var Router = require('react-router');
 var CondominioForm = require('./condominioForm');
 var CondominioStore = require("../../stores/condominioStore");
+var EnderecoStore = require("../../stores/enderecoStore");
 var CondominioActions = require("../../actions/condominioActions");
+var EnderecoActions = require("../../actions/enderecoActions");
 
 var Toastr = require("toastr");
 
@@ -21,6 +23,16 @@ var ManageCondominioPage = React.createClass({
         }
 
     },
+    
+    // componentWillUnmount : function(){
+    //     EnderecoStore.removeChangeListener(this._onChange);
+    // },
+    
+    // _onChange : function(){
+    //     console.log("onChange EnderecoStore");
+    //     this.state.condominio.enderecos = EnderecoStore.getEnderecos();
+    //     this.setState({ condominio: this.state.condominio });
+    // },
 
     getInitialState: function(){
         console.log("getInitialState managerCondominio");
@@ -33,8 +45,8 @@ var ManageCondominioPage = React.createClass({
                 quantidadeBlocos: 0,
                 quantidadeElevadores: 0,
                 quantidadeVagas: 0,
-                id: 0
-                //endereco: [enderecoSchema],
+                id: 0,
+                enderecos: []
                 //facilities: [facilitySchema]
             
             },
@@ -45,6 +57,8 @@ var ManageCondominioPage = React.createClass({
 
     componentWillMount: function(){
        
+        //EnderecoStore.addChangeListener(this._onChange);
+
         console.log("componentWillMount managerCondominio");
        
         var condominioId = this.props.params.id; // from the path /condominio/:id
@@ -54,10 +68,11 @@ var ManageCondominioPage = React.createClass({
         if(condominioId){
             this.setState({condominio: CondominioStore.getCondominioById(condominioId)});
         }
-
-    },
         
-    setCondominioState: function(event){ // called for every key press
+        console.dir(this.state.condominio);
+    },
+
+     setCondominioState: function(event){ // called for every key press
         var field = event.target.name;
         var value = event.target.value;
         this.state.condominio[field] = value;
@@ -83,13 +98,19 @@ var ManageCondominioPage = React.createClass({
 
     },
 
+    getEnderecos: function(){
+       
+        return  CondominioStore.getEnderecosCondominio(this.props.params.id);
+
+    },
+
     saveCondominio: function(event){
         event.preventDefault();
         if(!this.condominioFormIsValid()){
             return;
         }
 
-        console.log("saveCondominio");
+        this.state.condominio.enderecos = EnderecoStore.getEnderecos();
 
         if(this.state.condominio.id)
         {
@@ -99,7 +120,8 @@ var ManageCondominioPage = React.createClass({
             CondominioActions.createCondominio(this.state.condominio);
             console.log("saveCondominio");
         }
-            
+
+        EnderecoActions.cleanEndereco();
         
         this.setState({ dirty: false });
         console.log("setState");
@@ -108,6 +130,9 @@ var ManageCondominioPage = React.createClass({
         this.transitionTo('condominios');
 
     },
+
+    
+
     /**
      * creating reusable inputs
      * 
@@ -118,6 +143,7 @@ var ManageCondominioPage = React.createClass({
              condominio={this.state.condominio} 
              onChange={this.setCondominioState}
              onSave={this.saveCondominio}
+             getEnderecos={this.getEnderecos}
              errors={this.state.errors} />
         ); 
     }

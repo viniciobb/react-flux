@@ -3,7 +3,6 @@ var React = require('react');
 var Router = require('react-router');
 var Link = require('react-router').Link;
 var CondominioStore = require("../../stores/condominioStore");
-var CondominioActions = require("../../actions/condominioActions");
 var CondominioList = require("./condominioList");
 
 var CondominiosPage = React.createClass({
