@@ -50364,18 +50364,26 @@ module.exports = CondominioActions;
 var Dispatcher = require("../dispatcher/appDispatcher");
 var CondominioApi = require("../api/condominioApi");
 var actionTypes = require("../constants/actionTypes");
+var Toastr = require("toastr");
 
 var EnderecoActions = {
 
 
     buscaEndereco: function(cep){
         
-        CondominioApi.buscaCep(cep).then(function(response){
+        CondominioApi.buscaEndereco(cep).then(function(response){
+            console.log("actions busca cep");
+            console.dir(response);
+            if(response){
+                Dispatcher.dispatch({
+                    actionType: actionTypes.BUSCA_ENDERECO,
+                    endereco: response
+                });
 
-            Dispatcher.dispatch({
-                actionType: actionTypes.BUSCA_ENDERECO,
-                endereco: response
-            });
+            }else{
+                Toastr.warning("CEP não encontrado"); 
+            }
+            
 
         });
         
@@ -50450,7 +50458,7 @@ var EnderecoActions = {
 
 module.exports = EnderecoActions;
 
-},{"../api/condominioApi":210,"../constants/actionTypes":229,"../dispatcher/appDispatcher":231}],207:[function(require,module,exports){
+},{"../api/condominioApi":210,"../constants/actionTypes":229,"../dispatcher/appDispatcher":231,"toastr":203}],207:[function(require,module,exports){
 "use strict"
 var Dispatcher = require("../dispatcher/appDispatcher");
 var ActionTypes = require("../constants/actionTypes");
@@ -50786,7 +50794,7 @@ var CondominioApi = {
 	buscaEndereco: function(cep) {
 		
 		//pretend an ajax call to web api is made here
-		return fetch('http://api.postmon.com.br/v1/cep/'+cep,
+		return fetch('http://localhost:1337/api.postmon.com.br/v1/cep/'+cep,
 			{
 				method: 'get',
 				headers: {
@@ -50801,6 +50809,7 @@ var CondominioApi = {
 				});
 			} else {
 				console.log('Network response was not ok.');
+				return resposta;
 			}  
 		})
 		  .catch(function(error) {
@@ -51550,21 +51559,28 @@ var EnderecoForm = React.createClass({displayName: "EnderecoForm",
         endereco: React.PropTypes.object.isRequired,
         onSave: React.PropTypes.func.isRequired,
         onChange: React.PropTypes.func.isRequired,
+        onBusca: React.PropTypes.func.isRequired,
         errors: React.PropTypes.object
     },
         
     render: function(){
-        return ( 
+        return (
             React.createElement("form", null, 
-                React.createElement("h1", null, "Formulário Endereço"), 
-                React.createElement(Input, {
-                    label: "CEP", 
-                    name: "cep", 
-                    onChange: this.props.onChange, 
-                    value: this.props.endereco.cep, 
-                    error: this.props.errors.cep}
-                ), 
                 
+                React.createElement("h1", null, "Formulário Endereço"), 
+                
+                    React.createElement(Input, {
+                        label: "CEP", 
+                        name: "cep", 
+                        onChange: this.props.onChange, 
+                        value: this.props.endereco.cep, 
+                        error: this.props.errors.cep}
+                    ), 
+                
+                React.createElement("button", {type: "submit", onClick: this.props.onBusca, className: "btn btn-primary mb-2"}, "Buscar"), 
+            
+            
+
                 React.createElement(Input, {
                     label: "Logradouro", 
                     name: "logradouro", 
@@ -51601,7 +51617,7 @@ var EnderecoForm = React.createClass({displayName: "EnderecoForm",
                     value: this.props.endereco.cidade, 
                     error: this.props.errors.cidade}
                 ), 
-                React.createElement("input", {type: "submit", value: "Save", onClick: this.props.onSave, className: "btn btn-default"})
+                React.createElement("input", {type: "submit", value: "Save", onClick: this.props.onSave, className: "btn btn-primary mb-2"})
             )               
         ); 
     }
@@ -51628,13 +51644,6 @@ var EnderecoList = React.createClass({displayName: "EnderecoList",
         enderecos: React.PropTypes.array.isRequired
     },
 
-    deleteCondominio: function(id, event){
-        event.preventDefault();
-        console.log(id);
-        //CondominioActions.deleteCondominio(id);
-        Toastr.success("Condominio Deleted");
-    },
-
     deleteEndereco: function(endereco, event){
         event.preventDefault();
         EnderecoActions.deleteEndereco(endereco);
@@ -51652,7 +51661,6 @@ var EnderecoList = React.createClass({displayName: "EnderecoList",
                 React.createElement("tr", null, 
                     React.createElement("td", null, React.createElement("a", {href: "#", onClick: this.deleteEndereco.bind(this, endereco)}, "Delete")), 
                     React.createElement("td", null, React.createElement(Link, {to: "manageEndereco", params: { idCondominio: this.props.idCondominio, idEndereco: idEndereco}}, endereco.logradouro)), 
-                    React.createElement("td", null, endereco.logradouro), 
                     React.createElement("td", null, endereco.numero), 
                     React.createElement("td", null, endereco.bairro), 
                     React.createElement("td", null, endereco.cep)
@@ -51775,6 +51783,16 @@ var Toastr = require("toastr");
 
 var ManageEnderecoPage = React.createClass({displayName: "ManageEnderecoPage",
 
+    
+    componentWillUnmount : function(){
+        EnderecoStore.removeChangeListener(this._onChange);
+    },
+    
+    _onChange : function(){
+        console.log("onChange enderecoPage");
+        this.setState({ endereco: EnderecoStore.getEndereco()});
+    },
+
     getInitialState: function(){
         console.log("getInitialState ManageEnderecoPage");
         return {
@@ -51794,6 +51812,11 @@ var ManageEnderecoPage = React.createClass({displayName: "ManageEnderecoPage",
         };
     },
 
+    buscaEndereco: function(){
+        event.preventDefault();
+        EnderecoActions.buscaEndereco(this.state.endereco.cep);
+    },
+
     mixins: [
         Router.Navigation
     ],
@@ -51809,6 +51832,8 @@ var ManageEnderecoPage = React.createClass({displayName: "ManageEnderecoPage",
     },
 
     componentWillMount: function(){
+        
+        EnderecoStore.addChangeListener(this._onChange);
        
         console.log("componentWillMount managerEndereco");
         console.log(this.props.params.idCondominio);
@@ -51895,6 +51920,7 @@ var ManageEnderecoPage = React.createClass({displayName: "ManageEnderecoPage",
              endereco: this.state.endereco, 
              onChange: this.setEnderecoState, 
              onSave: this.saveEndereco, 
+             onBusca: this.buscaEndereco, 
              errors: this.state.errors})
         ); 
     }
@@ -52216,23 +52242,7 @@ Dispatcher.register(function(action){
             CondominioStore.emitChange();
             break;        
 
-        // case ActionTypes.BUSCA_ENDERECO:
-
-        //     var enderecoModel = {
-        //         logradouro: action.endereco.logradouro, 
-        //         siglaFederacao: action.endereco.estado,
-        //         cep: action.endereco.cep,
-        //         bairro: action.endereco.bairro,
-        //         cidade: action.endereco.cidade,
-        //         numero: 0,
-        //         complemento : ""
-        //     };
-        
-        //     var existingCondominio = _.find(_condominios, {id : action.id});
-        //     var existingCondominioIndex = _.indexOf(_condominios, existingCondominio);
-        //     condominios[existingCondominioIndex].enderecos.push(enderecoModel);
-        //     CondominioStore.emitChange();
-        //     break;    
+          
     }
 });
 
@@ -52250,6 +52260,8 @@ var CHANGE_EVENT = "change";
 
 var _enderecos = []; // outside the export module
 var _initialized = false;
+var _endereco = {};
+var _saved_state = false;
 
 // take an empty object, take the emitEmitter.prototype and 
 // add everything on the last object
@@ -52267,6 +52279,11 @@ var EnderecoStore = assign({}, EventEmitter.prototype,{
     getEnderecos: function(){
         
         return _enderecos;
+    },
+
+    getEndereco: function(){
+        
+        return _endereco;
     },
 
     getEnderecoById: function(id){
@@ -52289,24 +52306,53 @@ Dispatcher.register(function(action){
         case ActionTypes.CLEAN_ENDERECO:
             _enderecos = [];
             _initialized = false;
+            _endereco = {};
+            _saved_state = false;
             EnderecoStore.emitChange();
             break;
         
         case ActionTypes.INIT_ENDERECO:
             _enderecos = action.enderecos;
             _initialized = true;
+            _endereco = {};
+            _saved_state = false;
             EnderecoStore.emitChange();
             break;
         
         case ActionTypes.CREATE_ENDERECO:
             _enderecos.push(action.endereco);
+            _endereco = {};
+            _saved_state = false;
             EnderecoStore.emitChange();
         break;
 
-        case ActionTypes.UPDATE_ENDERECO:
-            
-            _enderecos[action.index] = action.endereco;
+        case ActionTypes.BUSCA_ENDERECO:
 
+            var enderecoModel = {
+                logradouro: action.endereco.logradouro, 
+                siglaFederacao: action.endereco.estado,
+                cep: action.endereco.cep,
+                bairro: action.endereco.bairro,
+                cidade: action.endereco.cidade,
+                numero: 0,
+                complemento : ""
+            };
+
+            console.log("enderecoResponse");
+            console.dir(action.endereco);
+            
+            console.log("enderecoModel");
+            console.dir(enderecoModel);    
+            
+            _endereco = enderecoModel;
+            _saved_state = true;
+            EnderecoStore.emitChange();
+            break;  
+
+        case ActionTypes.UPDATE_ENDERECO:
+            _enderecos[action.index] = action.endereco;
+            _endereco = {};
+            _saved_state = false;    
             EnderecoStore.emitChange();
         break;
         

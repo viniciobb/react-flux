@@ -119,7 +119,7 @@ var CondominioApi = {
 	buscaEndereco: function(cep) {
 		
 		//pretend an ajax call to web api is made here
-		return fetch('http://api.postmon.com.br/v1/cep/'+cep,
+		return fetch('http://localhost:1337/api.postmon.com.br/v1/cep/'+cep,
 			{
 				method: 'get',
 				headers: {
@@ -134,6 +134,7 @@ var CondominioApi = {
 				});
 			} else {
 				console.log('Network response was not ok.');
+				return resposta;
 			}  
 		})
 		  .catch(function(error) {

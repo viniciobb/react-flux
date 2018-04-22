@@ -114,23 +114,7 @@ Dispatcher.register(function(action){
             CondominioStore.emitChange();
             break;        
 
-        // case ActionTypes.BUSCA_ENDERECO:
-
-        //     var enderecoModel = {
-        //         logradouro: action.endereco.logradouro, 
-        //         siglaFederacao: action.endereco.estado,
-        //         cep: action.endereco.cep,
-        //         bairro: action.endereco.bairro,
-        //         cidade: action.endereco.cidade,
-        //         numero: 0,
-        //         complemento : ""
-        //     };
-        
-        //     var existingCondominio = _.find(_condominios, {id : action.id});
-        //     var existingCondominioIndex = _.indexOf(_condominios, existingCondominio);
-        //     condominios[existingCondominioIndex].enderecos.push(enderecoModel);
-        //     CondominioStore.emitChange();
-        //     break;    
+          
     }
 });
 

@@ -15,13 +15,6 @@ var EnderecoList = React.createClass({
         enderecos: React.PropTypes.array.isRequired
     },
 
-    deleteCondominio: function(id, event){
-        event.preventDefault();
-        console.log(id);
-        //CondominioActions.deleteCondominio(id);
-        Toastr.success("Condominio Deleted");
-    },
-
     deleteEndereco: function(endereco, event){
         event.preventDefault();
         EnderecoActions.deleteEndereco(endereco);
@@ -39,7 +32,6 @@ var EnderecoList = React.createClass({
                 <tr>
                     <td><a href="#" onClick={this.deleteEndereco.bind(this, endereco)}>Delete</a></td>
                     <td><Link to="manageEndereco" params={{ idCondominio: this.props.idCondominio, idEndereco: idEndereco }}>{endereco.logradouro}</Link></td>
-                    <td>{endereco.logradouro}</td>                    
                     <td>{endereco.numero}</td>
                     <td>{endereco.bairro}</td>
                     <td>{endereco.cep}</td>

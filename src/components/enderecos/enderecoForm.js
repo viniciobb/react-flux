@@ -7,21 +7,28 @@ var EnderecoForm = React.createClass({
         endereco: React.PropTypes.object.isRequired,
         onSave: React.PropTypes.func.isRequired,
         onChange: React.PropTypes.func.isRequired,
+        onBusca: React.PropTypes.func.isRequired,
         errors: React.PropTypes.object
     },
         
     render: function(){
-        return ( 
+        return (
             <form>
-                <h1>Formulário Endereço</h1>
-                <Input 
-                    label="CEP"
-                    name="cep"
-                    onChange={this.props.onChange}
-                    value={this.props.endereco.cep}
-                    error={this.props.errors.cep}
-                />
                 
+                <h1>Formulário Endereço</h1>   
+                
+                    <Input 
+                        label="CEP"
+                        name="cep"
+                        onChange={this.props.onChange}
+                        value={this.props.endereco.cep}
+                        error={this.props.errors.cep}
+                    />
+                
+                <button type="submit" onClick={this.props.onBusca} className="btn btn-primary mb-2">Buscar</button>
+            
+            
+
                 <Input 
                     label="Logradouro"
                     name="logradouro"
@@ -58,7 +65,7 @@ var EnderecoForm = React.createClass({
                     value={this.props.endereco.cidade}
                     error={this.props.errors.cidade}
                 />
-                <input type="submit" value="Save" onClick={this.props.onSave} className="btn btn-default"/>
+                <input type="submit" value="Save" onClick={this.props.onSave} className="btn btn-primary mb-2"/>
             </form>               
         ); 
     }

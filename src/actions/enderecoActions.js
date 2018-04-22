@@ -2,18 +2,26 @@
 var Dispatcher = require("../dispatcher/appDispatcher");
 var CondominioApi = require("../api/condominioApi");
 var actionTypes = require("../constants/actionTypes");
+var Toastr = require("toastr");
 
 var EnderecoActions = {
 
 
     buscaEndereco: function(cep){
         
-        CondominioApi.buscaCep(cep).then(function(response){
+        CondominioApi.buscaEndereco(cep).then(function(response){
+            console.log("actions busca cep");
+            console.dir(response);
+            if(response){
+                Dispatcher.dispatch({
+                    actionType: actionTypes.BUSCA_ENDERECO,
+                    endereco: response
+                });
 
-            Dispatcher.dispatch({
-                actionType: actionTypes.BUSCA_ENDERECO,
-                endereco: response
-            });
+            }else{
+                Toastr.warning("CEP não encontrado"); 
+            }
+            
 
         });
         

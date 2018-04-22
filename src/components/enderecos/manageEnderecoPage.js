@@ -9,6 +9,16 @@ var Toastr = require("toastr");
 
 var ManageEnderecoPage = React.createClass({
 
+    
+    componentWillUnmount : function(){
+        EnderecoStore.removeChangeListener(this._onChange);
+    },
+    
+    _onChange : function(){
+        console.log("onChange enderecoPage");
+        this.setState({ endereco: EnderecoStore.getEndereco()});
+    },
+
     getInitialState: function(){
         console.log("getInitialState ManageEnderecoPage");
         return {
@@ -28,6 +38,11 @@ var ManageEnderecoPage = React.createClass({
         };
     },
 
+    buscaEndereco: function(){
+        event.preventDefault();
+        EnderecoActions.buscaEndereco(this.state.endereco.cep);
+    },
+
     mixins: [
         Router.Navigation
     ],
@@ -43,6 +58,8 @@ var ManageEnderecoPage = React.createClass({
     },
 
     componentWillMount: function(){
+        
+        EnderecoStore.addChangeListener(this._onChange);
        
         console.log("componentWillMount managerEndereco");
         console.log(this.props.params.idCondominio);
@@ -129,6 +146,7 @@ var ManageEnderecoPage = React.createClass({
              endereco={this.state.endereco} 
              onChange={this.setEnderecoState}
              onSave={this.saveEndereco}
+             onBusca={this.buscaEndereco}
              errors={this.state.errors} />
         ); 
     }
