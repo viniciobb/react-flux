@@ -12,6 +12,16 @@ var EnderecosPage = React.createClass({
     propTypes: {
         getEnderecos: React.PropTypes.func.isRequired
     },
+
+    statics: {
+
+        willTransitionFrom: function(transition, component){
+            // if( component.state.dirty && !confirm("Leave without saving ?")){
+            //     transition.abort();
+            // }    
+        }
+
+    },
     
     getInitialState: function(){
 
@@ -28,6 +38,10 @@ var EnderecosPage = React.createClass({
             }else{
                 enderecos = EnderecoStore.getEnderecos();
             }
+
+        }else{
+
+            enderecos = EnderecoStore.getEnderecos();
 
         }
 

@@ -10,6 +10,8 @@ module.exports = keyMirror({
     CREATE_CONDOMINIO: null,
     UPDATE_CONDOMINIO: null,
     DELETE_CONDOMINIO: null,
+    SAVE_STATE_CONDOMINIO: null,
+    GET_STATE_CONDOMINIO: null,
     CREATE_ENDERECO: null,
     CLEAN_ENDERECO: null,
     INIT_ENDERECO: null,

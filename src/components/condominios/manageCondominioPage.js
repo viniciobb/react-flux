@@ -17,16 +17,18 @@ var ManageCondominioPage = React.createClass({
     statics: {
 
         willTransitionFrom: function(transition, component){
-            if( component.state.dirty && !confirm("Leave without saving ?")){
-                transition.abort();
+            if( component.state.dirty){
+                console.log("dirty");       
+                console.dir(component.state.condominio);       
+                CondominioActions.saveStateCondominio(component.state.condominio);    
             }    
         }
 
     },
     
-    // componentWillUnmount : function(){
-    //     EnderecoStore.removeChangeListener(this._onChange);
-    // },
+     componentWillUnmount : function(){
+
+     },
     
     // _onChange : function(){
     //     console.log("onChange EnderecoStore");
@@ -64,12 +66,27 @@ var ManageCondominioPage = React.createClass({
         var condominioId = this.props.params.id; // from the path /condominio/:id
         
         console.log(condominioId);
+        console.log(typeof(condominioId));
 
-        if(condominioId){
+        if(condominioId && condominioId != '0' ){
+            console.log("entered condominioID");
+            console.log(condominioId);
+
             this.setState({condominio: CondominioStore.getCondominioById(condominioId)});
+        }else{
+
+            var condominioState = CondominioStore.getStateCondominio();
+
+            if(condominioState){
+                this.setState({condominio: condominioState});                
+            }
+            else{
+                // new entry , cleaning previus states
+                EnderecoActions.cleanEndereco();                
+            }
+
         }
-        
-        console.dir(this.state.condominio);
+       
     },
 
      setCondominioState: function(event){ // called for every key press

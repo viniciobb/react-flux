@@ -50314,6 +50314,20 @@ var CondominioActions = {
 
         });
     },
+ 
+    //SAVE_STATE_CONDOMINIO: null,
+    //GET_STATE_CONDOMINIO: null,    
+
+    saveStateCondominio: function(condominio){
+        //CondominioApi.updateCondominio(condominio).then(function(updatedCondominio){
+            Dispatcher.dispatch({
+                actionType: actionTypes.SAVE_STATE_CONDOMINIO,
+                condominio: condominio
+            });
+
+        //});
+        
+    },
 
     updateCondominio: function(condominio){
         CondominioApi.updateCondominio(condominio).then(function(updatedCondominio){
@@ -51359,16 +51373,18 @@ var ManageCondominioPage = React.createClass({displayName: "ManageCondominioPage
     statics: {
 
         willTransitionFrom: function(transition, component){
-            if( component.state.dirty && !confirm("Leave without saving ?")){
-                transition.abort();
+            if( component.state.dirty){
+                console.log("dirty");       
+                console.dir(component.state.condominio);       
+                CondominioActions.saveStateCondominio(component.state.condominio);    
             }    
         }
 
     },
     
-    // componentWillUnmount : function(){
-    //     EnderecoStore.removeChangeListener(this._onChange);
-    // },
+     componentWillUnmount : function(){
+
+     },
     
     // _onChange : function(){
     //     console.log("onChange EnderecoStore");
@@ -51406,12 +51422,27 @@ var ManageCondominioPage = React.createClass({displayName: "ManageCondominioPage
         var condominioId = this.props.params.id; // from the path /condominio/:id
         
         console.log(condominioId);
+        console.log(typeof(condominioId));
 
-        if(condominioId){
+        if(condominioId && condominioId != '0' ){
+            console.log("entered condominioID");
+            console.log(condominioId);
+
             this.setState({condominio: CondominioStore.getCondominioById(condominioId)});
+        }else{
+
+            var condominioState = CondominioStore.getStateCondominio();
+
+            if(condominioState){
+                this.setState({condominio: condominioState});                
+            }
+            else{
+                // new entry , cleaning previus states
+                EnderecoActions.cleanEndereco();                
+            }
+
         }
-        
-        console.dir(this.state.condominio);
+       
     },
 
      setCondominioState: function(event){ // called for every key press
@@ -51580,10 +51611,17 @@ var EnderecoList = React.createClass({displayName: "EnderecoList",
         enderecos: React.PropTypes.array.isRequired
     },
 
+    deleteCondominio: function(id, event){
+        event.preventDefault();
+        console.log(id);
+        //CondominioActions.deleteCondominio(id);
+        Toastr.success("Condominio Deleted");
+    },
+
     render: function(){
 
         
-        var createEnderecoRow = function(endereco, index, array){
+        var createEnderecoRow = function(endereco, index){
             console.log(index);
             return (
                 
@@ -51632,6 +51670,16 @@ var EnderecosPage = React.createClass({displayName: "EnderecosPage",
     propTypes: {
         getEnderecos: React.PropTypes.func.isRequired
     },
+
+    statics: {
+
+        willTransitionFrom: function(transition, component){
+            // if( component.state.dirty && !confirm("Leave without saving ?")){
+            //     transition.abort();
+            // }    
+        }
+
+    },
     
     getInitialState: function(){
 
@@ -51648,6 +51696,10 @@ var EnderecosPage = React.createClass({displayName: "EnderecosPage",
             }else{
                 enderecos = EnderecoStore.getEnderecos();
             }
+
+        }else{
+
+            enderecos = EnderecoStore.getEnderecos();
 
         }
 
@@ -51865,6 +51917,8 @@ module.exports = keyMirror({
     CREATE_CONDOMINIO: null,
     UPDATE_CONDOMINIO: null,
     DELETE_CONDOMINIO: null,
+    SAVE_STATE_CONDOMINIO: null,
+    GET_STATE_CONDOMINIO: null,
     CREATE_ENDERECO: null,
     CLEAN_ENDERECO: null,
     INIT_ENDERECO: null,
@@ -52014,7 +52068,8 @@ var _ = require("lodash");
 var CHANGE_EVENT = "change";
 
 var _condominios = []; // outside the export module
-
+var _condominio = {};
+var _saved_state = false;
 
 // take an empty object, take the emitEmitter.prototype and 
 // add everything on the last object
@@ -52036,8 +52091,30 @@ var CondominioStore = assign({}, EventEmitter.prototype,{
 
     getCondominioById: function(id){
         
-        if(_condominios)
-            return  _.find(_condominios, {id : id});
+        console.log("condominio store get condominio by id ");
+        console.dir(_condominios);
+        console.log(id);
+
+        var condominio;
+
+        if(_condominios){
+
+            condominio = _.find(_condominios, {id : id});
+        }
+        console.log("condominio filtrado");    
+        console.log(condominio);
+        return condominio;
+    },
+
+    getStateCondominio: function(){
+
+        if(_saved_state){
+
+            return _condominio;
+
+        }else{
+            return false;            
+        }
     },
     
     getEnderecosCondominio: function(condominioId){
@@ -52071,12 +52148,16 @@ Dispatcher.register(function(action){
         
         case ActionTypes.CREATE_CONDOMINIO:
             _condominios.push(action.condominio);
+            _condominio = {};
+            _saved_state = false;
             CondominioStore.emitChange();
             break;
 
         case ActionTypes.UPDATE_CONDOMINIO:
             var existingCondominio = _.find(_condominios, {id : action.condominio.id});
             var existingCondominioIndex = _.indexOf(_condominios, existingCondominio);
+            _condominio = {};
+            _saved_state = false;
             _condominios.splice(existingCondominioIndex,1,action.condominio);
             CondominioStore.emitChange();
             break;
@@ -52087,28 +52168,30 @@ Dispatcher.register(function(action){
             _condominios.splice(existingCondominioIndex,1);
             CondominioStore.emitChange();
             break;
-        
-        
-            
 
-
-        case ActionTypes.BUSCA_ENDERECO:
-
-            var enderecoModel = {
-                logradouro: action.endereco.logradouro, 
-                siglaFederacao: action.endereco.estado,
-                cep: action.endereco.cep,
-                bairro: action.endereco.bairro,
-                cidade: action.endereco.cidade,
-                numero: 0,
-                complemento : ""
-            };
-        
-            var existingCondominio = _.find(_condominios, {id : action.id});
-            var existingCondominioIndex = _.indexOf(_condominios, existingCondominio);
-            condominios[existingCondominioIndex].enderecos.push(enderecoModel);
+        case ActionTypes.SAVE_STATE_CONDOMINIO:
+            _condominio = action.condominio;
+            _saved_state = true;
             CondominioStore.emitChange();
-            break;    
+            break;        
+
+        // case ActionTypes.BUSCA_ENDERECO:
+
+        //     var enderecoModel = {
+        //         logradouro: action.endereco.logradouro, 
+        //         siglaFederacao: action.endereco.estado,
+        //         cep: action.endereco.cep,
+        //         bairro: action.endereco.bairro,
+        //         cidade: action.endereco.cidade,
+        //         numero: 0,
+        //         complemento : ""
+        //     };
+        
+        //     var existingCondominio = _.find(_condominios, {id : action.id});
+        //     var existingCondominioIndex = _.indexOf(_condominios, existingCondominio);
+        //     condominios[existingCondominioIndex].enderecos.push(enderecoModel);
+        //     CondominioStore.emitChange();
+        //     break;    
     }
 });
 

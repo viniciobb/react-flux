@@ -13,10 +13,17 @@ var EnderecoList = React.createClass({
         enderecos: React.PropTypes.array.isRequired
     },
 
+    deleteCondominio: function(id, event){
+        event.preventDefault();
+        console.log(id);
+        //CondominioActions.deleteCondominio(id);
+        Toastr.success("Condominio Deleted");
+    },
+
     render: function(){
 
         
-        var createEnderecoRow = function(endereco, index, array){
+        var createEnderecoRow = function(endereco, index){
             console.log(index);
             return (
                 

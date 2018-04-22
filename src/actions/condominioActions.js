@@ -19,6 +19,20 @@ var CondominioActions = {
 
         });
     },
+ 
+    //SAVE_STATE_CONDOMINIO: null,
+    //GET_STATE_CONDOMINIO: null,    
+
+    saveStateCondominio: function(condominio){
+        //CondominioApi.updateCondominio(condominio).then(function(updatedCondominio){
+            Dispatcher.dispatch({
+                actionType: actionTypes.SAVE_STATE_CONDOMINIO,
+                condominio: condominio
+            });
+
+        //});
+        
+    },
 
     updateCondominio: function(condominio){
         CondominioApi.updateCondominio(condominio).then(function(updatedCondominio){
