@@ -2,7 +2,7 @@
 var React = require('react');
 var Router = require('react-router');
 var EnderecoForm = require('./enderecoForm');
-var CondominioStore = require("../../stores/condominioStore");
+var EnderecoStore = require("../../stores/enderecoStore");
 var EnderecoActions = require("../../actions/enderecoActions");
 
 var Toastr = require("toastr");
@@ -46,10 +46,13 @@ var ManageEnderecoPage = React.createClass({
        
         console.log("componentWillMount managerEndereco");
         console.log(this.props.params.idCondominio);
+        console.log(this.props.params.idEndereco);
+        
 
-        if(this.props.params.idEndereco && this.props.params.idCondominio){
+        if(this.props.params.idEndereco){
             
-            this.setState({endereco: CondominioStore.getEnderecoCondominioById(this.props.params.idCondominio, this.props.params.idEndereco)});
+          this.setState({endereco: EnderecoStore.getEnderecoById(this.props.params.idEndereco)});
+
         }
 
     },
@@ -71,7 +74,16 @@ var ManageEnderecoPage = React.createClass({
         
         console.dir(this.state.endereco);
 
-        EnderecoActions.createEndereco(this.state.endereco, this.props.idCondominio);
+        if(this.props.params.idEndereco){
+
+            EnderecoActions.updateEndereco(this.state.endereco, this.props.params.idEndereco);
+
+        }else{
+
+            EnderecoActions.createEndereco(this.state.endereco, this.props.idCondominio);
+
+        }
+               
         
         console.log(this.props.params.idCondominio);
         

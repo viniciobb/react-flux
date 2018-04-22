@@ -59,7 +59,7 @@ var EnderecosPage = React.createClass({
     
     _onChange : function(){
         console.log("onChange enderecoPage");
-        this.setState({ enderecos: EnderecoStore.getEnderecos() });
+        this.setState({ enderecos: EnderecoStore.getEnderecos()});
     },
     
     render: function(){
@@ -70,6 +70,7 @@ var EnderecosPage = React.createClass({
                <Link to="addEndereco" params={{idCondominio: this.props.idCondominio}} className="btn btn-default">Adicionar Endereço</Link>
                <EnderecoList 
                     enderecos={this.state.enderecos}
+                    idCondominio={this.props.idCondominio}
                 />   
             </div>    
         );

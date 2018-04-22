@@ -15,6 +15,8 @@ module.exports = keyMirror({
     CREATE_ENDERECO: null,
     CLEAN_ENDERECO: null,
     INIT_ENDERECO: null,
+    UPDATE_ENDERECO: null,
+    DELETE_ENDERECO: null,
     DELETE_CONDOMINIO_ENDERECO: null,
     BUSCA_ENDERECO: null
 

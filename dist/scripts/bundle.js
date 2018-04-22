@@ -50395,6 +50395,21 @@ var EnderecoActions = {
         });
     },
 
+    updateEndereco: function(endereco, index){
+        Dispatcher.dispatch({
+            actionType: actionTypes.UPDATE_ENDERECO,
+            endereco: endereco,
+            index : index
+        });
+    },
+
+    deleteEndereco: function(endereco){
+        Dispatcher.dispatch({
+            actionType: actionTypes.DELETE_ENDERECO,
+            endereco: endereco
+        });
+    },
+
     carregaEnderecos: function(enderecos){
         Dispatcher.dispatch({
             actionType: actionTypes.INIT_ENDERECO,
@@ -51602,6 +51617,8 @@ var Router = require('react-router');
 var Link = Router.Link;
 var CondominioStore = require("../../stores/condominioStore");
 var EnderecoStore = require("../../stores/enderecoStore");
+var EnderecoActions = require("../../actions/enderecoActions");
+var Toastr = require("toastr");
 
 var EnderecoList = React.createClass({displayName: "EnderecoList",
     
@@ -51618,14 +51635,23 @@ var EnderecoList = React.createClass({displayName: "EnderecoList",
         Toastr.success("Condominio Deleted");
     },
 
-    render: function(){
+    deleteEndereco: function(endereco, event){
+        event.preventDefault();
+        EnderecoActions.deleteEndereco(endereco);
+        Toastr.success("Endereco Deleted" + endereco.logradouro);
+    },
 
+    render: function(){
         
         var createEnderecoRow = function(endereco, index){
-            console.log(index);
+            
+            var idEndereco = ( endereco.id ? endereco.id : index);
+            
             return (
                 
-                React.createElement("tr", {key: index}, 
+                React.createElement("tr", null, 
+                    React.createElement("td", null, React.createElement("a", {href: "#", onClick: this.deleteEndereco.bind(this, endereco)}, "Delete")), 
+                    React.createElement("td", null, React.createElement(Link, {to: "manageEndereco", params: { idCondominio: this.props.idCondominio, idEndereco: idEndereco}}, endereco.logradouro)), 
                     React.createElement("td", null, endereco.logradouro), 
                     React.createElement("td", null, endereco.numero), 
                     React.createElement("td", null, endereco.bairro), 
@@ -51645,7 +51671,7 @@ var EnderecoList = React.createClass({displayName: "EnderecoList",
                     React.createElement("th", null, "CEP")
                 ), 
                 React.createElement("tbody", null, 
-                    this.props.enderecos.map(createEnderecoRow)
+                    this.props.enderecos.map(createEnderecoRow, this)
                 )
                 )
             )    
@@ -51655,7 +51681,7 @@ var EnderecoList = React.createClass({displayName: "EnderecoList",
 
 module.exports = EnderecoList;
 
-},{"../../stores/condominioStore":235,"../../stores/enderecoStore":236,"react":202,"react-router":33}],225:[function(require,module,exports){
+},{"../../actions/enderecoActions":206,"../../stores/condominioStore":235,"../../stores/enderecoStore":236,"react":202,"react-router":33,"toastr":203}],225:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Router = require('react-router');
@@ -51717,7 +51743,7 @@ var EnderecosPage = React.createClass({displayName: "EnderecosPage",
     
     _onChange : function(){
         console.log("onChange enderecoPage");
-        this.setState({ enderecos: EnderecoStore.getEnderecos() });
+        this.setState({ enderecos: EnderecoStore.getEnderecos()});
     },
     
     render: function(){
@@ -51727,7 +51753,8 @@ var EnderecosPage = React.createClass({displayName: "EnderecosPage",
                React.createElement("h1", null, "Endereços"), 
                React.createElement(Link, {to: "addEndereco", params: {idCondominio: this.props.idCondominio}, className: "btn btn-default"}, "Adicionar Endereço"), 
                React.createElement(EnderecoList, {
-                    enderecos: this.state.enderecos}
+                    enderecos: this.state.enderecos, 
+                    idCondominio: this.props.idCondominio}
                 )
             )    
         );
@@ -51741,7 +51768,7 @@ module.exports = EnderecosPage;
 var React = require('react');
 var Router = require('react-router');
 var EnderecoForm = require('./enderecoForm');
-var CondominioStore = require("../../stores/condominioStore");
+var EnderecoStore = require("../../stores/enderecoStore");
 var EnderecoActions = require("../../actions/enderecoActions");
 
 var Toastr = require("toastr");
@@ -51785,10 +51812,13 @@ var ManageEnderecoPage = React.createClass({displayName: "ManageEnderecoPage",
        
         console.log("componentWillMount managerEndereco");
         console.log(this.props.params.idCondominio);
+        console.log(this.props.params.idEndereco);
+        
 
-        if(this.props.params.idEndereco && this.props.params.idCondominio){
+        if(this.props.params.idEndereco){
             
-            this.setState({endereco: CondominioStore.getEnderecoCondominioById(this.props.params.idCondominio, this.props.params.idEndereco)});
+          this.setState({endereco: EnderecoStore.getEnderecoById(this.props.params.idEndereco)});
+
         }
 
     },
@@ -51810,7 +51840,16 @@ var ManageEnderecoPage = React.createClass({displayName: "ManageEnderecoPage",
         
         console.dir(this.state.endereco);
 
-        EnderecoActions.createEndereco(this.state.endereco, this.props.idCondominio);
+        if(this.props.params.idEndereco){
+
+            EnderecoActions.updateEndereco(this.state.endereco, this.props.params.idEndereco);
+
+        }else{
+
+            EnderecoActions.createEndereco(this.state.endereco, this.props.idCondominio);
+
+        }
+               
         
         console.log(this.props.params.idCondominio);
         
@@ -51864,7 +51903,7 @@ var ManageEnderecoPage = React.createClass({displayName: "ManageEnderecoPage",
 
 module.exports = ManageEnderecoPage; 
 
-},{"../../actions/enderecoActions":206,"../../stores/condominioStore":235,"./enderecoForm":223,"react":202,"react-router":33,"toastr":203}],227:[function(require,module,exports){
+},{"../../actions/enderecoActions":206,"../../stores/enderecoStore":236,"./enderecoForm":223,"react":202,"react-router":33,"toastr":203}],227:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Router = require('react-router');
@@ -51922,6 +51961,8 @@ module.exports = keyMirror({
     CREATE_ENDERECO: null,
     CLEAN_ENDERECO: null,
     INIT_ENDERECO: null,
+    UPDATE_ENDERECO: null,
+    DELETE_ENDERECO: null,
     DELETE_CONDOMINIO_ENDERECO: null,
     BUSCA_ENDERECO: null
 
@@ -52228,6 +52269,11 @@ var EnderecoStore = assign({}, EventEmitter.prototype,{
         return _enderecos;
     },
 
+    getEnderecoById: function(id){
+        
+        return _enderecos[id];
+    },
+
     getInitialized: function(){
         
         return _initialized;
@@ -52256,7 +52302,36 @@ Dispatcher.register(function(action){
             _enderecos.push(action.endereco);
             EnderecoStore.emitChange();
         break;
+
+        case ActionTypes.UPDATE_ENDERECO:
             
+            _enderecos[action.index] = action.endereco;
+
+            EnderecoStore.emitChange();
+        break;
+        
+        case ActionTypes.DELETE_ENDERECO:
+            //_enderecos.push(action.endereco);
+            var find = false;
+            if(action.endereco.id){
+                var existingEndereco = _.find(_enderecos, {id : action.endereco.id});
+                var existingEnderecoIndex = _.indexOf(_enderecos, existingEndereco);
+                _enderecos.splice(existingEnderecoIndex,1);
+                var find = true;
+            }else{
+                var existingEndereco = _.find(_enderecos, {logradouro : action.endereco.logradouro, 
+                                                           numero: action.endereco.numero});
+                var existingEnderecoIndex = _.indexOf(_enderecos, existingEndereco);                                           
+                _enderecos.splice(existingEnderecoIndex,1);    
+                var find = true;
+
+            }
+        if(find == true){
+            console.log("found");
+        }    
+
+        EnderecoStore.emitChange();
+        break;
             
             
     }

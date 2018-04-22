@@ -33,6 +33,21 @@ var EnderecoActions = {
         });
     },
 
+    updateEndereco: function(endereco, index){
+        Dispatcher.dispatch({
+            actionType: actionTypes.UPDATE_ENDERECO,
+            endereco: endereco,
+            index : index
+        });
+    },
+
+    deleteEndereco: function(endereco){
+        Dispatcher.dispatch({
+            actionType: actionTypes.DELETE_ENDERECO,
+            endereco: endereco
+        });
+    },
+
     carregaEnderecos: function(enderecos){
         Dispatcher.dispatch({
             actionType: actionTypes.INIT_ENDERECO,

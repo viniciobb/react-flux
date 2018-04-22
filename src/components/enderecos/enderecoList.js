@@ -4,6 +4,8 @@ var Router = require('react-router');
 var Link = Router.Link;
 var CondominioStore = require("../../stores/condominioStore");
 var EnderecoStore = require("../../stores/enderecoStore");
+var EnderecoActions = require("../../actions/enderecoActions");
+var Toastr = require("toastr");
 
 var EnderecoList = React.createClass({
     
@@ -20,14 +22,23 @@ var EnderecoList = React.createClass({
         Toastr.success("Condominio Deleted");
     },
 
-    render: function(){
+    deleteEndereco: function(endereco, event){
+        event.preventDefault();
+        EnderecoActions.deleteEndereco(endereco);
+        Toastr.success("Endereco Deleted" + endereco.logradouro);
+    },
 
+    render: function(){
         
         var createEnderecoRow = function(endereco, index){
-            console.log(index);
+            
+            var idEndereco = ( endereco.id ? endereco.id : index);
+            
             return (
                 
-                <tr key={index}>
+                <tr>
+                    <td><a href="#" onClick={this.deleteEndereco.bind(this, endereco)}>Delete</a></td>
+                    <td><Link to="manageEndereco" params={{ idCondominio: this.props.idCondominio, idEndereco: idEndereco }}>{endereco.logradouro}</Link></td>
                     <td>{endereco.logradouro}</td>                    
                     <td>{endereco.numero}</td>
                     <td>{endereco.bairro}</td>
@@ -47,7 +58,7 @@ var EnderecoList = React.createClass({
                     <th>CEP</th>
                 </thead>    
                 <tbody>
-                    {this.props.enderecos.map(createEnderecoRow)}
+                    {this.props.enderecos.map(createEnderecoRow, this)}
                 </tbody>
                 </table>    
             </div>    

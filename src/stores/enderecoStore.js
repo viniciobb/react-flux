@@ -28,6 +28,11 @@ var EnderecoStore = assign({}, EventEmitter.prototype,{
         return _enderecos;
     },
 
+    getEnderecoById: function(id){
+        
+        return _enderecos[id];
+    },
+
     getInitialized: function(){
         
         return _initialized;
@@ -56,7 +61,36 @@ Dispatcher.register(function(action){
             _enderecos.push(action.endereco);
             EnderecoStore.emitChange();
         break;
+
+        case ActionTypes.UPDATE_ENDERECO:
             
+            _enderecos[action.index] = action.endereco;
+
+            EnderecoStore.emitChange();
+        break;
+        
+        case ActionTypes.DELETE_ENDERECO:
+            //_enderecos.push(action.endereco);
+            var find = false;
+            if(action.endereco.id){
+                var existingEndereco = _.find(_enderecos, {id : action.endereco.id});
+                var existingEnderecoIndex = _.indexOf(_enderecos, existingEndereco);
+                _enderecos.splice(existingEnderecoIndex,1);
+                var find = true;
+            }else{
+                var existingEndereco = _.find(_enderecos, {logradouro : action.endereco.logradouro, 
+                                                           numero: action.endereco.numero});
+                var existingEnderecoIndex = _.indexOf(_enderecos, existingEndereco);                                           
+                _enderecos.splice(existingEnderecoIndex,1);    
+                var find = true;
+
+            }
+        if(find == true){
+            console.log("found");
+        }    
+
+        EnderecoStore.emitChange();
+        break;
             
             
     }
