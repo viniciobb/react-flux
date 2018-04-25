@@ -77,7 +77,18 @@ var ManageEnderecoPage = React.createClass({
     setEnderecoState: function(event){ // called for every key press
         var field = event.target.name;
         var value = event.target.value;
+        
+
+        
+        console.log("field : " + field);
+        console.log("value : " + value);
+
+
         this.state.endereco[field] = value;
+
+        console.dir(this.state.endereco);
+
+
         console.log("typed : " + value);
         this.setState({ dirty: true });
         return this.state.endereco;
@@ -97,7 +108,7 @@ var ManageEnderecoPage = React.createClass({
 
         }else{
 
-            EnderecoActions.createEndereco(this.state.endereco, this.props.idCondominio);
+            EnderecoActions.createEndereco(this.state.endereco);
 
         }
                

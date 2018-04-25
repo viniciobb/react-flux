@@ -27,7 +27,7 @@ var EnderecoActions = {
         
     },
 
-    createEndereco: function(endereco, idCondominio){
+    createEndereco: function(endereco){
 
         Dispatcher.dispatch({
             actionType: actionTypes.CREATE_ENDERECO,

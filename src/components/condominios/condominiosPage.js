@@ -31,8 +31,8 @@ var CondominiosPage = React.createClass({
     render: function(){
         
         return (
-            <div>
-               <h1>Condomínios</h1>
+            <div className="container">
+               <h1 className="page-header">Condomínios</h1>
                <Link to="addCondominio" className="btn btn-default">Adicionar Condomínio</Link>
                <CondominioList 
                     condominios={this.state.condominios}/>   

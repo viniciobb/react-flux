@@ -65,8 +65,8 @@ var EnderecosPage = React.createClass({
     render: function(){
         
         return (
-            <div>
-               <h1>Endereços</h1>
+            <div className="container">
+               <h1 className="page-header">Endereços</h1>
                <Link to="addEndereco" params={{idCondominio: this.props.idCondominio}} className="btn btn-default">Adicionar Endereço</Link>
                <EnderecoList 
                     enderecos={this.state.enderecos}

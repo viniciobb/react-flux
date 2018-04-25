@@ -1,6 +1,7 @@
 "use strict";
 var React = require('react');
 var Input = require("../common/textInput");
+var BuscaCep = require("../common/buscaCep");
 var EnderecoForm = React.createClass({
     
     propTypes: {
@@ -13,21 +14,21 @@ var EnderecoForm = React.createClass({
         
     render: function(){
         return (
-            <form>
+           
+           <form className="container">
                 
-                <h1>Formulário Endereço</h1>   
+                <h1 className="page-header">Formulário Endereço</h1>   
                 
-                    <Input 
-                        label="CEP"
-                        name="cep"
-                        onChange={this.props.onChange}
-                        value={this.props.endereco.cep}
-                        error={this.props.errors.cep}
-                    />
-                
-                <button type="submit" onClick={this.props.onBusca} className="btn btn-primary mb-2">Buscar</button>
-            
-            
+                <BuscaCep 
+                    onBusca={this.props.onBusca}
+                    errors={this.props.errors}
+                    onChange={this.props.onChange}
+                    label="CEP"
+                    name="cep"
+                    onChange={this.props.onChange}
+                    value={this.props.endereco.cep}
+                    error={this.props.errors.cep}
+                />
 
                 <Input 
                     label="Logradouro"
@@ -38,7 +39,7 @@ var EnderecoForm = React.createClass({
                 />
                 
                 <Input 
-                    label="Numero"
+                    label="Número"
                     name="numero"
                     onChange={this.props.onChange}
                     value={this.props.endereco.numero}
@@ -65,8 +66,10 @@ var EnderecoForm = React.createClass({
                     value={this.props.endereco.cidade}
                     error={this.props.errors.cidade}
                 />
-                <input type="submit" value="Save" onClick={this.props.onSave} className="btn btn-primary mb-2"/>
-            </form>               
+                <input type="submit" value="Save" onClick={this.props.onSave} classNameName="btn btn-primary mb-2"/>
+            </form>
+           
+            
         ); 
     }
 

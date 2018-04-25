@@ -50292,7 +50292,7 @@ var AuthorActions = {
 
 module.exports = AuthorActions;
 
-},{"../api/authorApi":208,"../constants/actionTypes":229,"../dispatcher/appDispatcher":231}],205:[function(require,module,exports){
+},{"../api/authorApi":208,"../constants/actionTypes":230,"../dispatcher/appDispatcher":232}],205:[function(require,module,exports){
 "use strict"
 var Dispatcher = require("../dispatcher/appDispatcher");
 var CondominioApi = require("../api/condominioApi");
@@ -50359,7 +50359,7 @@ var CondominioActions = {
 
 module.exports = CondominioActions;
 
-},{"../api/condominioApi":210,"../constants/actionTypes":229,"../dispatcher/appDispatcher":231}],206:[function(require,module,exports){
+},{"../api/condominioApi":210,"../constants/actionTypes":230,"../dispatcher/appDispatcher":232}],206:[function(require,module,exports){
 "use strict"
 var Dispatcher = require("../dispatcher/appDispatcher");
 var CondominioApi = require("../api/condominioApi");
@@ -50389,7 +50389,7 @@ var EnderecoActions = {
         
     },
 
-    createEndereco: function(endereco, idCondominio){
+    createEndereco: function(endereco){
 
         Dispatcher.dispatch({
             actionType: actionTypes.CREATE_ENDERECO,
@@ -50458,7 +50458,7 @@ var EnderecoActions = {
 
 module.exports = EnderecoActions;
 
-},{"../api/condominioApi":210,"../constants/actionTypes":229,"../dispatcher/appDispatcher":231,"toastr":203}],207:[function(require,module,exports){
+},{"../api/condominioApi":210,"../constants/actionTypes":230,"../dispatcher/appDispatcher":232,"toastr":203}],207:[function(require,module,exports){
 "use strict"
 var Dispatcher = require("../dispatcher/appDispatcher");
 var ActionTypes = require("../constants/actionTypes");
@@ -50500,7 +50500,7 @@ var InitializeActions = {
 
 module.exports = InitializeActions;
 
-},{"../api/authorApi":208,"../api/condominioApi":210,"../constants/actionTypes":229,"../dispatcher/appDispatcher":231}],208:[function(require,module,exports){
+},{"../api/authorApi":208,"../api/condominioApi":210,"../constants/actionTypes":230,"../dispatcher/appDispatcher":232}],208:[function(require,module,exports){
 "use strict";
 
 //This file is mocking a web API by hitting hard coded data.
@@ -50896,7 +50896,7 @@ var App = React.createClass({displayName: "App",
 
 module.exports = App;
 
-},{"./common/header":217,"jquery":6,"react":202,"react-router":33}],213:[function(require,module,exports){
+},{"./common/header":218,"jquery":6,"react":202,"react-router":33}],213:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Input = require("../common/textInput");
@@ -50936,7 +50936,7 @@ var AuthorForm = React.createClass({displayName: "AuthorForm",
 
 module.exports = AuthorForm;  
 
-},{"../common/textInput":218,"react":202}],214:[function(require,module,exports){
+},{"../common/textInput":219,"react":202}],214:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Router = require('react-router');
@@ -51030,7 +51030,7 @@ var AuthorsPage = React.createClass({displayName: "AuthorsPage",
 
 module.exports = AuthorsPage;
 
-},{"../../actions/authorActions":204,"../../stores/authorStore":234,"./authorList":214,"react":202,"react-router":33}],216:[function(require,module,exports){
+},{"../../actions/authorActions":204,"../../stores/authorStore":235,"./authorList":214,"react":202,"react-router":33}],216:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Router = require('react-router');
@@ -51142,7 +51142,51 @@ var ManageAuthorPage = React.createClass({displayName: "ManageAuthorPage",
 
 module.exports = ManageAuthorPage; 
 
-},{"../../actions/authorActions":204,"../../stores/authorStore":234,"./authorForm":213,"react":202,"react-router":33,"toastr":203}],217:[function(require,module,exports){
+},{"../../actions/authorActions":204,"../../stores/authorStore":235,"./authorForm":213,"react":202,"react-router":33,"toastr":203}],217:[function(require,module,exports){
+"use strict";
+var React = require('react');
+var BuscaCep = React.createClass({displayName: "BuscaCep",
+
+    propTypes: {
+        onBusca:  React.PropTypes.func.isRequired,
+        error:    React.PropTypes.object,
+        onChange: React.PropTypes.func.isRequired
+    },
+
+
+    
+    render: function(){
+        
+        var wrapperClass = 'form-inline';
+        if(this.props.error && this.props.error.length > 0){
+            wrapperClass += " " + "has-error";
+        }
+        
+        return (
+            React.createElement("div", {className: wrapperClass}, 
+                
+                React.createElement("div", {className: "form-group "}, 
+                    React.createElement("input", {
+                        type: "text", 
+                        onChange: this.props.onChange, 
+                        name: this.props.name, 
+                        value: this.props.value, 
+                        ref: this.props.name, 
+                        className: "form-control", 
+                        placeholder: this.props.label}), 
+                       React.createElement("div", {className: "input"}, this.props.error)
+                ), 
+                React.createElement("button", {type: "submit", onClick: this.props.onBusca, className: "btn btn-default"}, "Buscar Cep")
+            ) 
+
+        ); 
+    }
+
+});
+
+module.exports = BuscaCep; 
+
+},{"react":202}],218:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Router = require('react-router');
@@ -51170,7 +51214,7 @@ var Header = React.createClass({displayName: "Header",
 
 module.exports = Header; 
 
-},{"react":202,"react-router":33}],218:[function(require,module,exports){
+},{"react":202,"react-router":33}],219:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var TextInput = React.createClass({displayName: "TextInput",
@@ -51204,7 +51248,7 @@ var TextInput = React.createClass({displayName: "TextInput",
 
 module.exports = TextInput; 
 
-},{"react":202}],219:[function(require,module,exports){
+},{"react":202}],220:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Input = require("../common/textInput");
@@ -51220,58 +51264,60 @@ var CondominioForm = React.createClass({displayName: "CondominioForm",
         
     render: function(){
         return ( 
-            React.createElement("form", null, 
-                React.createElement("h1", null, "Formulário Condomínio"), 
-                React.createElement(Input, {
-                    label: "Nome", 
-                    name: "nome", 
-                    onChange: this.props.onChange, 
-                    value: this.props.condominio.nome, 
-                    error: this.props.errors.nomeCondominio}
-                ), 
-                React.createElement(Input, {
-                    label: "CNPJ", 
-                    name: "cnpj", 
-                    onChange: this.props.onChange, 
-                    value: this.props.condominio.cnpj, 
-                    error: this.props.errors.cnpj}
-                ), 
-                React.createElement(Input, {
-                    label: "Quantidade de Apartamentos", 
-                    name: "quantidadeApartamentos", 
-                    onChange: this.props.onChange, 
-                    value: this.props.condominio.quantidadeApartamentos, 
-                    error: this.props.errors.quantidadeApartamentos}
-                ), 
-                React.createElement(Input, {
-                    label: "Quantidade de Blocos", 
-                    name: "quantidadeBlocos", 
-                    onChange: this.props.onChange, 
-                    value: this.props.condominio.quantidadeBlocos, 
-                    error: this.props.errors.quantidadeBlocos}
-                ), 
-                 React.createElement(Input, {
-                    label: "Quantidade de Elevadores", 
-                    name: "quantidadeElevadores", 
-                    onChange: this.props.onChange, 
-                    value: this.props.condominio.quantidadeElevadores, 
-                    error: this.props.errors.quantidadeElevadores}
-                ), 
-                React.createElement(Input, {
-                    label: "Quantidade de Vagas", 
-                    name: "quantidadeVagas", 
-                    onChange: this.props.onChange, 
-                    value: this.props.condominio.quantidadeVagas, 
-                    error: this.props.errors.quantidadeVagas}
-                ), 
+            React.createElement("div", {className: "container"}, 
+                React.createElement("form", null, 
+                React.createElement("h1", {className: "page-header"}, "Formulário Condomínio"), 
+                    React.createElement(Input, {
+                        label: "Nome", 
+                        name: "nome", 
+                        onChange: this.props.onChange, 
+                        value: this.props.condominio.nome, 
+                        error: this.props.errors.nomeCondominio}
+                    ), 
+                    React.createElement(Input, {
+                        label: "CNPJ", 
+                        name: "cnpj", 
+                        onChange: this.props.onChange, 
+                        value: this.props.condominio.cnpj, 
+                        error: this.props.errors.cnpj}
+                    ), 
+                    React.createElement(Input, {
+                        label: "Quantidade de Apartamentos", 
+                        name: "quantidadeApartamentos", 
+                        onChange: this.props.onChange, 
+                        value: this.props.condominio.quantidadeApartamentos, 
+                        error: this.props.errors.quantidadeApartamentos}
+                    ), 
+                    React.createElement(Input, {
+                        label: "Quantidade de Blocos", 
+                        name: "quantidadeBlocos", 
+                        onChange: this.props.onChange, 
+                        value: this.props.condominio.quantidadeBlocos, 
+                        error: this.props.errors.quantidadeBlocos}
+                    ), 
+                    React.createElement(Input, {
+                        label: "Quantidade de Elevadores", 
+                        name: "quantidadeElevadores", 
+                        onChange: this.props.onChange, 
+                        value: this.props.condominio.quantidadeElevadores, 
+                        error: this.props.errors.quantidadeElevadores}
+                    ), 
+                    React.createElement(Input, {
+                        label: "Quantidade de Vagas", 
+                        name: "quantidadeVagas", 
+                        onChange: this.props.onChange, 
+                        value: this.props.condominio.quantidadeVagas, 
+                        error: this.props.errors.quantidadeVagas}
+                    ), 
 
-                React.createElement(EnderecosPage, {
-                    idCondominio: this.props.condominio.id, 
-                    getEnderecos: this.props.getEnderecos}
-                ), 
+                    React.createElement(EnderecosPage, {
+                        idCondominio: this.props.condominio.id, 
+                        getEnderecos: this.props.getEnderecos}
+                    ), 
 
-                React.createElement("input", {type: "submit", value: "Save", onClick: this.props.onSave, className: "btn btn-default"})
-            )               
+                    React.createElement("input", {type: "submit", value: "Save", onClick: this.props.onSave, className: "btn btn-default"})
+                )
+            )    
         ); 
     }
 
@@ -51279,7 +51325,7 @@ var CondominioForm = React.createClass({displayName: "CondominioForm",
 
 module.exports = CondominioForm;  
 
-},{"../common/textInput":218,"../enderecos/enderecosPage":225,"react":202}],220:[function(require,module,exports){
+},{"../common/textInput":219,"../enderecos/enderecosPage":226,"react":202}],221:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Router = require('react-router');
@@ -51331,7 +51377,7 @@ var CondominioList = React.createClass({displayName: "CondominioList",
 
 module.exports = CondominioList;
 
-},{"../../actions/condominioActions":205,"react":202,"react-router":33,"toastr":203}],221:[function(require,module,exports){
+},{"../../actions/condominioActions":205,"react":202,"react-router":33,"toastr":203}],222:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Router = require('react-router');
@@ -51365,8 +51411,8 @@ var CondominiosPage = React.createClass({displayName: "CondominiosPage",
     render: function(){
         
         return (
-            React.createElement("div", null, 
-               React.createElement("h1", null, "Condomínios"), 
+            React.createElement("div", {className: "container"}, 
+               React.createElement("h1", {className: "page-header"}, "Condomínios"), 
                React.createElement(Link, {to: "addCondominio", className: "btn btn-default"}, "Adicionar Condomínio"), 
                React.createElement(CondominioList, {
                     condominios: this.state.condominios})
@@ -51377,7 +51423,7 @@ var CondominiosPage = React.createClass({displayName: "CondominiosPage",
 
 module.exports = CondominiosPage;
 
-},{"../../stores/condominioStore":235,"./condominioList":220,"react":202,"react-router":33}],222:[function(require,module,exports){
+},{"../../stores/condominioStore":236,"./condominioList":221,"react":202,"react-router":33}],223:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Router = require('react-router');
@@ -51549,10 +51595,11 @@ var ManageCondominioPage = React.createClass({displayName: "ManageCondominioPage
 
 module.exports = ManageCondominioPage; 
 
-},{"../../actions/condominioActions":205,"../../actions/enderecoActions":206,"../../stores/condominioStore":235,"../../stores/enderecoStore":236,"./condominioForm":219,"react":202,"react-router":33,"toastr":203}],223:[function(require,module,exports){
+},{"../../actions/condominioActions":205,"../../actions/enderecoActions":206,"../../stores/condominioStore":236,"../../stores/enderecoStore":237,"./condominioForm":220,"react":202,"react-router":33,"toastr":203}],224:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Input = require("../common/textInput");
+var BuscaCep = require("../common/buscaCep");
 var EnderecoForm = React.createClass({displayName: "EnderecoForm",
     
     propTypes: {
@@ -51565,21 +51612,21 @@ var EnderecoForm = React.createClass({displayName: "EnderecoForm",
         
     render: function(){
         return (
-            React.createElement("form", null, 
+           
+           React.createElement("form", {className: "container"}, 
                 
-                React.createElement("h1", null, "Formulário Endereço"), 
+                React.createElement("h1", {className: "page-header"}, "Formulário Endereço"), 
                 
-                    React.createElement(Input, {
-                        label: "CEP", 
-                        name: "cep", 
-                        onChange: this.props.onChange, 
-                        value: this.props.endereco.cep, 
-                        error: this.props.errors.cep}
-                    ), 
-                
-                React.createElement("button", {type: "submit", onClick: this.props.onBusca, className: "btn btn-primary mb-2"}, "Buscar"), 
-            
-            
+                React.createElement(BuscaCep, {
+                    onBusca: this.props.onBusca, 
+                    errors: this.props.errors, 
+                    onChange: this.props.onChange, 
+                    label: "CEP", 
+                    name: "cep", 
+                    onChange: this.props.onChange, 
+                    value: this.props.endereco.cep, 
+                    error: this.props.errors.cep}
+                ), 
 
                 React.createElement(Input, {
                     label: "Logradouro", 
@@ -51590,7 +51637,7 @@ var EnderecoForm = React.createClass({displayName: "EnderecoForm",
                 ), 
                 
                 React.createElement(Input, {
-                    label: "Numero", 
+                    label: "Número", 
                     name: "numero", 
                     onChange: this.props.onChange, 
                     value: this.props.endereco.numero, 
@@ -51617,8 +51664,10 @@ var EnderecoForm = React.createClass({displayName: "EnderecoForm",
                     value: this.props.endereco.cidade, 
                     error: this.props.errors.cidade}
                 ), 
-                React.createElement("input", {type: "submit", value: "Save", onClick: this.props.onSave, className: "btn btn-primary mb-2"})
-            )               
+                React.createElement("input", {type: "submit", value: "Save", onClick: this.props.onSave, classNameName: "btn btn-primary mb-2"})
+            )
+           
+            
         ); 
     }
 
@@ -51626,7 +51675,7 @@ var EnderecoForm = React.createClass({displayName: "EnderecoForm",
 
 module.exports = EnderecoForm;  
 
-},{"../common/textInput":218,"react":202}],224:[function(require,module,exports){
+},{"../common/buscaCep":217,"../common/textInput":219,"react":202}],225:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Router = require('react-router');
@@ -51689,7 +51738,7 @@ var EnderecoList = React.createClass({displayName: "EnderecoList",
 
 module.exports = EnderecoList;
 
-},{"../../actions/enderecoActions":206,"../../stores/condominioStore":235,"../../stores/enderecoStore":236,"react":202,"react-router":33,"toastr":203}],225:[function(require,module,exports){
+},{"../../actions/enderecoActions":206,"../../stores/condominioStore":236,"../../stores/enderecoStore":237,"react":202,"react-router":33,"toastr":203}],226:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Router = require('react-router');
@@ -51757,8 +51806,8 @@ var EnderecosPage = React.createClass({displayName: "EnderecosPage",
     render: function(){
         
         return (
-            React.createElement("div", null, 
-               React.createElement("h1", null, "Endereços"), 
+            React.createElement("div", {className: "container"}, 
+               React.createElement("h1", {className: "page-header"}, "Endereços"), 
                React.createElement(Link, {to: "addEndereco", params: {idCondominio: this.props.idCondominio}, className: "btn btn-default"}, "Adicionar Endereço"), 
                React.createElement(EnderecoList, {
                     enderecos: this.state.enderecos, 
@@ -51771,7 +51820,7 @@ var EnderecosPage = React.createClass({displayName: "EnderecosPage",
 
 module.exports = EnderecosPage;
 
-},{"../../actions/enderecoActions":206,"../../stores/enderecoStore":236,"./enderecoList":224,"react":202,"react-router":33}],226:[function(require,module,exports){
+},{"../../actions/enderecoActions":206,"../../stores/enderecoStore":237,"./enderecoList":225,"react":202,"react-router":33}],227:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Router = require('react-router');
@@ -51851,7 +51900,18 @@ var ManageEnderecoPage = React.createClass({displayName: "ManageEnderecoPage",
     setEnderecoState: function(event){ // called for every key press
         var field = event.target.name;
         var value = event.target.value;
+        
+
+        
+        console.log("field : " + field);
+        console.log("value : " + value);
+
+
         this.state.endereco[field] = value;
+
+        console.dir(this.state.endereco);
+
+
         console.log("typed : " + value);
         this.setState({ dirty: true });
         return this.state.endereco;
@@ -51871,7 +51931,7 @@ var ManageEnderecoPage = React.createClass({displayName: "ManageEnderecoPage",
 
         }else{
 
-            EnderecoActions.createEndereco(this.state.endereco, this.props.idCondominio);
+            EnderecoActions.createEndereco(this.state.endereco);
 
         }
                
@@ -51929,7 +51989,7 @@ var ManageEnderecoPage = React.createClass({displayName: "ManageEnderecoPage",
 
 module.exports = ManageEnderecoPage; 
 
-},{"../../actions/enderecoActions":206,"../../stores/enderecoStore":236,"./enderecoForm":223,"react":202,"react-router":33,"toastr":203}],227:[function(require,module,exports){
+},{"../../actions/enderecoActions":206,"../../stores/enderecoStore":237,"./enderecoForm":224,"react":202,"react-router":33,"toastr":203}],228:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Router = require('react-router');
@@ -51950,7 +52010,7 @@ var Home = React.createClass({displayName: "Home",
 
 module.exports = Home; 
 
-},{"react":202,"react-router":33}],228:[function(require,module,exports){
+},{"react":202,"react-router":33}],229:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Link = require('react-router').Link;
@@ -51969,7 +52029,7 @@ var NotFoundPage = React.createClass({displayName: "NotFoundPage",
 
 module.exports = NotFoundPage; 
 
-},{"react":202,"react-router":33}],229:[function(require,module,exports){
+},{"react":202,"react-router":33}],230:[function(require,module,exports){
 "use strict"
 var keyMirror = require("react/lib/keyMirror")
 
@@ -51994,7 +52054,7 @@ module.exports = keyMirror({
 
 });
 
-},{"react/lib/keyMirror":187}],230:[function(require,module,exports){
+},{"react/lib/keyMirror":187}],231:[function(require,module,exports){
 "use strict"
 var keyMirror = require("react/lib/keyMirror")
 
@@ -52004,11 +52064,11 @@ module.exports = keyMirror({
 
 });
 
-},{"react/lib/keyMirror":187}],231:[function(require,module,exports){
+},{"react/lib/keyMirror":187}],232:[function(require,module,exports){
 var Dispatcher = require("flux").Dispatcher;
 module.exports = new Dispatcher();
 
-},{"flux":3}],232:[function(require,module,exports){
+},{"flux":3}],233:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Router = require('react-router');
@@ -52021,7 +52081,7 @@ Router.run(routes, function(Handler){
     React.render(React.createElement(Handler, null), document.getElementById('app'));
 }); 
 
-},{"./actions/initializeActions":207,"./routes":233,"react":202,"react-router":33}],233:[function(require,module,exports){
+},{"./actions/initializeActions":207,"./routes":234,"react":202,"react-router":33}],234:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Router = require("react-router");
@@ -52052,7 +52112,7 @@ var routes = (
 
 module.exports = routes;
 
-},{"./components/about/aboutPage":211,"./components/app":212,"./components/authors/authorPage":215,"./components/authors/manageAuthorPage":216,"./components/condominios/condominiosPage":221,"./components/condominios/manageCondominioPage":222,"./components/enderecos/manageEnderecoPage":226,"./components/homePage":227,"./components/notFoundPage":228,"react":202,"react-router":33}],234:[function(require,module,exports){
+},{"./components/about/aboutPage":211,"./components/app":212,"./components/authors/authorPage":215,"./components/authors/manageAuthorPage":216,"./components/condominios/condominiosPage":222,"./components/condominios/manageCondominioPage":223,"./components/enderecos/manageEnderecoPage":227,"./components/homePage":228,"./components/notFoundPage":229,"react":202,"react-router":33}],235:[function(require,module,exports){
 "use strict"
 var Dispatcher = require("../dispatcher/appDispatcher");
 var ActionTypes = require("../constants/actionTypes");
@@ -52125,7 +52185,7 @@ Dispatcher.register(function(action){
 
 module.exports = AuthorStore;
 
-},{"../constants/actionTypes":229,"../dispatcher/appDispatcher":231,"events":1,"lodash":7,"object-assign":8}],235:[function(require,module,exports){
+},{"../constants/actionTypes":230,"../dispatcher/appDispatcher":232,"events":1,"lodash":7,"object-assign":8}],236:[function(require,module,exports){
 "use strict"
 var Dispatcher = require("../dispatcher/appDispatcher");
 var ActionTypes = require("../constants/actionTypes");
@@ -52248,7 +52308,7 @@ Dispatcher.register(function(action){
 
 module.exports = CondominioStore;
 
-},{"../constants/actionTypes":229,"../dispatcher/appDispatcher":231,"events":1,"lodash":7,"object-assign":8}],236:[function(require,module,exports){
+},{"../constants/actionTypes":230,"../dispatcher/appDispatcher":232,"events":1,"lodash":7,"object-assign":8}],237:[function(require,module,exports){
 "use strict"
 var Dispatcher = require("../dispatcher/appDispatcher");
 var ParentTypes = require("../constants/parentTypes");
@@ -52304,8 +52364,8 @@ Dispatcher.register(function(action){
 
         
         case ActionTypes.CLEAN_ENDERECO:
-            _enderecos = [];
-            _initialized = false;
+            //_enderecos = [];
+            //_initialized = false;
             _endereco = {};
             _saved_state = false;
             EnderecoStore.emitChange();
@@ -52321,6 +52381,8 @@ Dispatcher.register(function(action){
         
         case ActionTypes.CREATE_ENDERECO:
             _enderecos.push(action.endereco);
+            console.log("_enderecos in endereco Store");
+            console.dir(_enderecos);
             _endereco = {};
             _saved_state = false;
             EnderecoStore.emitChange();
@@ -52385,4 +52447,4 @@ Dispatcher.register(function(action){
 
 module.exports = EnderecoStore;
 
-},{"../constants/actionTypes":229,"../constants/parentTypes":230,"../dispatcher/appDispatcher":231,"events":1,"lodash":7,"object-assign":8}]},{},[232]);
+},{"../constants/actionTypes":230,"../constants/parentTypes":231,"../dispatcher/appDispatcher":232,"events":1,"lodash":7,"object-assign":8}]},{},[233]);

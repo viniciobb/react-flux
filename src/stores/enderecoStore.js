@@ -53,8 +53,8 @@ Dispatcher.register(function(action){
 
         
         case ActionTypes.CLEAN_ENDERECO:
-            _enderecos = [];
-            _initialized = false;
+            //_enderecos = [];
+            //_initialized = false;
             _endereco = {};
             _saved_state = false;
             EnderecoStore.emitChange();
@@ -70,6 +70,8 @@ Dispatcher.register(function(action){
         
         case ActionTypes.CREATE_ENDERECO:
             _enderecos.push(action.endereco);
+            console.log("_enderecos in endereco Store");
+            console.dir(_enderecos);
             _endereco = {};
             _saved_state = false;
             EnderecoStore.emitChange();
