@@ -29,6 +29,8 @@ var EnderecosPage = React.createClass({
 
         console.log(this.props.idCondominio); 
 
+        
+
         if(this.props.idCondominio){
             
             if(!EnderecoStore.getInitialized()){
@@ -41,7 +43,15 @@ var EnderecosPage = React.createClass({
 
         }else{
 
-            enderecos = EnderecoStore.getEnderecos();
+            if(!EnderecoStore.getInitialized()){
+
+                enderecos = EnderecoStore.getEnderecos();
+
+            }else{
+
+                EnderecoActions.cleanEndereco();
+
+            }
 
         }
 
@@ -62,12 +72,35 @@ var EnderecosPage = React.createClass({
         this.setState({ enderecos: EnderecoStore.getEnderecos()});
     },
     
+    qtdeEnderecos : function(){
+        
+        var labelEndereco = "Endereços"
+        if(this.props.qtdeEndereco == 1){
+            labelEndereco = "Endereço"
+        }
+        return labelEndereco;
+
+    },
+
+    showAddEnderecos : function(){
+        
+        var showAddEnderecos = true; 
+        console.log("showAddEnderecos");
+        console.log(this.state.enderecos.length);
+        console.log(this.props.qtdeEndereco);
+        if(this.state.enderecos.length >= this.props.qtdeEndereco){
+            showAddEnderecos = false;
+        }
+
+        return showAddEnderecos;
+    },
+
     render: function(){
         
         return (
             <div className="container">
-               <h1 className="page-header">Endereços</h1>
-               <Link to="addEndereco" params={{idCondominio: this.props.idCondominio}} className="btn btn-default">Adicionar Endereço</Link>
+               <h1 className="page-header">{this.qtdeEnderecos()}</h1>
+               {this.showAddEnderecos() && <Link to="addEndereco" params={{idCondominio: this.props.idCondominio}} className="btn btn-default">Adicionar Endereço</Link>}
                <EnderecoList 
                     enderecos={this.state.enderecos}
                     idCondominio={this.props.idCondominio}

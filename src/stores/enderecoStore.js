@@ -53,11 +53,12 @@ Dispatcher.register(function(action){
 
         
         case ActionTypes.CLEAN_ENDERECO:
-            //_enderecos = [];
-            //_initialized = false;
+            _enderecos = [];
+            _initialized = false;
             _endereco = {};
             _saved_state = false;
             EnderecoStore.emitChange();
+            console.log("erase CLEAN _ENDERECO");
             break;
         
         case ActionTypes.INIT_ENDERECO:
@@ -85,6 +86,7 @@ Dispatcher.register(function(action){
                 cep: action.endereco.cep,
                 bairro: action.endereco.bairro,
                 cidade: action.endereco.cidade,
+                estado: action.endereco.estado_info.nome,
                 numero: 0,
                 complemento : ""
             };

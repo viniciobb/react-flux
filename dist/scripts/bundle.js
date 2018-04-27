@@ -51312,7 +51312,8 @@ var CondominioForm = React.createClass({displayName: "CondominioForm",
 
                     React.createElement(EnderecosPage, {
                         idCondominio: this.props.condominio.id, 
-                        getEnderecos: this.props.getEnderecos}
+                        getEnderecos: this.props.getEnderecos, 
+                        qtdeEndereco: 1}
                     ), 
 
                     React.createElement("input", {type: "submit", value: "Save", onClick: this.props.onSave, className: "btn btn-default"})
@@ -51508,7 +51509,9 @@ var ManageCondominioPage = React.createClass({displayName: "ManageCondominioPage
             }
             else{
                 // new entry , cleaning previus states
-                EnderecoActions.cleanEndereco();                
+                console.log("// new entry , cleaning previus states");
+                EnderecoActions.cleanEndereco(); 
+
             }
 
         }
@@ -51664,6 +51667,15 @@ var EnderecoForm = React.createClass({displayName: "EnderecoForm",
                     value: this.props.endereco.cidade, 
                     error: this.props.errors.cidade}
                 ), 
+
+                React.createElement(Input, {
+                    label: "Estado", 
+                    name: "estado", 
+                    onChange: this.props.onChange, 
+                    value: this.props.endereco.estado, 
+                    error: this.props.errors.estado}
+                ), 
+
                 React.createElement("input", {type: "submit", value: "Save", onClick: this.props.onSave, classNameName: "btn btn-primary mb-2"})
             )
            
@@ -51770,6 +51782,8 @@ var EnderecosPage = React.createClass({displayName: "EnderecosPage",
 
         console.log(this.props.idCondominio); 
 
+        
+
         if(this.props.idCondominio){
             
             if(!EnderecoStore.getInitialized()){
@@ -51782,7 +51796,15 @@ var EnderecosPage = React.createClass({displayName: "EnderecosPage",
 
         }else{
 
-            enderecos = EnderecoStore.getEnderecos();
+            if(!EnderecoStore.getInitialized()){
+
+                enderecos = EnderecoStore.getEnderecos();
+
+            }else{
+
+                EnderecoActions.cleanEndereco();
+
+            }
 
         }
 
@@ -51803,12 +51825,35 @@ var EnderecosPage = React.createClass({displayName: "EnderecosPage",
         this.setState({ enderecos: EnderecoStore.getEnderecos()});
     },
     
+    qtdeEnderecos : function(){
+        
+        var labelEndereco = "Endereços"
+        if(this.props.qtdeEndereco == 1){
+            labelEndereco = "Endereço"
+        }
+        return labelEndereco;
+
+    },
+
+    showAddEnderecos : function(){
+        
+        var showAddEnderecos = true; 
+        console.log("showAddEnderecos");
+        console.log(this.state.enderecos.length);
+        console.log(this.props.qtdeEndereco);
+        if(this.state.enderecos.length >= this.props.qtdeEndereco){
+            showAddEnderecos = false;
+        }
+
+        return showAddEnderecos;
+    },
+
     render: function(){
         
         return (
             React.createElement("div", {className: "container"}, 
-               React.createElement("h1", {className: "page-header"}, "Endereços"), 
-               React.createElement(Link, {to: "addEndereco", params: {idCondominio: this.props.idCondominio}, className: "btn btn-default"}, "Adicionar Endereço"), 
+               React.createElement("h1", {className: "page-header"}, this.qtdeEnderecos()), 
+               this.showAddEnderecos() && React.createElement(Link, {to: "addEndereco", params: {idCondominio: this.props.idCondominio}, className: "btn btn-default"}, "Adicionar Endereço"), 
                React.createElement(EnderecoList, {
                     enderecos: this.state.enderecos, 
                     idCondominio: this.props.idCondominio}
@@ -51853,6 +51898,7 @@ var ManageEnderecoPage = React.createClass({displayName: "ManageEnderecoPage",
                 cep: 0,
                 siglaFederacao: '',
                 cidade: '',
+                estado: '',
                 id: ''
             
             },
@@ -52364,11 +52410,12 @@ Dispatcher.register(function(action){
 
         
         case ActionTypes.CLEAN_ENDERECO:
-            //_enderecos = [];
-            //_initialized = false;
+            _enderecos = [];
+            _initialized = false;
             _endereco = {};
             _saved_state = false;
             EnderecoStore.emitChange();
+            console.log("erase CLEAN _ENDERECO");
             break;
         
         case ActionTypes.INIT_ENDERECO:
@@ -52396,6 +52443,7 @@ Dispatcher.register(function(action){
                 cep: action.endereco.cep,
                 bairro: action.endereco.bairro,
                 cidade: action.endereco.cidade,
+                estado: action.endereco.estado_info.nome,
                 numero: 0,
                 complemento : ""
             };

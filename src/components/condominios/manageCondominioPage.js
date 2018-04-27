@@ -82,7 +82,9 @@ var ManageCondominioPage = React.createClass({
             }
             else{
                 // new entry , cleaning previus states
-                EnderecoActions.cleanEndereco();                
+                console.log("// new entry , cleaning previus states");
+                EnderecoActions.cleanEndereco(); 
+
             }
 
         }

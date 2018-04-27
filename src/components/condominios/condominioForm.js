@@ -62,6 +62,7 @@ var CondominioForm = React.createClass({
                     <EnderecosPage
                         idCondominio={this.props.condominio.id}
                         getEnderecos={this.props.getEnderecos}
+                        qtdeEndereco={1}
                     />
 
                     <input type="submit" value="Save" onClick={this.props.onSave} className="btn btn-default"/>

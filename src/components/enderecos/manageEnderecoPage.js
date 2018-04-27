@@ -30,6 +30,7 @@ var ManageEnderecoPage = React.createClass({
                 cep: 0,
                 siglaFederacao: '',
                 cidade: '',
+                estado: '',
                 id: ''
             
             },

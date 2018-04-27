@@ -66,6 +66,15 @@ var EnderecoForm = React.createClass({
                     value={this.props.endereco.cidade}
                     error={this.props.errors.cidade}
                 />
+
+                <Input 
+                    label="Estado"
+                    name="estado"
+                    onChange={this.props.onChange}
+                    value={this.props.endereco.estado}
+                    error={this.props.errors.estado}
+                />
+
                 <input type="submit" value="Save" onClick={this.props.onSave} classNameName="btn btn-primary mb-2"/>
             </form>
            
