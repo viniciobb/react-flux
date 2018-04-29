@@ -2,6 +2,7 @@
 var React = require('react');
 var Input = require("../common/textInput");
 var EnderecosPage = require("../enderecos/enderecosPage");
+var FacilitiesPage = require("../facilities/facilitiesPage");
 var CondominioForm = React.createClass({
     
     propTypes: {
@@ -63,6 +64,11 @@ var CondominioForm = React.createClass({
                         idCondominio={this.props.condominio.id}
                         getEnderecos={this.props.getEnderecos}
                         qtdeEndereco={1}
+                    />
+
+                    <FacilitiesPage
+                        idCondominio={this.props.condominio.id}
+                        getFacilities={this.props.getFacilities}
                     />
 
                     <input type="submit" value="Save" onClick={this.props.onSave} className="btn btn-default"/>

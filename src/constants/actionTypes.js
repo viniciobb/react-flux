@@ -17,6 +17,15 @@ module.exports = keyMirror({
     INIT_ENDERECO: null,
     UPDATE_ENDERECO: null,
     DELETE_ENDERECO: null,
+    
+
+    CREATE_FACILITY: null,
+    CLEAN_FACILITY: null,
+    INIT_FACILITY: null,
+    UPDATE_FACILITY: null,
+    DELETE_FACILITY: null,
+
+
     DELETE_CONDOMINIO_ENDERECO: null,
     BUSCA_ENDERECO: null
 

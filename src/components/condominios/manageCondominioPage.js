@@ -4,8 +4,10 @@ var Router = require('react-router');
 var CondominioForm = require('./condominioForm');
 var CondominioStore = require("../../stores/condominioStore");
 var EnderecoStore = require("../../stores/enderecoStore");
+var FacilityStore = require("../../stores/falicityStore");
 var CondominioActions = require("../../actions/condominioActions");
 var EnderecoActions = require("../../actions/enderecoActions");
+var FacilityActions = require("../../actions/facilityActions");
 
 var Toastr = require("toastr");
 
@@ -48,8 +50,8 @@ var ManageCondominioPage = React.createClass({
                 quantidadeElevadores: 0,
                 quantidadeVagas: 0,
                 id: 0,
-                enderecos: []
-                //facilities: [facilitySchema]
+                enderecos: [],
+                facilities: []
             
             },
             errors: {},
@@ -83,7 +85,10 @@ var ManageCondominioPage = React.createClass({
             else{
                 // new entry , cleaning previus states
                 console.log("// new entry , cleaning previus states");
+                
                 EnderecoActions.cleanEndereco(); 
+                                
+                //FacilityActions.cleanFacility();
 
             }
 
@@ -123,6 +128,12 @@ var ManageCondominioPage = React.createClass({
 
     },
 
+    getFacilities: function(){
+       
+        return  CondominioStore.getFacilitiesCondominio(this.props.params.id);
+
+    },
+
     saveCondominio: function(event){
         event.preventDefault();
         if(!this.condominioFormIsValid()){
@@ -130,6 +141,8 @@ var ManageCondominioPage = React.createClass({
         }
 
         this.state.condominio.enderecos = EnderecoStore.getEnderecos();
+
+        this.state.condominio.facilities = FacilityStore.getFacilities();
 
         if(this.state.condominio.id)
         {
@@ -141,6 +154,7 @@ var ManageCondominioPage = React.createClass({
         }
 
         EnderecoActions.cleanEndereco();
+        FacilityActions.cleanFacility();
         
         this.setState({ dirty: false });
         console.log("setState");
@@ -163,6 +177,7 @@ var ManageCondominioPage = React.createClass({
              onChange={this.setCondominioState}
              onSave={this.saveCondominio}
              getEnderecos={this.getEnderecos}
+             getFacilities={this.getFacilities}
              errors={this.state.errors} />
         ); 
     }

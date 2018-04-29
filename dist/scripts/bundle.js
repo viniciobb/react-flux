@@ -50292,7 +50292,7 @@ var AuthorActions = {
 
 module.exports = AuthorActions;
 
-},{"../api/authorApi":208,"../constants/actionTypes":230,"../dispatcher/appDispatcher":232}],205:[function(require,module,exports){
+},{"../api/authorApi":209,"../constants/actionTypes":235,"../dispatcher/appDispatcher":237}],205:[function(require,module,exports){
 "use strict"
 var Dispatcher = require("../dispatcher/appDispatcher");
 var CondominioApi = require("../api/condominioApi");
@@ -50359,7 +50359,7 @@ var CondominioActions = {
 
 module.exports = CondominioActions;
 
-},{"../api/condominioApi":210,"../constants/actionTypes":230,"../dispatcher/appDispatcher":232}],206:[function(require,module,exports){
+},{"../api/condominioApi":211,"../constants/actionTypes":235,"../dispatcher/appDispatcher":237}],206:[function(require,module,exports){
 "use strict"
 var Dispatcher = require("../dispatcher/appDispatcher");
 var CondominioApi = require("../api/condominioApi");
@@ -50458,7 +50458,58 @@ var EnderecoActions = {
 
 module.exports = EnderecoActions;
 
-},{"../api/condominioApi":210,"../constants/actionTypes":230,"../dispatcher/appDispatcher":232,"toastr":203}],207:[function(require,module,exports){
+},{"../api/condominioApi":211,"../constants/actionTypes":235,"../dispatcher/appDispatcher":237,"toastr":203}],207:[function(require,module,exports){
+"use strict"
+var Dispatcher = require("../dispatcher/appDispatcher");
+var CondominioApi = require("../api/condominioApi");
+var actionTypes = require("../constants/actionTypes");
+var Toastr = require("toastr");
+
+var FacilityActions = {
+    
+
+    createFacility: function(facility){
+
+        Dispatcher.dispatch({
+            actionType: actionTypes.CREATE_FACILITY,
+            facility: facility
+        });
+    },
+
+    cleanFacility: function(){
+        Dispatcher.dispatch({
+            actionType: actionTypes.CLEAN_FACILITY
+        });
+    },
+
+    updateFacility: function(facility, index){
+        Dispatcher.dispatch({
+            actionType: actionTypes.UPDATE_FACILITY,
+            facility: facility,
+            index : index
+        });
+    },
+
+    deleteFacility: function(facility){
+        Dispatcher.dispatch({
+            actionType: actionTypes.DELETE_FACILITY,
+            facility: facility
+        });
+    },
+
+    carregaFacilities: function(facilities){
+        Dispatcher.dispatch({
+            actionType: actionTypes.INIT_FACILITY,
+            facilities: facilities
+        });
+    }
+  
+
+};
+
+module.exports = FacilityActions;
+
+},{"../api/condominioApi":211,"../constants/actionTypes":235,"../dispatcher/appDispatcher":237,"toastr":203}],208:[function(require,module,exports){
 "use strict"
 var Dispatcher = require("../dispatcher/appDispatcher");
 var ActionTypes = require("../constants/actionTypes");
@@ -50500,7 +50551,7 @@ var InitializeActions = {
 
 module.exports = InitializeActions;
 
-},{"../api/authorApi":208,"../api/condominioApi":210,"../constants/actionTypes":230,"../dispatcher/appDispatcher":232}],208:[function(require,module,exports){
+},{"../api/authorApi":209,"../api/condominioApi":211,"../constants/actionTypes":235,"../dispatcher/appDispatcher":237}],209:[function(require,module,exports){
 "use strict";
 
 //This file is mocking a web API by hitting hard coded data.
@@ -50650,7 +50701,7 @@ var AuthorApi = {
 
 module.exports = AuthorApi;
 
-},{"./authorData":209,"lodash":7}],209:[function(require,module,exports){
+},{"./authorData":210,"lodash":7}],210:[function(require,module,exports){
 module.exports = {
 	authors: 
 	[
@@ -50672,7 +50723,7 @@ module.exports = {
 	]
 };
 
-},{}],210:[function(require,module,exports){
+},{}],211:[function(require,module,exports){
 "use strict";
 
 //This file is mocking a web API by hitting hard coded data.
@@ -50823,7 +50874,7 @@ var CondominioApi = {
 
 module.exports = CondominioApi;
 
-},{"./authorData":209,"lodash":7}],211:[function(require,module,exports){
+},{"./authorData":210,"lodash":7}],212:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var About = React.createClass({displayName: "About",
@@ -50873,7 +50924,7 @@ var About = React.createClass({displayName: "About",
 
 module.exports = About; 
 
-},{"react":202}],212:[function(require,module,exports){
+},{"react":202}],213:[function(require,module,exports){
 /*eslint-disable strict */ // disabling check because qe cant run strict mode . we need global vars
 
 var React = require('react');
@@ -50896,7 +50947,7 @@ var App = React.createClass({displayName: "App",
 
 module.exports = App;
 
-},{"./common/header":218,"jquery":6,"react":202,"react-router":33}],213:[function(require,module,exports){
+},{"./common/header":219,"jquery":6,"react":202,"react-router":33}],214:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Input = require("../common/textInput");
@@ -50936,7 +50987,7 @@ var AuthorForm = React.createClass({displayName: "AuthorForm",
 
 module.exports = AuthorForm;  
 
-},{"../common/textInput":219,"react":202}],214:[function(require,module,exports){
+},{"../common/textInput":220,"react":202}],215:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Router = require('react-router');
@@ -50986,7 +51037,7 @@ var AuthorList = React.createClass({displayName: "AuthorList",
 
 module.exports = AuthorList;
 
-},{"../../actions/authorActions":204,"react":202,"react-router":33,"toastr":203}],215:[function(require,module,exports){
+},{"../../actions/authorActions":204,"react":202,"react-router":33,"toastr":203}],216:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Router = require('react-router');
@@ -51030,7 +51081,7 @@ var AuthorsPage = React.createClass({displayName: "AuthorsPage",
 
 module.exports = AuthorsPage;
 
-},{"../../actions/authorActions":204,"../../stores/authorStore":235,"./authorList":214,"react":202,"react-router":33}],216:[function(require,module,exports){
+},{"../../actions/authorActions":204,"../../stores/authorStore":240,"./authorList":215,"react":202,"react-router":33}],217:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Router = require('react-router');
@@ -51142,7 +51193,7 @@ var ManageAuthorPage = React.createClass({displayName: "ManageAuthorPage",
 
 module.exports = ManageAuthorPage; 
 
-},{"../../actions/authorActions":204,"../../stores/authorStore":235,"./authorForm":213,"react":202,"react-router":33,"toastr":203}],217:[function(require,module,exports){
+},{"../../actions/authorActions":204,"../../stores/authorStore":240,"./authorForm":214,"react":202,"react-router":33,"toastr":203}],218:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var BuscaCep = React.createClass({displayName: "BuscaCep",
@@ -51186,7 +51237,7 @@ var BuscaCep = React.createClass({displayName: "BuscaCep",
 
 module.exports = BuscaCep; 
 
-},{"react":202}],218:[function(require,module,exports){
+},{"react":202}],219:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Router = require('react-router');
@@ -51214,7 +51265,7 @@ var Header = React.createClass({displayName: "Header",
 
 module.exports = Header; 
 
-},{"react":202,"react-router":33}],219:[function(require,module,exports){
+},{"react":202,"react-router":33}],220:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var TextInput = React.createClass({displayName: "TextInput",
@@ -51248,11 +51299,12 @@ var TextInput = React.createClass({displayName: "TextInput",
 
 module.exports = TextInput; 
 
-},{"react":202}],220:[function(require,module,exports){
+},{"react":202}],221:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Input = require("../common/textInput");
 var EnderecosPage = require("../enderecos/enderecosPage");
+var FacilitiesPage = require("../facilities/facilitiesPage");
 var CondominioForm = React.createClass({displayName: "CondominioForm",
     
     propTypes: {
@@ -51316,6 +51368,11 @@ var CondominioForm = React.createClass({displayName: "CondominioForm",
                         qtdeEndereco: 1}
                     ), 
 
+                    React.createElement(FacilitiesPage, {
+                        idCondominio: this.props.condominio.id, 
+                        getFacilities: this.props.getFacilities}
+                    ), 
+
                     React.createElement("input", {type: "submit", value: "Save", onClick: this.props.onSave, className: "btn btn-default"})
                 )
             )    
@@ -51326,7 +51383,7 @@ var CondominioForm = React.createClass({displayName: "CondominioForm",
 
 module.exports = CondominioForm;  
 
-},{"../common/textInput":219,"../enderecos/enderecosPage":226,"react":202}],221:[function(require,module,exports){
+},{"../common/textInput":220,"../enderecos/enderecosPage":227,"../facilities/facilitiesPage":230,"react":202}],222:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Router = require('react-router');
@@ -51378,7 +51435,7 @@ var CondominioList = React.createClass({displayName: "CondominioList",
 
 module.exports = CondominioList;
 
-},{"../../actions/condominioActions":205,"react":202,"react-router":33,"toastr":203}],222:[function(require,module,exports){
+},{"../../actions/condominioActions":205,"react":202,"react-router":33,"toastr":203}],223:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Router = require('react-router');
@@ -51424,15 +51481,17 @@ var CondominiosPage = React.createClass({displayName: "CondominiosPage",
 
 module.exports = CondominiosPage;
 
-},{"../../stores/condominioStore":236,"./condominioList":221,"react":202,"react-router":33}],223:[function(require,module,exports){
+},{"../../stores/condominioStore":241,"./condominioList":222,"react":202,"react-router":33}],224:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Router = require('react-router');
 var CondominioForm = require('./condominioForm');
 var CondominioStore = require("../../stores/condominioStore");
 var EnderecoStore = require("../../stores/enderecoStore");
+var FacilityStore = require("../../stores/falicityStore");
 var CondominioActions = require("../../actions/condominioActions");
 var EnderecoActions = require("../../actions/enderecoActions");
+var FacilityActions = require("../../actions/facilityActions");
 
 var Toastr = require("toastr");
 
@@ -51475,8 +51534,8 @@ var ManageCondominioPage = React.createClass({displayName: "ManageCondominioPage
                 quantidadeElevadores: 0,
                 quantidadeVagas: 0,
                 id: 0,
-                enderecos: []
-                //facilities: [facilitySchema]
+                enderecos: [],
+                facilities: []
             
             },
             errors: {},
@@ -51510,7 +51569,10 @@ var ManageCondominioPage = React.createClass({displayName: "ManageCondominioPage
             else{
                 // new entry , cleaning previus states
                 console.log("// new entry , cleaning previus states");
+                
                 EnderecoActions.cleanEndereco(); 
+                                
+                //FacilityActions.cleanFacility();
 
             }
 
@@ -51550,6 +51612,12 @@ var ManageCondominioPage = React.createClass({displayName: "ManageCondominioPage
 
     },
 
+    getFacilities: function(){
+       
+        return  CondominioStore.getFacilitiesCondominio(this.props.params.id);
+
+    },
+
     saveCondominio: function(event){
         event.preventDefault();
         if(!this.condominioFormIsValid()){
@@ -51557,6 +51625,8 @@ var ManageCondominioPage = React.createClass({displayName: "ManageCondominioPage
         }
 
         this.state.condominio.enderecos = EnderecoStore.getEnderecos();
+
+        this.state.condominio.facilities = FacilityStore.getFacilities();
 
         if(this.state.condominio.id)
         {
@@ -51568,6 +51638,7 @@ var ManageCondominioPage = React.createClass({displayName: "ManageCondominioPage
         }
 
         EnderecoActions.cleanEndereco();
+        FacilityActions.cleanFacility();
         
         this.setState({ dirty: false });
         console.log("setState");
@@ -51590,6 +51661,7 @@ var ManageCondominioPage = React.createClass({displayName: "ManageCondominioPage
              onChange: this.setCondominioState, 
              onSave: this.saveCondominio, 
              getEnderecos: this.getEnderecos, 
+             getFacilities: this.getFacilities, 
              errors: this.state.errors})
         ); 
     }
@@ -51598,7 +51670,7 @@ var ManageCondominioPage = React.createClass({displayName: "ManageCondominioPage
 
 module.exports = ManageCondominioPage; 
 
-},{"../../actions/condominioActions":205,"../../actions/enderecoActions":206,"../../stores/condominioStore":236,"../../stores/enderecoStore":237,"./condominioForm":220,"react":202,"react-router":33,"toastr":203}],224:[function(require,module,exports){
+},{"../../actions/condominioActions":205,"../../actions/enderecoActions":206,"../../actions/facilityActions":207,"../../stores/condominioStore":241,"../../stores/enderecoStore":242,"../../stores/falicityStore":243,"./condominioForm":221,"react":202,"react-router":33,"toastr":203}],225:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Input = require("../common/textInput");
@@ -51687,7 +51759,7 @@ var EnderecoForm = React.createClass({displayName: "EnderecoForm",
 
 module.exports = EnderecoForm;  
 
-},{"../common/buscaCep":217,"../common/textInput":219,"react":202}],225:[function(require,module,exports){
+},{"../common/buscaCep":218,"../common/textInput":220,"react":202}],226:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Router = require('react-router');
@@ -51750,7 +51822,7 @@ var EnderecoList = React.createClass({displayName: "EnderecoList",
 
 module.exports = EnderecoList;
 
-},{"../../actions/enderecoActions":206,"../../stores/condominioStore":236,"../../stores/enderecoStore":237,"react":202,"react-router":33,"toastr":203}],226:[function(require,module,exports){
+},{"../../actions/enderecoActions":206,"../../stores/condominioStore":241,"../../stores/enderecoStore":242,"react":202,"react-router":33,"toastr":203}],227:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Router = require('react-router');
@@ -51865,7 +51937,7 @@ var EnderecosPage = React.createClass({displayName: "EnderecosPage",
 
 module.exports = EnderecosPage;
 
-},{"../../actions/enderecoActions":206,"../../stores/enderecoStore":237,"./enderecoList":225,"react":202,"react-router":33}],227:[function(require,module,exports){
+},{"../../actions/enderecoActions":206,"../../stores/enderecoStore":242,"./enderecoList":226,"react":202,"react-router":33}],228:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Router = require('react-router');
@@ -52035,7 +52107,425 @@ var ManageEnderecoPage = React.createClass({displayName: "ManageEnderecoPage",
 
 module.exports = ManageEnderecoPage; 
 
-},{"../../actions/enderecoActions":206,"../../stores/enderecoStore":237,"./enderecoForm":224,"react":202,"react-router":33,"toastr":203}],228:[function(require,module,exports){
+},{"../../actions/enderecoActions":206,"../../stores/enderecoStore":242,"./enderecoForm":225,"react":202,"react-router":33,"toastr":203}],229:[function(require,module,exports){
+"use strict";
+var React = require('react');
+var Router = require('react-router');
+var Link = Router.Link;
+var FacilityStore = require("../../stores/falicityStore");
+var FacilityActions = require("../../actions/facilityActions");
+var Toastr = require("toastr");
+
+var FacilitiesList = React.createClass({displayName: "FacilitiesList",
+    
+    //<td><Link to="manageEndereco" params={{idCondominio: this.props.idCondominio, idEndereco: endereco.id }}>{endereco.logradouro}</Link></td>
+    
+    propTypes: {
+        facilities: React.PropTypes.array.isRequired
+    },
+
+     deleteFacility: function(facility, event){
+         event.preventDefault();
+         FacilityActions.deleteFacility(facility);
+         Toastr.success("facility Deleted" + facility.nomefacility);
+     },
+
+    render: function(){
+        
+        var createFacilityRow = function(facility, index){
+            
+            var idFacility = ( facility.id ? facility.id : index);
+            
+            return (
+                
+                React.createElement("tr", null, 
+                    React.createElement("td", null, React.createElement("a", {href: "#", onClick: this.deleteFacility.bind(this, facility)}, "Delete")), 
+                    React.createElement("td", null, facility.nomefacility)
+                )
+            );
+        };
+        
+        return (
+            React.createElement("div", null, 
+                React.createElement("table", {className: "table"}, 
+                React.createElement("thead", null, 
+                    React.createElement("th", null, "Delete"), 
+                    React.createElement("th", null, "Nome Facility")
+                ), 
+                React.createElement("tbody", null, 
+                    this.props.facilities.map(createFacilityRow, this)
+                )
+                )
+            )    
+        );
+    }
+});
+
+module.exports = FacilitiesList;
+
+},{"../../actions/facilityActions":207,"../../stores/falicityStore":243,"react":202,"react-router":33,"toastr":203}],230:[function(require,module,exports){
+"use strict";
+var React = require('react');
+var Router = require('react-router');
+var Link = require('react-router').Link;
+var FacilitiesList = require("./facilitiesList");
+var FacilityStore = require("../../stores/falicityStore");
+var FacilityActions = require("../../actions/facilityActions");
+
+
+var FacilitiesPage = React.createClass({displayName: "FacilitiesPage",
+
+     propTypes: {
+         getFacilities: React.PropTypes.func.isRequired
+     },
+
+    statics: {
+
+        willTransitionFrom: function(transition, component){
+            // if( component.state.dirty && !confirm("Leave without saving ?")){
+            //     transition.abort();
+            // }    
+        }
+
+    },
+    
+    getInitialState: function(){
+
+        var facilities = [];
+
+        console.log(this.props.idCondominio); 
+
+        
+
+        if(this.props.idCondominio){
+            
+            if(!FacilityStore.getInitialized()){
+                facilities = this.props.getFacilities(); 
+                FacilityActions.carregaFacilities(facilities);
+
+            }else{
+                facilities = FacilityStore.getFacilities();
+            }
+
+        }else{
+
+            console.log("idCondominio = 0");
+            console.log("FacilityStore.getFacilities()");
+            console.dir(FacilityStore.getFacilities()); 
+
+            if(FacilityStore.getInitialized()){
+
+                console.log("getInitialized");
+                
+                facilities = FacilityStore.getFacilities();
+
+                console.dir(facilities);
+
+            }else{
+
+                FacilityActions.cleanFacility();
+
+            }
+
+        }
+
+        return {
+            facilities
+        };
+    },
+    
+    componentWillMount : function(){
+        FacilityStore.addChangeListener(this._onChange);
+    },
+    componentWillUnmount : function(){
+        FacilityStore.removeChangeListener(this._onChange);
+    },
+    
+    _onChange : function(){
+        console.log("onChange facilityPage");
+        this.setState({ facilities: FacilityStore.getfacilities()});
+    },
+    
+    // qtdeEnderecos : function(){
+        
+    //     var labelEndereco = "Endereços"
+    //     if(this.props.qtdeEndereco == 1){
+    //         labelEndereco = "Endereço"
+    //     }
+    //     return labelEndereco;
+
+    // },
+
+    // showAddFacility : function(){
+        
+    //     var showAddEnderecos = true; 
+    //     console.log("showAddEnderecos");
+    //     console.log(this.state.enderecos.length);
+    //     console.log(this.props.qtdeEndereco);
+    //     if(this.state.enderecos.length >= this.props.qtdeEndereco){
+    //         showAddEnderecos = false;
+    //     }
+
+    //     return showAddEnderecos;
+    // },
+
+    render: function(){
+        
+        return (
+            React.createElement("div", {className: "container"}, 
+               React.createElement("h1", {className: "page-header"}, "Facilities Page"), 
+               React.createElement(Link, {to: "addFacility", params: {idCondominio: this.props.idCondominio}, className: "btn btn-default"}, "Adicionar Facility"), 
+               React.createElement(FacilitiesList, {
+                    facilities: this.state.facilities, 
+                    idCondominio: this.props.idCondominio}
+                )
+            )    
+        );
+    }
+});
+
+module.exports = FacilitiesPage;
+
+},{"../../actions/facilityActions":207,"../../stores/falicityStore":243,"./facilitiesList":229,"react":202,"react-router":33}],231:[function(require,module,exports){
+"use strict";
+var React = require('react');
+var Input = require("../common/textInput");
+var FacilityForm = React.createClass({displayName: "FacilityForm",
+    
+    propTypes: {
+        facility: React.PropTypes.object.isRequired,
+        onSave: React.PropTypes.func.isRequired,
+        onChange: React.PropTypes.func.isRequired,
+        errors: React.PropTypes.object
+    },
+        
+    render: function(){
+        return (
+           
+           React.createElement("form", {className: "container"}, 
+                
+                React.createElement("h1", {className: "page-header"}, "Formulário Facility"), 
+             
+
+                React.createElement(Input, {
+                    label: "Nome", 
+                    name: "nomefacility", 
+                    onChange: this.props.onChange, 
+                    value: this.props.facility.nomefacility, 
+                    error: this.props.errors.nomefacility}
+                ), 
+                
+                React.createElement(Input, {
+                    label: "Tempo de Reserva", 
+                    name: "tempoReserva", 
+                    onChange: this.props.onChange, 
+                    value: this.props.facility.tempoReserva, 
+                    error: this.props.errors.tempoReserva}
+                ), 
+                React.createElement(Input, {
+                    label: "Disponibilidade Dia", 
+                    name: "disponibilidadeDia", 
+                    onChange: this.props.onChange, 
+                    value: this.props.facility.disponibilidadeDia, 
+                    error: this.props.errors.disponibilidadeDia}
+                ), 
+
+                React.createElement(Input, {
+                    label: "Disponibilidade Hora", 
+                    name: "disponibilidadeHora", 
+                    onChange: this.props.onChange, 
+                    value: this.props.facility.disponibilidadeHora, 
+                    error: this.props.errors.disponibilidadeHora}
+                ), 
+
+                React.createElement(Input, {
+                    label: "Valor", 
+                    name: "valor", 
+                    onChange: this.props.onChange, 
+                    value: this.props.facility.valor, 
+                    error: this.props.errors.valor}
+                ), 
+
+                React.createElement(Input, {
+                    label: "Regras de Uso", 
+                    name: "regrasUso", 
+                    onChange: this.props.onChange, 
+                    value: this.props.facility.regrasUso, 
+                    error: this.props.errors.regrasUso}
+                ), 
+
+                React.createElement("input", {type: "submit", value: "Save", onClick: this.props.onSave, classNameName: "btn btn-primary mb-2"})
+            )
+           
+            
+        ); 
+    }
+
+});
+
+module.exports = FacilityForm;  
+
+},{"../common/textInput":220,"react":202}],232:[function(require,module,exports){
+"use strict";
+var React = require('react');
+var Router = require('react-router');
+var FacilityForm = require('./facilityForm');
+ var FacilityStore = require("../../stores/falicityStore");
+ var FacilityActions = require("../../actions/facilityActions");
+
+var Toastr = require("toastr");
+
+var ManageFacilitiesPage = React.createClass({displayName: "ManageFacilitiesPage",
+
+    
+     componentWillUnmount : function(){
+        FacilityStore.removeChangeListener(this._onChange);
+     },
+    
+    _onChange : function(){
+        console.log("onChange facilityPage");
+        this.setState({ facility: FacilityStore.getFacility()});
+    },
+
+    getInitialState: function(){
+        console.log("getInitialState ManageFacilityPage");
+        return {
+            facility: {
+                nomefacility: '',
+                tempoReserva: '',
+                disponibilidadeDia: '',
+                disponibilidadeHora: '',
+                valor: 0,
+                regrasUso: '',
+                id: ''
+            
+            },
+            errors: {},
+            dirty: false
+        };
+    },
+
+    
+
+    mixins: [
+        Router.Navigation
+    ],
+
+    statics: {
+
+        willTransitionFrom: function(transition, component){
+            if( component.state.dirty && !confirm("Leave without saving ?")){
+                transition.abort();
+            }    
+        }
+
+    },
+
+    componentWillMount: function(){
+        
+        FacilityStore.addChangeListener(this._onChange);
+       
+        console.log("componentWillMount managerFacility");
+        console.log(this.props.params.idCondominio);
+        console.log(this.props.params.idFacility);
+        
+
+        if(this.props.params.idFacility){
+            
+          this.setState({facility: FacilityStore.getFacilityById(this.props.params.idFacility)});
+
+        }
+
+    },
+        
+    setFacilityState: function(event){ // called for every key press
+        var field = event.target.name;
+        var value = event.target.value;
+        
+
+        
+        console.log("field : " + field);
+        console.log("value : " + value);
+
+
+        this.state.facility[field] = value;
+
+        console.dir(this.state.facility);
+
+
+        console.log("typed : " + value);
+        this.setState({ dirty: true });
+        return this.state.facility;
+    },
+    
+    saveFacility: function(event){ 
+        event.preventDefault();
+        if(!this.facilityFormIsValid()){
+            return;
+        }
+        
+        console.dir(this.state.facility);
+
+        if(this.props.params.idFacility){
+
+            FacilityActions.updateFacility(this.state.facility, this.props.params.idFacility);
+
+        }else{
+
+            FacilityActions.createFacility(this.state.facility);
+
+        }
+               
+        
+        console.log(this.props.params.idCondominio);
+        
+        if(this.props.params.idCondominio)
+            
+            this.transitionTo('manageCondominio', {id: this.props.params.idCondominio});
+            
+        else{
+            
+            this.transitionTo('addFacility');
+
+        }    
+
+    },
+
+
+    facilityFormIsValid: function(){
+        var formIsValid = true;
+        this.state.errors = {}; // clear any previous errors
+        if(this.state.facility.nomefacility.length < 1){
+            this.state.errors.nomefacility = "nome facility must be filled.";
+            formIsValid = false;
+        }
+
+        this.setState({errors: this.state.errors});
+        return formIsValid;
+
+    },
+
+    
+    /**
+     * creating reusable inputs
+     * 
+     */
+    render: function(){
+        return (
+            React.createElement(FacilityForm, {
+             facility: this.state.facility, 
+             onChange: this.setFacilityState, 
+             onSave: this.saveFacility, 
+             errors: this.state.errors}
+            ) 
+        ); 
+    }
+
+});
+
+module.exports = ManageFacilitiesPage; 
+
+},{"../../actions/facilityActions":207,"../../stores/falicityStore":243,"./facilityForm":231,"react":202,"react-router":33,"toastr":203}],233:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Router = require('react-router');
@@ -52056,7 +52546,7 @@ var Home = React.createClass({displayName: "Home",
 
 module.exports = Home; 
 
-},{"react":202,"react-router":33}],229:[function(require,module,exports){
+},{"react":202,"react-router":33}],234:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Link = require('react-router').Link;
@@ -52075,7 +52565,7 @@ var NotFoundPage = React.createClass({displayName: "NotFoundPage",
 
 module.exports = NotFoundPage; 
 
-},{"react":202,"react-router":33}],230:[function(require,module,exports){
+},{"react":202,"react-router":33}],235:[function(require,module,exports){
 "use strict"
 var keyMirror = require("react/lib/keyMirror")
 
@@ -52095,12 +52585,21 @@ module.exports = keyMirror({
     INIT_ENDERECO: null,
     UPDATE_ENDERECO: null,
     DELETE_ENDERECO: null,
+    
+
+    CREATE_FACILITY: null,
+    CLEAN_FACILITY: null,
+    INIT_FACILITY: null,
+    UPDATE_FACILITY: null,
+    DELETE_FACILITY: null,
+
+
     DELETE_CONDOMINIO_ENDERECO: null,
     BUSCA_ENDERECO: null
 
 });
 
-},{"react/lib/keyMirror":187}],231:[function(require,module,exports){
+},{"react/lib/keyMirror":187}],236:[function(require,module,exports){
 "use strict"
 var keyMirror = require("react/lib/keyMirror")
 
@@ -52110,11 +52609,11 @@ module.exports = keyMirror({
 
 });
 
-},{"react/lib/keyMirror":187}],232:[function(require,module,exports){
+},{"react/lib/keyMirror":187}],237:[function(require,module,exports){
 var Dispatcher = require("flux").Dispatcher;
 module.exports = new Dispatcher();
 
-},{"flux":3}],233:[function(require,module,exports){
+},{"flux":3}],238:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Router = require('react-router');
@@ -52127,7 +52626,7 @@ Router.run(routes, function(Handler){
     React.render(React.createElement(Handler, null), document.getElementById('app'));
 }); 
 
-},{"./actions/initializeActions":207,"./routes":234,"react":202,"react-router":33}],234:[function(require,module,exports){
+},{"./actions/initializeActions":208,"./routes":239,"react":202,"react-router":33}],239:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Router = require("react-router");
@@ -52144,6 +52643,7 @@ var routes = (
         React.createElement(Route, {name: "addAuthor", path: "author", handler: require('./components/authors/manageAuthorPage')}), 
         React.createElement(Route, {name: "addCondominio", path: "condominio", handler: require('./components/condominios/manageCondominioPage')}), 
         React.createElement(Route, {name: "addEndereco", path: "condominio/:idCondominio/endereco", handler: require('./components/enderecos/manageEnderecoPage')}), 
+        React.createElement(Route, {name: "addFacility", path: "condominio/:idCondominio/facility", handler: require('./components/facilities/manageFacilitiesPage')}), 
         React.createElement(Route, {name: "manageAuthor", path: "author/:id", handler: require('./components/authors/manageAuthorPage')}), 
         React.createElement(Route, {name: "manageCondominio", path: "condominio/:id", handler: require('./components/condominios/manageCondominioPage')}), 
         React.createElement(Route, {name: "manageEndereco", path: "condominio/:idCondominio/endereco/:idEndereco", handler: require('./components/enderecos/manageEnderecoPage')}), 
@@ -52158,7 +52658,7 @@ var routes = (
 
 module.exports = routes;
 
-},{"./components/about/aboutPage":211,"./components/app":212,"./components/authors/authorPage":215,"./components/authors/manageAuthorPage":216,"./components/condominios/condominiosPage":222,"./components/condominios/manageCondominioPage":223,"./components/enderecos/manageEnderecoPage":227,"./components/homePage":228,"./components/notFoundPage":229,"react":202,"react-router":33}],235:[function(require,module,exports){
+},{"./components/about/aboutPage":212,"./components/app":213,"./components/authors/authorPage":216,"./components/authors/manageAuthorPage":217,"./components/condominios/condominiosPage":223,"./components/condominios/manageCondominioPage":224,"./components/enderecos/manageEnderecoPage":228,"./components/facilities/manageFacilitiesPage":232,"./components/homePage":233,"./components/notFoundPage":234,"react":202,"react-router":33}],240:[function(require,module,exports){
 "use strict"
 var Dispatcher = require("../dispatcher/appDispatcher");
 var ActionTypes = require("../constants/actionTypes");
@@ -52231,7 +52731,7 @@ Dispatcher.register(function(action){
 
 module.exports = AuthorStore;
 
-},{"../constants/actionTypes":230,"../dispatcher/appDispatcher":232,"events":1,"lodash":7,"object-assign":8}],236:[function(require,module,exports){
+},{"../constants/actionTypes":235,"../dispatcher/appDispatcher":237,"events":1,"lodash":7,"object-assign":8}],241:[function(require,module,exports){
 "use strict"
 var Dispatcher = require("../dispatcher/appDispatcher");
 var ActionTypes = require("../constants/actionTypes");
@@ -52354,7 +52854,7 @@ Dispatcher.register(function(action){
 
 module.exports = CondominioStore;
 
-},{"../constants/actionTypes":230,"../dispatcher/appDispatcher":232,"events":1,"lodash":7,"object-assign":8}],237:[function(require,module,exports){
+},{"../constants/actionTypes":235,"../dispatcher/appDispatcher":237,"events":1,"lodash":7,"object-assign":8}],242:[function(require,module,exports){
 "use strict"
 var Dispatcher = require("../dispatcher/appDispatcher");
 var ParentTypes = require("../constants/parentTypes");
@@ -52495,4 +52995,124 @@ Dispatcher.register(function(action){
 
 module.exports = EnderecoStore;
 
-},{"../constants/actionTypes":230,"../constants/parentTypes":231,"../dispatcher/appDispatcher":232,"events":1,"lodash":7,"object-assign":8}]},{},[233]);
+},{"../constants/actionTypes":235,"../constants/parentTypes":236,"../dispatcher/appDispatcher":237,"events":1,"lodash":7,"object-assign":8}],243:[function(require,module,exports){
+"use strict"
+var Dispatcher = require("../dispatcher/appDispatcher");
+// apagar ?? var ParentTypes = require("../constants/parentTypes");
+var ActionTypes = require("../constants/actionTypes");
+var EventEmitter = require("events").EventEmitter;
+var assign = require("object-assign");
+var _ = require("lodash");
+var CHANGE_EVENT = "change";
+
+var _facilities = []; // outside the export module
+var _initialized = false;
+var _facility = {};
+var _saved_state = false;
+
+// take an empty object, take the emitEmitter.prototype and 
+// add everything on the last object
+var FacilityStore = assign({}, EventEmitter.prototype,{
+    addChangeListener: function(callback){
+        this.on(CHANGE_EVENT, callback);        
+    },
+    removeChangeListener: function(callback){
+        this.removeListener(CHANGE_EVENT, callback);        
+    },
+    emitChange: function(){
+        this.emit(CHANGE_EVENT);
+    },
+    
+    getFacilities: function(){
+        
+        return _facilities;
+    },
+
+    getFacility: function(){
+        
+        return _facility;
+    },
+
+    getFacilityById: function(id){
+        
+        return _facilities[id];
+    },
+
+    getInitialized: function(){
+        
+        console.log("getInitialized");
+        console.log(_initialized);
+        return _initialized;
+    }
+
+    
+
+});
+
+Dispatcher.register(function(action){
+    switch(action.actionType){
+        // this is the part that varies...
+
+        
+        case ActionTypes.CLEAN_FACILITY:
+            _facilities = [];
+            _initialized = false;
+            _facility = {};
+            _saved_state = false;
+            FacilityStore.emitChange();
+            break;
+        
+        case ActionTypes.INIT_FACILITY:
+            _facilities = action.facilities;
+            _initialized = true;
+            _facility = {};
+            _saved_state = false;
+            FacilityStore.emitChange();
+            break;
+        
+        case ActionTypes.CREATE_FACILITY:
+            _facilities.push(action.facility);
+            console.log("_facilities in facility Store");
+            console.dir(_facilities);
+            _initialized = true;
+            _facility = {};
+            _saved_state = false;
+            FacilityStore.emitChange();
+        break;
+
+        case ActionTypes.UPDATE_FACILITY:
+            _facilities[action.index] = action.facility;
+            _facility = {};
+            _saved_state = false;    
+            FacilityStore.emitChange();
+        break;
+        
+        case ActionTypes.DELETE_FACILITY:
+            var find = false;
+            if(action.facility.id){
+                var existingFacility = _.find(_facilities, {id : action.facility.id});
+                var existingFacilityIndex = _.indexOf(_facilities, existingFacility);
+                _facilities.splice(existingFacilityIndex,1);
+                var find = true;
+            }else{
+                var existingFacility = _.find(_facilities, {nomefacility : action.facility.nomefacility, 
+                                                            tempoReserva: action.facility.tempoReserva});
+                var existingFacilityIndex = _.indexOf(_facilities, existingFacility);                                           
+                _facilities.splice(existingFacilityIndex,1);    
+                var find = true;
+
+            }
+        if(find == true){
+            console.log("found");
+        }    
+
+        FacilityStore.emitChange();
+        break;
+            
+            
+    }
+});
+
+module.exports = FacilityStore;
+
+},{"../constants/actionTypes":235,"../dispatcher/appDispatcher":237,"events":1,"lodash":7,"object-assign":8}]},{},[238]);
